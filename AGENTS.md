@@ -7,3 +7,7 @@ This file exists for compatibility with tools that look for AGENTS.md.
 > **Recovery**: Run `gt prime` after compaction, clear, or new session
 
 Full context is injected by `gt prime` at session start.
+
+## CRITICAL RULES
+
+- NEVER comment on PRs you didn't create - leave PR reviews to the repo owner
