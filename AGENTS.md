@@ -27,3 +27,12 @@ Only commit after completing all 5 iterations. This ensures higher quality code 
 - Add new functionality → add tests for it
 
 Never leave tests in a failing state. Run `go test ./...` before marking work complete.
+
+### Context Refresh Rule
+**If idle and under 15% context remaining, refresh your session.**
+
+When you:
+- Complete a task and have no pending work
+- Notice context is below 15%
+
+Run `gt crew refresh <your-name>` to get a fresh context. This prevents working with degraded context that leads to lower quality output.
