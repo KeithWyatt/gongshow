@@ -86,13 +86,14 @@ func runAudit(cmd *cobra.Command, args []string) error {
 		sinceTime = time.Now().Add(-duration)
 	}
 
-	// Collect entries from all sources
+	// Collect entries from all sources, tracking errors
 	var allEntries []AuditEntry
+	var collectionErrors []string
 
 	// 1. Git commits
 	gitEntries, err := collectGitCommits(townRoot, auditActor, sinceTime)
 	if err != nil {
-		// Non-fatal: log and continue
+		collectionErrors = append(collectionErrors, fmt.Sprintf("git commits: %v", err))
 		fmt.Fprintf(os.Stderr, "Warning: could not query git commits: %v\n", err)
 	}
 	allEntries = append(allEntries, gitEntries...)
@@ -100,6 +101,7 @@ func runAudit(cmd *cobra.Command, args []string) error {
 	// 2. Beads (created_by, assignee)
 	beadsEntries, err := collectBeadsActivity(townRoot, auditActor, sinceTime)
 	if err != nil {
+		collectionErrors = append(collectionErrors, fmt.Sprintf("beads: %v", err))
 		fmt.Fprintf(os.Stderr, "Warning: could not query beads: %v\n", err)
 	}
 	allEntries = append(allEntries, beadsEntries...)
@@ -107,6 +109,7 @@ func runAudit(cmd *cobra.Command, args []string) error {
 	// 3. Town log events
 	townlogEntries, err := collectTownlogEvents(townRoot, auditActor, sinceTime)
 	if err != nil {
+		collectionErrors = append(collectionErrors, fmt.Sprintf("town log: %v", err))
 		fmt.Fprintf(os.Stderr, "Warning: could not query town log: %v\n", err)
 	}
 	allEntries = append(allEntries, townlogEntries...)
@@ -114,9 +117,15 @@ func runAudit(cmd *cobra.Command, args []string) error {
 	// 4. Activity feed events
 	feedEntries, err := collectFeedEvents(townRoot, auditActor, sinceTime)
 	if err != nil {
+		collectionErrors = append(collectionErrors, fmt.Sprintf("events feed: %v", err))
 		fmt.Fprintf(os.Stderr, "Warning: could not query events feed: %v\n", err)
 	}
 	allEntries = append(allEntries, feedEntries...)
+
+	// If all sources failed with no results, return error
+	if len(allEntries) == 0 && len(collectionErrors) > 0 {
+		return fmt.Errorf("failed to collect audit data from all sources: %s", strings.Join(collectionErrors, "; "))
+	}
 
 	// Sort by timestamp (newest first)
 	sort.Slice(allEntries, func(i, j int) bool {
