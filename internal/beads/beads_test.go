@@ -905,6 +905,9 @@ func TestAttachmentFieldsRoundTrip(t *testing.T) {
 
 // TestResolveBeadsDir tests the redirect following logic.
 func TestResolveBeadsDir(t *testing.T) {
+	// Clear cache to ensure clean state for each test run
+	ClearBeadsDirCache()
+
 	// Create temp directory structure
 	tmpDir, err := os.MkdirTemp("", "beads-redirect-test-*")
 	if err != nil {
@@ -1015,6 +1018,57 @@ func TestResolveBeadsDir(t *testing.T) {
 			t.Error("circular redirect file should have been removed, but it still exists")
 		}
 	})
+}
+
+// TestResolveBeadsDirCaching verifies that ResolveBeadsDir caches results.
+func TestResolveBeadsDirCaching(t *testing.T) {
+	// Clear any existing cache
+	ClearBeadsDirCache()
+
+	tmpDir, err := os.MkdirTemp("", "beads-cache-test-*")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer func() { _ = os.RemoveAll(tmpDir) }()
+
+	// Create a simple .beads directory
+	workDir := filepath.Join(tmpDir, "project")
+	beadsDir := filepath.Join(workDir, ".beads")
+	if err := os.MkdirAll(beadsDir, 0755); err != nil {
+		t.Fatal(err)
+	}
+
+	// First call should resolve and cache
+	result1 := ResolveBeadsDir(workDir)
+	if result1 != beadsDir {
+		t.Errorf("first call: got %q, want %q", result1, beadsDir)
+	}
+
+	// Second call should return cached result
+	result2 := ResolveBeadsDir(workDir)
+	if result2 != beadsDir {
+		t.Errorf("second call: got %q, want %q", result2, beadsDir)
+	}
+
+	// Remove the .beads directory - cached result should still be returned
+	if err := os.RemoveAll(beadsDir); err != nil {
+		t.Fatal(err)
+	}
+
+	// Third call should still return cached result (even though directory is gone)
+	result3 := ResolveBeadsDir(workDir)
+	if result3 != beadsDir {
+		t.Errorf("third call (after removal): got %q, want %q", result3, beadsDir)
+	}
+
+	// Clear cache and call again - should return default .beads path
+	ClearBeadsDirCache()
+	result4 := ResolveBeadsDir(workDir)
+	// Now it should return the expected default path (workDir/.beads)
+	expected := filepath.Join(workDir, ".beads")
+	if result4 != expected {
+		t.Errorf("after cache clear: got %q, want %q", result4, expected)
+	}
 }
 
 func TestParseAgentBeadID(t *testing.T) {

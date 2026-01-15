@@ -6,7 +6,23 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
 )
+
+// beadsDirCache caches resolved beads directories to avoid repeated file I/O.
+// Key: cleaned workDir path, Value: resolved beads directory path.
+// The cache is process-scoped and cleared on process restart.
+var beadsDirCache sync.Map
+
+// ClearBeadsDirCache clears the beads directory cache.
+// This is primarily useful for testing where the same paths may be
+// reused with different redirect configurations.
+func ClearBeadsDirCache() {
+	beadsDirCache.Range(func(key, _ any) bool {
+		beadsDirCache.Delete(key)
+		return true
+	})
+}
 
 // ResolveBeadsDir returns the actual beads directory, following any redirect.
 // If workDir/.beads/redirect exists, it reads the redirect path and resolves it
@@ -23,6 +39,24 @@ import (
 // this indicates an errant redirect file that should be removed. The function logs a
 // warning and returns the original beads directory.
 func ResolveBeadsDir(workDir string) string {
+	// Clean the path for consistent cache keys
+	cleanedWorkDir := filepath.Clean(workDir)
+
+	// Check cache first to avoid repeated file I/O
+	if cached, ok := beadsDirCache.Load(cleanedWorkDir); ok {
+		return cached.(string)
+	}
+
+	// Resolve the beads directory
+	result := resolveBeadsDirUncached(cleanedWorkDir)
+
+	// Cache and return
+	beadsDirCache.Store(cleanedWorkDir, result)
+	return result
+}
+
+// resolveBeadsDirUncached performs the actual resolution without caching.
+func resolveBeadsDirUncached(workDir string) string {
 	beadsDir := filepath.Join(workDir, ".beads")
 	redirectPath := filepath.Join(beadsDir, "redirect")
 
