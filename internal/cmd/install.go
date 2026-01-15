@@ -68,7 +68,7 @@ Examples:
 
 func init() {
 	installCmd.Flags().BoolVarP(&installForce, "force", "f", false, "Overwrite existing HQ")
-	installCmd.Flags().StringVarP(&installName, "name", "n", "", "Town name (defaults to directory name)")
+	installCmd.Flags().StringVar(&installName, "name", "", "Town name (defaults to directory name)")
 	installCmd.Flags().StringVar(&installOwner, "owner", "", "Owner email for entity identity (defaults to git config user.email)")
 	installCmd.Flags().StringVar(&installPublicName, "public-name", "", "Public display name (defaults to town name)")
 	installCmd.Flags().BoolVar(&installNoBeads, "no-beads", false, "Skip town beads initialization")

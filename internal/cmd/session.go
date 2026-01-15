@@ -178,11 +178,11 @@ func init() {
 	sessionListCmd.Flags().BoolVar(&sessionListJSON, "json", false, "Output as JSON")
 
 	// Capture flags
-	sessionCaptureCmd.Flags().IntVarP(&sessionLines, "lines", "n", 100, "Number of lines to capture")
+	sessionCaptureCmd.Flags().IntVar(&sessionLines, "lines", 100, "Number of lines to capture")
 
 	// Inject flags
 	sessionInjectCmd.Flags().StringVarP(&sessionMessage, "message", "m", "", "Message to inject")
-	sessionInjectCmd.Flags().StringVarP(&sessionFile, "file", "f", "", "File to read message from")
+	sessionInjectCmd.Flags().StringVar(&sessionFile, "file", "", "File to read message from")
 
 	// Restart flags
 	sessionRestartCmd.Flags().BoolVarP(&sessionForce, "force", "f", false, "Force immediate shutdown")
