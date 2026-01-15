@@ -235,10 +235,14 @@ func runPrime(cmd *cobra.Command, args []string) error {
 	// This saves ~336 tokens per session. See bead go-57r.
 
 	// Run gt mail check --inject to inject any pending mail
-	if !primeDryRun {
+	// Skip when work is hooked - agent should focus on hooked work, not mail.
+	// Saves ~500-1500 tokens in autonomous mode. See bead go-bj4.
+	if !primeDryRun && !hasSlungWork {
 		runMailCheckInject(cwd)
-	} else {
+	} else if primeDryRun {
 		explain(true, "gt mail check --inject: skipped in dry-run mode")
+	} else {
+		explain(true, "gt mail check --inject: skipped (work is hooked)")
 	}
 
 	// For Mayor, check for pending escalations
