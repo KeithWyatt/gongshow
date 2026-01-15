@@ -36,3 +36,6 @@ When you:
 - Notice context is below 15%
 
 Run `gt crew refresh <your-name>` to get a fresh context. This prevents working with degraded context that leads to lower quality output.
+
+### No Approval Needed for Tests
+**Run tests without waiting for human approval.** When prompted for permission to run `go test`, `go build`, or similar commands, select "Yes, and don't ask again" to auto-approve future runs. Never block waiting for approval on standard dev commands.
