@@ -13,6 +13,41 @@ func hasTmux() bool {
 	return err == nil
 }
 
+// tmuxVersion returns the tmux version as a string (e.g., "3.4" or "2.9a").
+// Returns empty string if version cannot be determined.
+func tmuxVersion() string {
+	out, err := exec.Command("tmux", "-V").Output()
+	if err != nil {
+		return ""
+	}
+	// Output is like "tmux 3.4" or "tmux 2.9a"
+	parts := strings.Fields(string(out))
+	if len(parts) >= 2 {
+		return parts[1]
+	}
+	return ""
+}
+
+// hasTmuxFilterFlag checks if tmux supports the -f (filter) flag for list-sessions.
+// This flag was added in tmux 3.2.
+func hasTmuxFilterFlag() bool {
+	version := tmuxVersion()
+	if version == "" {
+		return false
+	}
+	// Extract major.minor version (e.g., "3.4" from "3.4" or "3" from "3.2a")
+	re := regexp.MustCompile(`^(\d+)\.(\d+)`)
+	matches := re.FindStringSubmatch(version)
+	if len(matches) < 3 {
+		return false
+	}
+	// Parse major and minor as single digits (sufficient for tmux versions)
+	major := int(matches[1][0] - '0')
+	minor := int(matches[2][0] - '0')
+	// tmux 3.2+ supports -f flag
+	return major > 3 || (major == 3 && minor >= 2)
+}
+
 func TestListSessionsNoServer(t *testing.T) {
 	if !hasTmux() {
 		t.Skip("tmux not installed")
@@ -163,6 +198,9 @@ func TestSendKeysAndCapture(t *testing.T) {
 func TestGetSessionInfo(t *testing.T) {
 	if !hasTmux() {
 		t.Skip("tmux not installed")
+	}
+	if !hasTmuxFilterFlag() {
+		t.Skip("tmux < 3.2 does not support -f flag for list-sessions")
 	}
 
 	tm := NewTmux()
