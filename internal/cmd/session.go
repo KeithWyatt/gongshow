@@ -278,7 +278,9 @@ func runSessionStart(cmd *cobra.Command, args []string) error {
 	if townRoot, err := workspace.FindFromCwd(); err == nil && townRoot != "" {
 		agent := fmt.Sprintf("%s/%s", rigName, polecatName)
 		logger := townlog.NewLogger(townRoot)
-		_ = logger.Log(townlog.EventWake, agent, sessionIssue)
+		if err := logger.Log(townlog.EventWake, agent, sessionIssue); err != nil {
+			fmt.Fprintf(os.Stderr, "Warning: failed to log wake event: %v\n", err)
+		}
 	}
 
 	return nil
@@ -314,7 +316,9 @@ func runSessionStop(cmd *cobra.Command, args []string) error {
 			reason = "gt session stop --force"
 		}
 		logger := townlog.NewLogger(townRoot)
-		_ = logger.Log(townlog.EventKill, agent, reason)
+		if err := logger.Log(townlog.EventKill, agent, reason); err != nil {
+			fmt.Fprintf(os.Stderr, "Warning: failed to log kill event: %v\n", err)
+		}
 	}
 
 	return nil

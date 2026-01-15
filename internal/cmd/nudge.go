@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 	"strings"
 	"time"
 
@@ -163,9 +164,13 @@ func runNudge(cmd *cobra.Command, args []string) error {
 
 		// Log nudge event
 		if townRoot, err := workspace.FindFromCwd(); err == nil && townRoot != "" {
-			_ = LogNudge(townRoot, "deacon", message)
+			if err := LogNudge(townRoot, "deacon", message); err != nil {
+				fmt.Fprintf(os.Stderr, "Warning: failed to log nudge to townlog: %v\n", err)
+			}
 		}
-		_ = events.LogFeed(events.TypeNudge, sender, events.NudgePayload("", "deacon", message))
+		if err := events.LogFeed(events.TypeNudge, sender, events.NudgePayload("", "deacon", message)); err != nil {
+			fmt.Fprintf(os.Stderr, "Warning: failed to log nudge event: %v\n", err)
+		}
 		return nil
 	}
 
@@ -202,9 +207,13 @@ func runNudge(cmd *cobra.Command, args []string) error {
 
 		// Log nudge event
 		if townRoot, err := workspace.FindFromCwd(); err == nil && townRoot != "" {
-			_ = LogNudge(townRoot, target, message)
+			if err := LogNudge(townRoot, target, message); err != nil {
+				fmt.Fprintf(os.Stderr, "Warning: failed to log nudge to townlog: %v\n", err)
+			}
 		}
-		_ = events.LogFeed(events.TypeNudge, sender, events.NudgePayload(rigName, target, message))
+		if err := events.LogFeed(events.TypeNudge, sender, events.NudgePayload(rigName, target, message)); err != nil {
+			fmt.Fprintf(os.Stderr, "Warning: failed to log nudge event: %v\n", err)
+		}
 	} else {
 		// Raw session name (legacy)
 		exists, err := t.HasSession(target)
@@ -223,9 +232,13 @@ func runNudge(cmd *cobra.Command, args []string) error {
 
 		// Log nudge event
 		if townRoot, err := workspace.FindFromCwd(); err == nil && townRoot != "" {
-			_ = LogNudge(townRoot, target, message)
+			if err := LogNudge(townRoot, target, message); err != nil {
+				fmt.Fprintf(os.Stderr, "Warning: failed to log nudge to townlog: %v\n", err)
+			}
 		}
-		_ = events.LogFeed(events.TypeNudge, sender, events.NudgePayload("", target, message))
+		if err := events.LogFeed(events.TypeNudge, sender, events.NudgePayload("", target, message)); err != nil {
+			fmt.Fprintf(os.Stderr, "Warning: failed to log nudge event: %v\n", err)
+		}
 	}
 
 	return nil
@@ -331,7 +344,9 @@ func runNudgeChannel(channelName, message string) error {
 	fmt.Println()
 
 	// Log nudge event
-	_ = events.LogFeed(events.TypeNudge, sender, events.NudgePayload("", "channel:"+channelName, message))
+	if err := events.LogFeed(events.TypeNudge, sender, events.NudgePayload("", "channel:"+channelName, message)); err != nil {
+		fmt.Fprintf(os.Stderr, "Warning: failed to log channel nudge event: %v\n", err)
+	}
 
 	if failed > 0 {
 		fmt.Printf("%s Channel nudge complete: %d succeeded, %d failed\n",

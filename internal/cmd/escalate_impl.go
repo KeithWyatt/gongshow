@@ -125,7 +125,9 @@ func runEscalate(cmd *cobra.Command, args []string) error {
 	if escalateSource != "" {
 		payload["source"] = escalateSource
 	}
-	_ = events.LogFeed(events.TypeEscalationSent, agentID, payload)
+	if err := events.LogFeed(events.TypeEscalationSent, agentID, payload); err != nil {
+		fmt.Fprintf(os.Stderr, "Warning: failed to log escalation event: %v\n", err)
+	}
 
 	// Output
 	if escalateJSON {
@@ -231,10 +233,12 @@ func runEscalateAck(cmd *cobra.Command, args []string) error {
 	}
 
 	// Log to activity feed
-	_ = events.LogFeed(events.TypeEscalationAcked, ackedBy, map[string]interface{}{
+	if err := events.LogFeed(events.TypeEscalationAcked, ackedBy, map[string]interface{}{
 		"escalation_id": escalationID,
 		"acked_by":      ackedBy,
-	})
+	}); err != nil {
+		fmt.Fprintf(os.Stderr, "Warning: failed to log escalation ack event: %v\n", err)
+	}
 
 	fmt.Printf("%s Escalation acknowledged: %s\n", style.Bold.Render("✓"), escalationID)
 	return nil
@@ -260,11 +264,13 @@ func runEscalateClose(cmd *cobra.Command, args []string) error {
 	}
 
 	// Log to activity feed
-	_ = events.LogFeed(events.TypeEscalationClosed, closedBy, map[string]interface{}{
+	if err := events.LogFeed(events.TypeEscalationClosed, closedBy, map[string]interface{}{
 		"escalation_id": escalationID,
 		"closed_by":     closedBy,
 		"reason":        escalateCloseReason,
-	})
+	}); err != nil {
+		fmt.Fprintf(os.Stderr, "Warning: failed to log escalation close event: %v\n", err)
+	}
 
 	fmt.Printf("%s Escalation closed: %s\n", style.Bold.Render("✓"), escalationID)
 	fmt.Printf("  Reason: %s\n", escalateCloseReason)

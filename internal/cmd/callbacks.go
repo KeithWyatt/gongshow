@@ -482,5 +482,7 @@ func handleSling(townRoot string, msg *mail.Message, dryRun bool) (string, error
 // logCallback logs a callback processing event to the town log.
 func logCallback(townRoot, context string) {
 	logger := townlog.NewLogger(townRoot)
-	_ = logger.Log(townlog.EventCallback, "mayor/", context)
+	if err := logger.Log(townlog.EventCallback, "mayor/", context); err != nil {
+		fmt.Fprintf(os.Stderr, "Warning: failed to log callback event: %v\n", err)
+	}
 }
