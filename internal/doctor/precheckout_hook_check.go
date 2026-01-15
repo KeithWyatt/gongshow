@@ -28,12 +28,12 @@ func NewPreCheckoutHookCheck() *PreCheckoutHookCheck {
 }
 
 // PreCheckoutHookScript is the expected content marker for our hook.
-const preCheckoutHookMarker = "Gas Town pre-checkout hook"
+const preCheckoutHookMarker = "GongShow pre-checkout hook"
 
 // preCheckoutHookScript is the full hook script content.
 // This matches the script in cmd/gitinit.go.
 const preCheckoutHookScript = `#!/bin/bash
-# Gas Town pre-checkout hook
+# GongShow pre-checkout hook
 # Prevents accidental branch switches in the town root (HQ).
 # The town root must stay on main to avoid breaking gt commands.
 
@@ -64,7 +64,7 @@ echo ""
 echo "⚠️  BLOCKED: Town root must stay on main branch"
 echo ""
 echo "   You're trying to switch from '$CURRENT_BRANCH' to '$TARGET_BRANCH'"
-echo "   in the Gas Town HQ directory."
+echo "   in the GongShow HQ directory."
 echo ""
 echo "   The town root (~/gt) should always be on main. Switching branches"
 echo "   can break gt commands (missing rigs.json, wrong configs, etc.)."
@@ -123,9 +123,9 @@ func (c *PreCheckoutHookCheck) Run(ctx *CheckContext) *CheckResult {
 		return &CheckResult{
 			Name:    c.Name(),
 			Status:  StatusWarning,
-			Message: "Pre-checkout hook exists but is not Gas Town's",
+			Message: "Pre-checkout hook exists but is not GongShow's",
 			Details: []string{
-				"A pre-checkout hook exists but doesn't contain the Gas Town marker",
+				"A pre-checkout hook exists but doesn't contain the GongShow marker",
 				"Consider adding branch protection manually or replacing it",
 			},
 		}

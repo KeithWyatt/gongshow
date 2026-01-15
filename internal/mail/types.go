@@ -63,7 +63,7 @@ type Message struct {
 	// ID is a unique message identifier (beads issue ID like "bd-abc123").
 	ID string `json:"id"`
 
-	// From is the sender address (e.g., "gastown/Toast" or "mayor/").
+	// From is the sender address (e.g., "gongshow/Toast" or "mayor/").
 	From string `json:"from"`
 
 	// To is the recipient address.
@@ -499,11 +499,11 @@ func ParseMessageType(s string) MessageType {
 //   - "mayor" → "mayor/"
 //   - "deacon/" → "deacon/"
 //   - "deacon" → "deacon/"
-//   - "gastown/polecats/Toast" → "gastown/Toast" (normalized)
-//   - "gastown/crew/max" → "gastown/max" (normalized)
-//   - "gastown/Toast" → "gastown/Toast" (already canonical)
-//   - "gastown/refinery" → "gastown/refinery"
-//   - "gastown/" → "gastown" (rig broadcast)
+//   - "gongshow/polecats/Toast" → "gongshow/Toast" (normalized)
+//   - "gongshow/crew/max" → "gongshow/max" (normalized)
+//   - "gongshow/Toast" → "gongshow/Toast" (already canonical)
+//   - "gongshow/refinery" → "gongshow/refinery"
+//   - "gongshow/" → "gongshow" (rig broadcast)
 func addressToIdentity(address string) string {
 	// Overseer (human operator) - no trailing slash, distinct from agents
 	if address == "overseer" {
@@ -540,10 +540,10 @@ func addressToIdentity(address string) string {
 //   - "overseer" → "overseer" (human operator)
 //   - "mayor/" → "mayor/"
 //   - "deacon/" → "deacon/"
-//   - "gastown/polecats/Toast" → "gastown/Toast" (normalized)
-//   - "gastown/crew/max" → "gastown/max" (normalized)
-//   - "gastown/Toast" → "gastown/Toast" (already canonical)
-//   - "gastown/refinery" → "gastown/refinery"
+//   - "gongshow/polecats/Toast" → "gongshow/Toast" (normalized)
+//   - "gongshow/crew/max" → "gongshow/max" (normalized)
+//   - "gongshow/Toast" → "gongshow/Toast" (already canonical)
+//   - "gongshow/refinery" → "gongshow/refinery"
 func identityToAddress(identity string) string {
 	// Overseer (human operator) - no trailing slash
 	if identity == "overseer" {

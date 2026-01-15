@@ -1,4 +1,4 @@
-// Package agent provides shared types and utilities for Gas Town agents
+// Package agent provides shared types and utilities for GongShow agents
 // (witness, refinery, deacon, etc.).
 package agent
 
@@ -7,7 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/steveyegge/gastown/internal/util"
+	"github.com/KeithWyatt/gongshow/internal/util"
 )
 
 // State represents an agent's running state.

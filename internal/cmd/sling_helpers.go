@@ -8,12 +8,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/constants"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/tmux"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/constants"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 // beadInfo holds status and assignee for a bead.
@@ -328,7 +328,7 @@ func updateAgentHookBead(agentID, beadID, workDir, townBeadsDir string) {
 	bdWorkDir := workDir
 	townRoot, err := workspace.FindFromCwd()
 	if err != nil {
-		// Not in a Gas Town workspace - can't update agent bead
+		// Not in a GongShow workspace - can't update agent bead
 		fmt.Fprintf(os.Stderr, "Warning: couldn't find town root to update agent hook: %v\n", err)
 		return
 	}
@@ -400,7 +400,7 @@ func attachPolecatWorkMolecule(targetAgent, hookWorkDir, townRoot string) error 
 	polecatName := parts[2]
 
 	// Get the polecat's agent bead ID
-	// Format: "<prefix>-<rig>-polecat-<name>" (e.g., "gt-gastown-polecat-Toast")
+	// Format: "<prefix>-<rig>-polecat-<name>" (e.g., "gt-gongshow-polecat-Toast")
 	prefix := config.GetRigPrefix(townRoot, rigName)
 	agentBeadID := beads.PolecatBeadIDWithPrefix(prefix, rigName, polecatName)
 

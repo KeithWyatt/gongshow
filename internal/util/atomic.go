@@ -1,4 +1,4 @@
-// Package util provides common utilities for Gas Town.
+// Package util provides common utilities for GongShow.
 package util
 
 import (

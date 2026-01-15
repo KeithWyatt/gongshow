@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/steveyegge/gastown/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/config"
 )
 
 // mockEnvReader implements SessionEnvReader for testing.
@@ -66,8 +66,8 @@ func TestEnvVarsCheck_NoSessions(t *testing.T) {
 	if result.Status != StatusOK {
 		t.Errorf("Status = %v, want StatusOK", result.Status)
 	}
-	if result.Message != "No Gas Town sessions running" {
-		t.Errorf("Message = %q, want %q", result.Message, "No Gas Town sessions running")
+	if result.Message != "No GongShow sessions running" {
+		t.Errorf("Message = %q, want %q", result.Message, "No GongShow sessions running")
 	}
 }
 
@@ -78,7 +78,7 @@ func TestEnvVarsCheck_ListSessionsError(t *testing.T) {
 	check := NewEnvVarsCheckWithReader(reader)
 	result := check.Run(testCtx())
 
-	// No tmux server is valid (Gas Town can be down)
+	// No tmux server is valid (GongShow can be down)
 	if result.Status != StatusOK {
 		t.Errorf("Status = %v, want StatusOK", result.Status)
 	}
@@ -97,8 +97,8 @@ func TestEnvVarsCheck_NonGasTownSessions(t *testing.T) {
 	if result.Status != StatusOK {
 		t.Errorf("Status = %v, want StatusOK", result.Status)
 	}
-	if result.Message != "No Gas Town sessions running" {
-		t.Errorf("Message = %q, want %q", result.Message, "No Gas Town sessions running")
+	if result.Message != "No GongShow sessions running" {
+		t.Errorf("Message = %q, want %q", result.Message, "No GongShow sessions running")
 	}
 }
 

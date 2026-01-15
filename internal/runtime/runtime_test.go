@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/config"
 )
 
 func TestSessionIDFromEnv_Default(t *testing.T) {

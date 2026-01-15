@@ -3,7 +3,7 @@ package web
 import (
 	"testing"
 
-	"github.com/steveyegge/gastown/internal/activity"
+	"github.com/KeithWyatt/gongshow/internal/activity"
 )
 
 func TestCalculateWorkStatus(t *testing.T) {
@@ -339,7 +339,7 @@ func TestParsePolecatSessionName(t *testing.T) {
 		{"valid polecat session", "gt-roxas-dag", "roxas", "dag", true},
 		{"valid polecat with hyphen", "gt-gas-town-nux", "gas", "town-nux", true},
 		{"refinery session", "gt-roxas-refinery", "roxas", "refinery", true},
-		{"witness session", "gt-gastown-witness", "gastown", "witness", true},
+		{"witness session", "gt-gongshow-witness", "gongshow", "witness", true},
 		{"not gt prefix", "other-roxas-dag", "", "", false},
 		{"too few parts", "gt-roxas", "", "", false},
 		{"empty string", "", "", "", false},

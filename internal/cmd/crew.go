@@ -35,7 +35,7 @@ Unlike polecats which are witness-managed and transient, crew workers are:
 - Persistent: Not auto-garbage-collected
 - User-managed: Overseer controls lifecycle
 - Long-lived identities: recognizable names like dave, emma, fred
-- Gas Town integrated: Mail, handoff mechanics work
+- GongShow integrated: Mail, handoff mechanics work
 - Tmux optional: Can work in terminal directly
 
 Commands:
@@ -270,7 +270,7 @@ Examples:
   gt crew start beads             # Start all crew in beads rig
   gt crew start                   # Start all crew (rig inferred from cwd)
   gt crew start beads grip fang   # Start specific crew in beads rig
-  gt crew start gastown joe       # Start joe in gastown rig`,
+  gt crew start gongshow joe       # Start joe in gongshow rig`,
 	Args: func(cmd *cobra.Command, args []string) error {
 		// With --all, we can have 0 args (infer rig) or 1+ args (rig specified)
 		if crewAll {

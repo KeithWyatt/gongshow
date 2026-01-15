@@ -6,10 +6,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/claude"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/opencode"
-	"github.com/steveyegge/gastown/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/claude"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/opencode"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
 )
 
 // EnsureSettingsForRole installs runtime hook settings when supported.

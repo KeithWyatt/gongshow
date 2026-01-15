@@ -3,7 +3,7 @@ package cmd
 import (
 	"testing"
 
-	"github.com/steveyegge/gastown/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/beads"
 )
 
 func TestMigrationResultStatus(t *testing.T) {

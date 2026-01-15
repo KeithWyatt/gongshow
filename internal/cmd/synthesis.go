@@ -10,10 +10,10 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/formula"
-	"github.com/steveyegge/gastown/internal/runtime"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/formula"
+	"github.com/KeithWyatt/gongshow/internal/runtime"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 // Synthesis command flags
@@ -204,7 +204,7 @@ func runSynthesisStart(cmd *cobra.Command, args []string) error {
 			}
 		}
 		if targetRig == "" {
-			targetRig = "gastown"
+			targetRig = "gongshow"
 		}
 	}
 

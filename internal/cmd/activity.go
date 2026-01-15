@@ -5,9 +5,9 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/events"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/events"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 // Activity emit command flags
@@ -29,7 +29,7 @@ var activityCmd = &cobra.Command{
 	Use:     "activity",
 	GroupID: GroupDiag,
 	Short:   "Emit and view activity events",
-	Long: `Emit and view activity events for the Gas Town activity feed.
+	Long: `Emit and view activity events for the GongShow activity feed.
 
 Events are written to ~/gt/.events.jsonl and can be viewed with 'gt feed'.
 
@@ -40,7 +40,7 @@ Subcommands:
 var activityEmitCmd = &cobra.Command{
 	Use:   "emit <event-type>",
 	Short: "Emit an activity event",
-	Long: `Emit an activity event to the Gas Town activity feed.
+	Long: `Emit an activity event to the GongShow activity feed.
 
 Supported event types for witness patrol:
   patrol_started   - When witness begins patrol cycle
@@ -90,10 +90,10 @@ func init() {
 func runActivityEmit(cmd *cobra.Command, args []string) error {
 	eventType := args[0]
 
-	// Validate we're in a Gas Town workspace
+	// Validate we're in a GongShow workspace
 	_, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	// Auto-detect actor if not provided

@@ -7,10 +7,10 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/boot"
-	"github.com/steveyegge/gastown/internal/deacon"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/boot"
+	"github.com/KeithWyatt/gongshow/internal/deacon"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 var (

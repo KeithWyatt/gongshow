@@ -126,7 +126,7 @@ func ParseAgentFields(description string) *AgentFields {
 }
 
 // CreateAgentBead creates an agent bead for tracking agent lifecycle.
-// The ID format is: <prefix>-<rig>-<role>-<name> (e.g., gt-gastown-polecat-Toast)
+// The ID format is: <prefix>-<rig>-<role>-<name> (e.g., gt-gongshow-polecat-Toast)
 // Use AgentBeadID() helper to generate correct IDs.
 // The created_by field is populated from BD_ACTOR env var for provenance tracking.
 func (b *Beads) CreateAgentBead(id, title string, fields *AgentFields) (*Issue, error) {

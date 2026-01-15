@@ -1,4 +1,4 @@
-// Package townlog provides centralized logging for Gas Town agent lifecycle events.
+// Package townlog provides centralized logging for GongShow agent lifecycle events.
 package townlog
 
 import (
@@ -46,7 +46,7 @@ const (
 type Event struct {
 	Timestamp time.Time `json:"timestamp"`
 	Type      EventType `json:"type"`
-	Agent     string    `json:"agent"`            // e.g., "gastown/crew/max" or "gastown/polecats/Toast"
+	Agent     string    `json:"agent"`            // e.g., "gongshow/crew/max" or "gongshow/polecats/Toast"
 	Context   string    `json:"context,omitempty"` // Additional context (issue ID, error message, etc.)
 }
 
@@ -110,7 +110,7 @@ func (l *Logger) Log(eventType EventType, agent, context string) error {
 }
 
 // formatLogLine formats an event as a human-readable log line.
-// Format: 2025-12-26 15:30:45 [spawn] gastown/crew/max spawned for gt-xyz
+// Format: 2025-12-26 15:30:45 [spawn] gongshow/crew/max spawned for gt-xyz
 func formatLogLine(e Event) string {
 	ts := e.Timestamp.Format("2006-01-02 15:04:05")
 
@@ -259,7 +259,7 @@ func ParseLogLines(content string) ([]Event, error) {
 }
 
 // parseLogLine parses a single log line into an Event.
-// Format: 2025-12-26 15:30:45 [spawn] gastown/crew/max spawned for gt-xyz
+// Format: 2025-12-26 15:30:45 [spawn] gongshow/crew/max spawned for gt-xyz
 func parseLogLine(line string) (Event, error) {
 	var event Event
 

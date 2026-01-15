@@ -1,4 +1,4 @@
-// ABOUTME: Doctor check for Gas Town global state configuration.
+// ABOUTME: Doctor check for GongShow global state configuration.
 // ABOUTME: Validates that state directories and shell integration are properly configured.
 
 package doctor
@@ -8,8 +8,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/steveyegge/gastown/internal/shell"
-	"github.com/steveyegge/gastown/internal/state"
+	"github.com/KeithWyatt/gongshow/internal/shell"
+	"github.com/KeithWyatt/gongshow/internal/state"
 )
 
 type GlobalStateCheck struct {
@@ -20,7 +20,7 @@ func NewGlobalStateCheck() *GlobalStateCheck {
 	return &GlobalStateCheck{
 		BaseCheck: BaseCheck{
 			CheckName:        "global-state",
-			CheckDescription: "Validates Gas Town global state and shell integration",
+			CheckDescription: "Validates GongShow global state and shell integration",
 			CheckCategory:    CategoryCore,
 		},
 	}
@@ -51,10 +51,10 @@ func (c *GlobalStateCheck) Run(ctx *CheckContext) *CheckResult {
 	}
 
 	if s.Enabled {
-		details = append(details, "Gas Town: enabled")
+		details = append(details, "GongShow: enabled")
 	} else {
-		details = append(details, "Gas Town: disabled")
-		warnings = append(warnings, "Gas Town is disabled globally")
+		details = append(details, "GongShow: disabled")
+		warnings = append(warnings, "GongShow is disabled globally")
 	}
 
 	if s.Version != "" {
@@ -107,5 +107,5 @@ func hasShellIntegration(rcPath string) bool {
 	if err != nil {
 		return false
 	}
-	return strings.Contains(string(data), "Gas Town Integration")
+	return strings.Contains(string(data), "GongShow Integration")
 }

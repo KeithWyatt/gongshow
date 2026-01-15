@@ -13,10 +13,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/git"
-	"github.com/steveyegge/gastown/internal/rig"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/git"
+	"github.com/KeithWyatt/gongshow/internal/rig"
 )
 
 // createTestGitRepo creates a minimal git repository for testing.
@@ -67,7 +67,7 @@ func createTestGitRepo(t *testing.T, name string) string {
 	return repoDir
 }
 
-// setupTestTown creates a minimal Gas Town workspace for testing.
+// setupTestTown creates a minimal GongShow workspace for testing.
 // Returns townRoot and a cleanup function.
 func setupTestTown(t *testing.T) string {
 	t.Helper()

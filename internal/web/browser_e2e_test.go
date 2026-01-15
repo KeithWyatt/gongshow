@@ -11,7 +11,7 @@ import (
 
 	"github.com/go-rod/rod"
 	"github.com/go-rod/rod/lib/launcher"
-	"github.com/steveyegge/gastown/internal/activity"
+	"github.com/KeithWyatt/gongshow/internal/activity"
 )
 
 // =============================================================================
@@ -127,8 +127,8 @@ func TestBrowser_ConvoyListLoads(t *testing.T) {
 
 	// Verify page title
 	title := page.MustElement("title").MustText()
-	if !strings.Contains(title, "Gas Town") {
-		t.Fatalf("Expected title to contain 'Gas Town', got: %s", title)
+	if !strings.Contains(title, "GongShow") {
+		t.Fatalf("Expected title to contain 'GongShow', got: %s", title)
 	}
 
 	// Verify convoy IDs are displayed

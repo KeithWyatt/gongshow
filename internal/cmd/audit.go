@@ -12,11 +12,11 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/events"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/townlog"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/events"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/townlog"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 // Audit command flags
@@ -73,7 +73,7 @@ type AuditEntry struct {
 func runAudit(cmd *cobra.Command, args []string) error {
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	// Parse since duration if provided
@@ -258,9 +258,9 @@ func matchesActor(name, actor string) bool {
 func collectBeadsActivity(townRoot, actor string, since time.Time) ([]AuditEntry, error) {
 	var entries []AuditEntry
 
-	// Find the gastown beads path (where gt- prefix issues live)
-	gastownBeadsPath := filepath.Join(townRoot, "gastown", "mayor", "rig")
-	b := beads.New(gastownBeadsPath)
+	// Find the gongshow beads path (where gt- prefix issues live)
+	gongshowBeadsPath := filepath.Join(townRoot, "gongshow", "mayor", "rig")
+	b := beads.New(gongshowBeadsPath)
 
 	// List all issues to filter by created_by and assignee
 	issues, err := b.List(beads.ListOptions{

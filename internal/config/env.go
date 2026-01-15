@@ -21,7 +21,7 @@ type AgentEnvConfig struct {
 	// For polecats, this is the polecat name. For crew, this is the crew member name.
 	AgentName string
 
-	// TownRoot is the root of the Gas Town workspace.
+	// TownRoot is the root of the GongShow workspace.
 	// Sets GT_ROOT environment variable.
 	TownRoot string
 

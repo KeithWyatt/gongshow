@@ -1,10 +1,10 @@
-// Package feed provides a TUI for the Gas Town activity feed.
+// Package feed provides a TUI for the GongShow activity feed.
 package feed
 
 import (
 	"github.com/charmbracelet/lipgloss"
-	"github.com/steveyegge/gastown/internal/constants"
-	"github.com/steveyegge/gastown/internal/ui"
+	"github.com/KeithWyatt/gongshow/internal/constants"
+	"github.com/KeithWyatt/gongshow/internal/ui"
 )
 
 // Color palette using Ayu theme colors from ui package

@@ -15,7 +15,7 @@ The formula package parses and validates structured workflow definitions, enabli
 ## Installation
 
 ```go
-import "github.com/steveyegge/gastown/internal/formula"
+import "github.com/KeithWyatt/gongshow/internal/formula"
 ```
 
 ## Quick Start
@@ -203,7 +203,7 @@ deps := f.GetDependencies("build")  // Returns ["test"]
 
 ## Embedded Formulas
 
-The package embeds common formulas for Gas Town workflows:
+The package embeds common formulas for GongShow workflows:
 
 ```go
 // Provision embedded formulas to a beads workspace

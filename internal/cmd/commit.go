@@ -6,12 +6,12 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 // DefaultAgentEmailDomain is the default domain for agent git emails.
-const DefaultAgentEmailDomain = "gastown.local"
+const DefaultAgentEmailDomain = "gongshow.local"
 
 var commitCmd = &cobra.Command{
 	Use:   "commit [flags] [-- git-commit-args...]",
@@ -24,7 +24,7 @@ When run by an agent (GT_ROLE set), this command:
 3. Runs 'git commit' with the correct identity
 
 The email domain is configurable in town settings (agent_email_domain).
-Default: gastown.local
+Default: gongshow.local
 
 Examples:
   gt commit -m "Fix bug"              # Commit as current agent
@@ -32,8 +32,8 @@ Examples:
   gt commit -- --amend                # Amend last commit
 
 Identity mapping:
-  Agent: gastown/crew/jack  →  Name: gastown/crew/jack
-                                Email: gastown.crew.jack@gastown.local
+  Agent: gongshow/crew/jack  →  Name: gongshow/crew/jack
+                                Email: gongshow.crew.jack@gongshow.local
 
 When run without GT_ROLE (human), passes through to git commit with no changes.`,
 	RunE:               runCommit,
@@ -65,7 +65,7 @@ func runCommit(cmd *cobra.Command, args []string) error {
 	}
 
 	// Convert identity to git-friendly email
-	// "gastown/crew/jack" → "gastown.crew.jack@domain"
+	// "gongshow/crew/jack" → "gongshow.crew.jack@domain"
 	email := identityToEmail(identity, domain)
 
 	// Use identity as the author name (human-readable)
@@ -74,8 +74,8 @@ func runCommit(cmd *cobra.Command, args []string) error {
 	return runGitCommit(args, name, email)
 }
 
-// identityToEmail converts a Gas Town identity to a git email address.
-// "gastown/crew/jack" → "gastown.crew.jack@domain"
+// identityToEmail converts a GongShow identity to a git email address.
+// "gongshow/crew/jack" → "gongshow.crew.jack@domain"
 // "mayor/" → "mayor@domain"
 func identityToEmail(identity, domain string) string {
 	// Remove trailing slash if present

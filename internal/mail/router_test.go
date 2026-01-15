@@ -11,7 +11,7 @@ func TestDetectTownRoot(t *testing.T) {
 	tmpDir := t.TempDir()
 	townRoot := filepath.Join(tmpDir, "town")
 	mayorDir := filepath.Join(townRoot, "mayor")
-	rigDir := filepath.Join(townRoot, "gastown", "polecats", "test")
+	rigDir := filepath.Join(townRoot, "gongshow", "polecats", "test")
 
 	// Create mayor/town.json marker
 	if err := os.MkdirAll(mayorDir, 0755); err != nil {
@@ -70,9 +70,9 @@ func TestIsTownLevelAddress(t *testing.T) {
 		{"mayor/", true},
 		{"deacon", true},
 		{"deacon/", true},
-		{"gastown/refinery", false},
-		{"gastown/polecats/Toast", false},
-		{"gastown/", false},
+		{"gongshow/refinery", false},
+		{"gongshow/polecats/Toast", false},
+		{"gongshow/", false},
 		{"", false},
 	}
 
@@ -94,11 +94,11 @@ func TestAddressToSessionID(t *testing.T) {
 		{"mayor", "hq-mayor"},
 		{"mayor/", "hq-mayor"},
 		{"deacon", "hq-deacon"},
-		{"gastown/refinery", "gt-gastown-refinery"},
-		{"gastown/Toast", "gt-gastown-Toast"},
+		{"gongshow/refinery", "gt-gongshow-refinery"},
+		{"gongshow/Toast", "gt-gongshow-Toast"},
 		{"beads/witness", "gt-beads-witness"},
-		{"gastown/", ""},   // Empty target
-		{"gastown", ""},    // No slash
+		{"gongshow/", ""},   // Empty target
+		{"gongshow", ""},    // No slash
 		{"", ""},           // Empty address
 	}
 
@@ -121,10 +121,10 @@ func TestIsSelfMail(t *testing.T) {
 		{"mayor/", "mayor/", true},
 		{"mayor", "mayor/", true},
 		{"mayor/", "mayor", true},
-		{"gastown/Toast", "gastown/Toast", true},
-		{"gastown/Toast/", "gastown/Toast", true},
+		{"gongshow/Toast", "gongshow/Toast", true},
+		{"gongshow/Toast/", "gongshow/Toast", true},
 		{"mayor/", "deacon/", false},
-		{"gastown/Toast", "gastown/Nux", false},
+		{"gongshow/Toast", "gongshow/Nux", false},
 		{"", "", true},
 	}
 
@@ -196,7 +196,7 @@ func TestShouldBeWisp(t *testing.T) {
 func TestResolveBeadsDir(t *testing.T) {
 	// With town root set
 	r := NewRouterWithTownRoot("/work/dir", "/home/user/gt")
-	got := r.resolveBeadsDir("gastown/Toast")
+	got := r.resolveBeadsDir("gongshow/Toast")
 	want := "/home/user/gt/.beads"
 	if got != want {
 		t.Errorf("resolveBeadsDir with townRoot = %q, want %q", got, want)
@@ -229,10 +229,10 @@ func TestIsListAddress(t *testing.T) {
 		want    bool
 	}{
 		{"list:oncall", true},
-		{"list:cleanup/gastown", true},
+		{"list:cleanup/gongshow", true},
 		{"list:", true}, // Edge case: empty list name (will fail on expand)
 		{"mayor/", false},
-		{"gastown/witness", false},
+		{"gongshow/witness", false},
 		{"listoncall", false}, // Missing colon
 		{"", false},
 	}
@@ -253,7 +253,7 @@ func TestParseListName(t *testing.T) {
 		want    string
 	}{
 		{"list:oncall", "oncall"},
-		{"list:cleanup/gastown", "cleanup/gastown"},
+		{"list:cleanup/gongshow", "cleanup/gongshow"},
 		{"list:", ""},
 		{"list:alerts", "alerts"},
 	}
@@ -274,10 +274,10 @@ func TestIsQueueAddress(t *testing.T) {
 		want    bool
 	}{
 		{"queue:work", true},
-		{"queue:gastown/polecats", true},
+		{"queue:gongshow/polecats", true},
 		{"queue:", true}, // Edge case: empty queue name (will fail on expand)
 		{"mayor/", false},
-		{"gastown/witness", false},
+		{"gongshow/witness", false},
 		{"queuework", false}, // Missing colon
 		{"list:oncall", false},
 		{"", false},
@@ -299,7 +299,7 @@ func TestParseQueueName(t *testing.T) {
 		want    string
 	}{
 		{"queue:work", "work"},
-		{"queue:gastown/polecats", "gastown/polecats"},
+		{"queue:gongshow/polecats", "gongshow/polecats"},
 		{"queue:", ""},
 		{"queue:priority-high", "priority-high"},
 	}
@@ -327,8 +327,8 @@ func TestExpandList(t *testing.T) {
   "type": "messaging",
   "version": 1,
   "lists": {
-    "oncall": ["mayor/", "gastown/witness"],
-    "cleanup/gastown": ["gastown/witness", "deacon/"]
+    "oncall": ["mayor/", "gongshow/witness"],
+    "cleanup/gongshow": ["gongshow/witness", "deacon/"]
   }
 }`
 	if err := os.WriteFile(filepath.Join(configDir, "messaging.json"), []byte(configContent), 0644); err != nil {
@@ -347,12 +347,12 @@ func TestExpandList(t *testing.T) {
 		{
 			name:     "oncall list",
 			listName: "oncall",
-			want:     []string{"mayor/", "gastown/witness"},
+			want:     []string{"mayor/", "gongshow/witness"},
 		},
 		{
-			name:     "cleanup/gastown list",
-			listName: "cleanup/gastown",
-			want:     []string{"gastown/witness", "deacon/"},
+			name:     "cleanup/gongshow list",
+			listName: "cleanup/gongshow",
+			want:     []string{"gongshow/witness", "deacon/"},
 		},
 		{
 			name:      "unknown list",
@@ -414,8 +414,8 @@ func TestExpandQueue(t *testing.T) {
   "type": "messaging",
   "version": 1,
   "queues": {
-    "work/gastown": {"workers": ["gastown/polecats/*"], "max_claims": 3},
-    "priority-high": {"workers": ["mayor/", "gastown/witness"]}
+    "work/gongshow": {"workers": ["gongshow/polecats/*"], "max_claims": 3},
+    "priority-high": {"workers": ["mayor/", "gongshow/witness"]}
   }
 }`
 	if err := os.WriteFile(filepath.Join(configDir, "messaging.json"), []byte(configContent), 0644); err != nil {
@@ -433,15 +433,15 @@ func TestExpandQueue(t *testing.T) {
 		errString   string
 	}{
 		{
-			name:        "work/gastown queue",
-			queueName:   "work/gastown",
-			wantWorkers: []string{"gastown/polecats/*"},
+			name:        "work/gongshow queue",
+			queueName:   "work/gongshow",
+			wantWorkers: []string{"gongshow/polecats/*"},
 			wantMax:     3,
 		},
 		{
 			name:        "priority-high queue",
 			queueName:   "priority-high",
-			wantWorkers: []string{"mayor/", "gastown/witness"},
+			wantWorkers: []string{"mayor/", "gongshow/witness"},
 			wantMax:     0, // Not specified, defaults to 0
 		},
 		{
@@ -502,10 +502,10 @@ func TestIsAnnounceAddress(t *testing.T) {
 		want    bool
 	}{
 		{"announce:bulletin", true},
-		{"announce:gastown/updates", true},
+		{"announce:gongshow/updates", true},
 		{"announce:", true}, // Edge case: empty announce name (will fail on expand)
 		{"mayor/", false},
-		{"gastown/witness", false},
+		{"gongshow/witness", false},
 		{"announcebulletin", false}, // Missing colon
 		{"list:oncall", false},
 		{"queue:work", false},
@@ -528,7 +528,7 @@ func TestParseAnnounceName(t *testing.T) {
 		want    string
 	}{
 		{"announce:bulletin", "bulletin"},
-		{"announce:gastown/updates", "gastown/updates"},
+		{"announce:gongshow/updates", "gongshow/updates"},
 		{"announce:", ""},
 		{"announce:priority-alerts", "priority-alerts"},
 	}
@@ -564,17 +564,17 @@ func TestIsGroupAddress(t *testing.T) {
 		address string
 		want    bool
 	}{
-		{"@rig/gastown", true},
+		{"@rig/gongshow", true},
 		{"@town", true},
 		{"@witnesses", true},
-		{"@crew/gastown", true},
+		{"@crew/gongshow", true},
 		{"@dogs", true},
 		{"@overseer", true},
-		{"@polecats/gastown", true},
+		{"@polecats/gongshow", true},
 		{"mayor/", false},
-		{"gastown/Toast", false},
+		{"gongshow/Toast", false},
 		{"", false},
-		{"rig/gastown", false}, // Missing @
+		{"rig/gongshow", false}, // Missing @
 	}
 
 	for _, tt := range tests {
@@ -606,12 +606,12 @@ func TestParseGroupAddress(t *testing.T) {
 		{"@deacons", GroupTypeRole, "deacon", "", false},
 
 		// Rig pattern (all agents in a rig)
-		{"@rig/gastown", GroupTypeRig, "", "gastown", false},
+		{"@rig/gongshow", GroupTypeRig, "", "gongshow", false},
 		{"@rig/beads", GroupTypeRig, "", "beads", false},
 
 		// Rig+role patterns
-		{"@crew/gastown", GroupTypeRigRole, "crew", "gastown", false},
-		{"@polecats/gastown", GroupTypeRigRole, "polecat", "gastown", false},
+		{"@crew/gongshow", GroupTypeRigRole, "crew", "gongshow", false},
+		{"@polecats/gongshow", GroupTypeRigRole, "polecat", "gongshow", false},
 
 		// Invalid patterns
 		{"mayor/", "", "", "", true},
@@ -676,32 +676,32 @@ func TestAgentBeadToAddress(t *testing.T) {
 		},
 		{
 			name: "rig singleton witness",
-			bead: &agentBead{ID: "gt-gastown-witness"},
-			want: "gastown/witness",
+			bead: &agentBead{ID: "gt-gongshow-witness"},
+			want: "gongshow/witness",
 		},
 		{
 			name: "rig singleton refinery",
-			bead: &agentBead{ID: "gt-gastown-refinery"},
-			want: "gastown/refinery",
+			bead: &agentBead{ID: "gt-gongshow-refinery"},
+			want: "gongshow/refinery",
 		},
 		{
 			name: "rig crew worker",
-			bead: &agentBead{ID: "gt-gastown-crew-max"},
-			want: "gastown/max",
+			bead: &agentBead{ID: "gt-gongshow-crew-max"},
+			want: "gongshow/max",
 		},
 		{
 			name: "rig polecat worker",
-			bead: &agentBead{ID: "gt-gastown-polecat-Toast"},
-			want: "gastown/Toast",
+			bead: &agentBead{ID: "gt-gongshow-polecat-Toast"},
+			want: "gongshow/Toast",
 		},
 		{
 			name: "rig polecat with hyphenated name",
-			bead: &agentBead{ID: "gt-gastown-polecat-my-agent"},
-			want: "gastown/my-agent",
+			bead: &agentBead{ID: "gt-gongshow-polecat-my-agent"},
+			want: "gongshow/my-agent",
 		},
 		{
 			name: "non-gt prefix (invalid)",
-			bead: &agentBead{ID: "bd-gastown-witness"},
+			bead: &agentBead{ID: "bd-gongshow-witness"},
 			want: "",
 		},
 		{
@@ -735,7 +735,7 @@ func TestExpandAnnounce(t *testing.T) {
   "version": 1,
   "announces": {
     "alerts": {"readers": ["@town"], "retain_count": 10},
-    "status/gastown": {"readers": ["gastown/witness", "mayor/"], "retain_count": 5}
+    "status/gongshow": {"readers": ["gongshow/witness", "mayor/"], "retain_count": 5}
   }
 }`
 	if err := os.WriteFile(filepath.Join(configDir, "messaging.json"), []byte(configContent), 0644); err != nil {
@@ -759,9 +759,9 @@ func TestExpandAnnounce(t *testing.T) {
 			wantRetain:   10,
 		},
 		{
-			name:         "status/gastown announce",
-			announceName: "status/gastown",
-			wantReaders:  []string{"gastown/witness", "mayor/"},
+			name:         "status/gongshow announce",
+			announceName: "status/gongshow",
+			wantReaders:  []string{"gongshow/witness", "mayor/"},
 			wantRetain:   5,
 		},
 		{

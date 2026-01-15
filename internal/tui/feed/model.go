@@ -8,7 +8,7 @@ import (
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/steveyegge/gastown/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/beads"
 )
 
 // Panel represents which panel has focus
@@ -24,7 +24,7 @@ const (
 type Event struct {
 	Time     time.Time
 	Type     string // create, update, complete, fail, delete
-	Actor    string // who did it (e.g., "gastown/crew/joe")
+	Actor    string // who did it (e.g., "gongshow/crew/joe")
 	Target   string // what was affected (e.g., "gt-xyz")
 	Message  string // human-readable description
 	Rig      string // which rig
@@ -362,7 +362,7 @@ func (m *Model) addEvent(e Event) {
 	}
 
 	// Filter out noisy agent session updates from the event feed.
-	// Agent session molecules (like gt-gastown-crew-joe) update frequently
+	// Agent session molecules (like gt-gongshow-crew-joe) update frequently
 	// for status tracking. These updates are visible in the agent tree,
 	// so we don't need to clutter the event feed with them.
 	// We still show create/complete/fail/delete events for agent sessions.

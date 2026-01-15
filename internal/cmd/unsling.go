@@ -6,10 +6,10 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/events"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/events"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 var unslingCmd = &cobra.Command{
@@ -92,7 +92,7 @@ func runUnsling(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("finding town root: %w", err)
 	}
 
-	// Extract rig name from agent ID (e.g., "gastown/crew/joe" -> "gastown")
+	// Extract rig name from agent ID (e.g., "gongshow/crew/joe" -> "gongshow")
 	// For town-level agents like "mayor/", use town root
 	rigName := strings.Split(agentID, "/")[0]
 	var beadsPath string

@@ -8,10 +8,10 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/session"
-	"github.com/steveyegge/gastown/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/session"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
 )
 
 // ErrUnknownList indicates a mailing list name was not found in configuration.
@@ -296,9 +296,9 @@ type agentBead struct {
 // Uses the agent bead ID to derive the address:
 //   - gt-mayor → mayor/
 //   - gt-deacon → deacon/
-//   - gt-gastown-witness → gastown/witness
-//   - gt-gastown-crew-max → gastown/max
-//   - gt-gastown-polecat-Toast → gastown/Toast
+//   - gt-gongshow-witness → gongshow/witness
+//   - gt-gongshow-crew-max → gongshow/max
+//   - gt-gongshow-polecat-Toast → gongshow/Toast
 func agentBeadToAddress(bead *agentBead) string {
 	if bead == nil {
 		return ""
@@ -318,13 +318,13 @@ func agentBeadToAddress(bead *agentBead) string {
 		// Town-level: gt-mayor, gt-deacon
 		return parts[0] + "/"
 	case 2:
-		// Rig singleton: gt-gastown-witness
+		// Rig singleton: gt-gongshow-witness
 		return parts[0] + "/" + parts[1]
 	default:
-		// Rig named agent: gt-gastown-crew-max, gt-gastown-polecat-Toast
+		// Rig named agent: gt-gongshow-crew-max, gt-gongshow-polecat-Toast
 		// Skip the role part (parts[1]) and use rig/name format
 		if len(parts) >= 3 {
-			// Rejoin if name has hyphens: gt-gastown-polecat-my-agent
+			// Rejoin if name has hyphens: gt-gongshow-polecat-my-agent
 			name := strings.Join(parts[2:], "-")
 			return parts[0] + "/" + name
 		}

@@ -5,8 +5,8 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/steveyegge/gastown/internal/session"
-	"github.com/steveyegge/gastown/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/session"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
 )
 
 // LinkedPaneCheck detects tmux sessions that share panes,
@@ -29,7 +29,7 @@ func NewLinkedPaneCheck() *LinkedPaneCheck {
 	}
 }
 
-// Run checks for linked panes across Gas Town tmux sessions.
+// Run checks for linked panes across GongShow tmux sessions.
 func (c *LinkedPaneCheck) Run(ctx *CheckContext) *CheckResult {
 	t := tmux.NewTmux()
 
@@ -99,7 +99,7 @@ func (c *LinkedPaneCheck) Run(ctx *CheckContext) *CheckResult {
 		return &CheckResult{
 			Name:    c.Name(),
 			Status:  StatusOK,
-			Message: fmt.Sprintf("All %d Gas Town sessions have independent panes", len(gtSessions)),
+			Message: fmt.Sprintf("All %d GongShow sessions have independent panes", len(gtSessions)),
 		}
 	}
 

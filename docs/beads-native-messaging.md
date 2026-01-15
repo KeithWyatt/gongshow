@@ -1,6 +1,6 @@
 # Beads-Native Messaging
 
-This document describes the beads-native messaging system for Gas Town, which replaces the file-based messaging configuration with persistent beads stored in the town's `.beads` directory.
+This document describes the beads-native messaging system for GongShow, which replaces the file-based messaging configuration with persistent beads stored in the town's `.beads` directory.
 
 ## Overview
 
@@ -27,8 +27,8 @@ Groups are named collections of addresses used for mail distribution. When you s
 - `created_at` - ISO 8601 timestamp
 
 **Member types:**
-- Direct addresses: `gastown/crew/max`, `mayor/`, `deacon/`
-- Wildcard patterns: `*/witness`, `gastown/*`, `gastown/crew/*`
+- Direct addresses: `gongshow/crew/max`, `mayor/`, `deacon/`
+- Wildcard patterns: `*/witness`, `gongshow/*`, `gongshow/crew/*`
 - Special patterns: `@town`, `@crew`, `@witnesses`
 - Nested groups: Reference other group names
 
@@ -76,7 +76,7 @@ gt mail group show <name>
 
 # Create a new group with members
 gt mail group create <name> [members...]
-gt mail group create ops-team gastown/witness gastown/crew/max
+gt mail group create ops-team gongshow/witness gongshow/crew/max
 
 # Add member to group
 gt mail group add <name> <member>
@@ -122,7 +122,7 @@ gt mail send queue:my-queue -s "Work item" -m "Details"
 gt mail send channel:my-channel -s "Announcement" -m "Content"
 
 # Direct address (unchanged)
-gt mail send gastown/crew/max -s "Hello" -m "World"
+gt mail send gongshow/crew/max -s "Hello" -m "World"
 ```
 
 ## Address Resolution
@@ -167,13 +167,13 @@ The patrol uses a 10% buffer to avoid thrashing (only prunes if count > retainCo
 
 ```bash
 # Create a group for the ops team
-gt mail group create ops-team gastown/witness gastown/crew/max deacon/
+gt mail group create ops-team gongshow/witness gongshow/crew/max deacon/
 
 # Send to the group
 gt mail send ops-team -s "Team meeting" -m "Tomorrow at 10am"
 
 # Add a new member
-gt mail group add ops-team gastown/crew/dennis
+gt mail group add ops-team gongshow/crew/dennis
 ```
 
 ### Set up an alerts channel
@@ -194,7 +194,7 @@ gt mail channel alerts
 ```bash
 # Create role-based groups
 gt mail group create witnesses */witness
-gt mail group create leads gastown/crew/max gastown/crew/dennis
+gt mail group create leads gongshow/crew/max gongshow/crew/dennis
 
 # Create a group that includes other groups
 gt mail group create all-hands witnesses leads mayor/

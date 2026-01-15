@@ -10,9 +10,9 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/steveyegge/gastown/internal/events"
-	"github.com/steveyegge/gastown/internal/runtime"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/events"
+	"github.com/KeithWyatt/gongshow/internal/runtime"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 // hookInput represents the JSON input from LLM runtime hooks.
@@ -176,7 +176,7 @@ func emitSessionEvent(ctx RoleContext) {
 }
 
 // outputSessionMetadata prints a structured metadata line for seance discovery.
-// Format: [GAS TOWN] role:<role> pid:<pid> session:<session_id>
+// Format: [GONGSHOW] role:<role> pid:<pid> session:<session_id>
 // This enables gt seance to discover sessions from gt prime output.
 func outputSessionMetadata(ctx RoleContext) {
 	if ctx.Role == RoleUnknown {
@@ -193,5 +193,5 @@ func outputSessionMetadata(ctx RoleContext) {
 	sessionID := resolveSessionIDForPrime(actor)
 
 	// Output structured metadata line
-	fmt.Printf("[GAS TOWN] role:%s pid:%d session:%s\n", actor, os.Getpid(), sessionID)
+	fmt.Printf("[GONGSHOW] role:%s pid:%d session:%s\n", actor, os.Getpid(), sessionID)
 }

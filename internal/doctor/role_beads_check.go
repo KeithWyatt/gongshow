@@ -5,7 +5,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/steveyegge/gastown/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/beads"
 )
 
 // RoleBeadsCheck verifies that role definition beads exist.

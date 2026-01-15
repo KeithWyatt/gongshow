@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/constants"
+	"github.com/KeithWyatt/gongshow/internal/constants"
 )
 
 var (
@@ -715,7 +715,7 @@ func LoadOrCreateMessagingConfig(path string) (*MessagingConfig, error) {
 
 // LoadRuntimeConfig loads the RuntimeConfig from a rig's settings.
 // Falls back to defaults if settings don't exist or don't specify runtime config.
-// rigPath should be the path to the rig directory (e.g., ~/gt/gastown).
+// rigPath should be the path to the rig directory (e.g., ~/gt/gongshow).
 //
 // Deprecated: Use ResolveAgentConfig for full agent resolution with town settings.
 func LoadRuntimeConfig(rigPath string) *RuntimeConfig {
@@ -794,7 +794,7 @@ func SaveTownSettings(path string, settings *TownSettings) error {
 //  4. Fall back to claude defaults
 //
 // townRoot is the path to the town directory (e.g., ~/gt).
-// rigPath is the path to the rig directory (e.g., ~/gt/gastown).
+// rigPath is the path to the rig directory (e.g., ~/gt/gongshow).
 func ResolveAgentConfig(townRoot, rigPath string) *RuntimeConfig {
 	// Load rig settings
 	rigSettings, err := LoadRigSettings(RigSettingsPath(rigPath))
@@ -954,7 +954,7 @@ func lookupAgentConfigIfExists(name string, townSettings *TownSettings, rigSetti
 //
 // role is one of: "mayor", "deacon", "witness", "refinery", "polecat", "crew".
 // townRoot is the path to the town directory (e.g., ~/gt).
-// rigPath is the path to the rig directory (e.g., ~/gt/gastown), or empty for town-level roles.
+// rigPath is the path to the rig directory (e.g., ~/gt/gongshow), or empty for town-level roles.
 func ResolveRoleAgentConfig(role, townRoot, rigPath string) *RuntimeConfig {
 	// Load rig settings (may be nil for town-level roles like mayor/deacon)
 	var rigSettings *RigSettings
@@ -1474,7 +1474,7 @@ func ExpectedPaneCommands(rc *RuntimeConfig) []string {
 
 // GetDefaultFormula returns the default formula for a rig from settings/config.json.
 // Returns empty string if no default is configured.
-// rigPath is the path to the rig directory (e.g., ~/gt/gastown).
+// rigPath is the path to the rig directory (e.g., ~/gt/gongshow).
 func GetDefaultFormula(rigPath string) string {
 	settingsPath := RigSettingsPath(rigPath)
 	settings, err := LoadRigSettings(settingsPath)

@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/steveyegge/gastown/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/beads"
 )
 
 func TestRoleBeadsCheck_Run(t *testing.T) {

@@ -5,8 +5,8 @@ import (
 	"io"
 	"os"
 
-	"github.com/steveyegge/gastown/internal/mail"
-	"github.com/steveyegge/gastown/internal/witness"
+	"github.com/KeithWyatt/gongshow/internal/mail"
+	"github.com/KeithWyatt/gongshow/internal/witness"
 )
 
 // DefaultWitnessHandler provides the default implementation for Witness protocol handlers.

@@ -1,6 +1,6 @@
 # Escalation System Design
 
-> Detailed design for the Gas Town unified escalation system.
+> Detailed design for the GongShow unified escalation system.
 > Written 2026-01-11, crew/george session.
 > Parent epic: gt-i9r20
 
@@ -225,7 +225,7 @@ gt escalate \
 gt escalate \
   --severity=high \
   --subject="Plugin FAILED: rebuild-gt" \
-  --body="Build failed: make returned exit code 2. Working directory: ~/gt/gastown/crew/george" \
+  --body="Build failed: make returned exit code 2. Working directory: ~/gt/gongshow/crew/george" \
   --source="plugin:rebuild-gt"
 
 # Output:
@@ -492,7 +492,7 @@ Deacon uses escalation for health issues:
 if [ $unresponsive_cycles -ge 5 ]; then
   gt escalate \
     --severity=high \
-    --subject="Witness unresponsive: gastown" \
+    --subject="Witness unresponsive: gongshow" \
     --body="Witness has been unresponsive for $unresponsive_cycles cycles" \
     --source="patrol:deacon:health-scan"
 fi

@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to the Gas Town project will be documented in this file.
+All notable changes to the GongShow project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -140,7 +140,7 @@ Priming subsystem overhaul and Zero Framework Cognition (ZFC) improvements.
 ### Added
 
 #### Priming Subsystem
-- **PRIME.md provisioning** - Auto-provision PRIME.md at rig level so all workers inherit Gas Town context (GUPP, hooks, propulsion) (#hq-5z76w)
+- **PRIME.md provisioning** - Auto-provision PRIME.md at rig level so all workers inherit GongShow context (GUPP, hooks, propulsion) (#hq-5z76w)
 - **Post-handoff detection** - `gt prime` detects handoff marker and outputs "HANDOFF COMPLETE" warning to prevent handoff loop bug (#hq-ukjrr)
 - **Priming health checks** - `gt doctor` validates priming subsystem: SessionStart hook, gt prime command, PRIME.md presence, CLAUDE.md size (#hq-5scnt)
 - **`gt prime --dry-run`** - Preview priming without side effects
@@ -171,7 +171,7 @@ Priming subsystem overhaul and Zero Framework Cognition (ZFC) improvements.
 - **Correct agent bead ID format** - Fix bd create flags for agent beads (#c4fcdd8)
 
 #### Formula
-- **rigPath fallback** - Set rigPath when falling back to gastown default (#afb944f)
+- **rigPath fallback** - Set rigPath when falling back to gongshow default (#afb944f)
 
 #### Doctor
 - **Full AgentEnv for env-vars check** - Use complete environment for validation (#ce231a3)
@@ -217,7 +217,7 @@ Worker safety release - prevents accidental termination of active agents.
 - **Hidden directory scanning** - Ignore `.claude` and other dot directories when enumerating polecats (#258, #279)
 - **SetupRedirect tracked beads** - Works correctly with tracked beads architecture where canonical location is `mayor/rig/.beads`
 - **Tmux shell ready** - Wait for shell ready before sending keys (#264)
-- **Gastown prefix derivation** - Correctly derive `gt-` prefix for gastown compound words (gt-m46bb)
+- **Gongshow prefix derivation** - Correctly derive `gt-` prefix for gongshow compound words (gt-m46bb)
 - **Custom beads types** - Register custom beads types during install (#250)
 
 ### Changed
@@ -413,7 +413,7 @@ Major release featuring the Convoy Dashboard, two-level beads architecture, and 
 ### Added
 
 #### Convoy Dashboard (Web UI)
-- **`gt dashboard` command** - Launch web-based monitoring UI for Gas Town (#71)
+- **`gt dashboard` command** - Launch web-based monitoring UI for GongShow (#71)
 - **Polecat Workers section** - Real-time activity monitoring with tmux session timestamps
 - **Refinery Merge Queue display** - Always-visible MR queue status
 - **Dynamic work status** - Convoy status columns with live updates
@@ -525,7 +525,7 @@ Thanks to all contributors for this release:
 
 ### Fixed
 
-- **Tmux keybindings scoped to Gas Town sessions** - C-b n/p no longer override default tmux behavior in non-GT sessions (#13)
+- **Tmux keybindings scoped to GongShow sessions** - C-b n/p no longer override default tmux behavior in non-GT sessions (#13)
 
 ### Added
 
@@ -539,7 +539,7 @@ Thanks to all contributors for this release:
 
 ### Added
 
-Initial public release of Gas Town - a multi-agent workspace manager for Claude Code.
+Initial public release of GongShow - a multi-agent workspace manager for Claude Code.
 
 #### Core Architecture
 - **Town structure** - Hierarchical workspace with rigs, crews, and polecats

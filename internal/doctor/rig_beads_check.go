@@ -5,8 +5,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/rig"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/rig"
 )
 
 // RigBeadsCheck verifies that rig identity beads exist for all rigs.
@@ -43,7 +43,7 @@ func (c *RigBeadsCheck) Run(ctx *CheckContext) *CheckResult {
 	}
 
 	// Build unique rig list from routes
-	// Routes have format: prefix "gt-" -> path "gastown/mayor/rig"
+	// Routes have format: prefix "gt-" -> path "gongshow/mayor/rig"
 	rigSet := make(map[string]struct {
 		prefix    string
 		beadsPath string

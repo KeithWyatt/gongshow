@@ -7,9 +7,9 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/shell"
-	"github.com/steveyegge/gastown/internal/state"
-	"github.com/steveyegge/gastown/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/shell"
+	"github.com/KeithWyatt/gongshow/internal/state"
+	"github.com/KeithWyatt/gongshow/internal/style"
 )
 
 var shellCmd = &cobra.Command{
@@ -22,11 +22,11 @@ var shellCmd = &cobra.Command{
 var shellInstallCmd = &cobra.Command{
 	Use:   "install",
 	Short: "Install or update shell integration",
-	Long: `Install or update the Gas Town shell integration.
+	Long: `Install or update the GongShow shell integration.
 
 This adds a hook to your shell RC file that:
-  - Sets GT_TOWN_ROOT and GT_RIG when you cd into a Gas Town rig
-  - Offers to add new git repos to Gas Town on first visit
+  - Sets GT_TOWN_ROOT and GT_RIG when you cd into a GongShow rig
+  - Offers to add new git repos to GongShow on first visit
 
 Run this after upgrading gt to get the latest shell hook features.`,
 	RunE: runShellInstall,
@@ -57,7 +57,7 @@ func runShellInstall(cmd *cobra.Command, args []string) error {
 	}
 
 	if err := state.Enable(Version); err != nil {
-		fmt.Printf("%s Could not enable Gas Town: %v\n", style.Dim.Render("⚠"), err)
+		fmt.Printf("%s Could not enable GongShow: %v\n", style.Dim.Render("⚠"), err)
 	}
 
 	fmt.Printf("%s Shell integration installed (%s)\n", style.Success.Render("✓"), shell.RCFilePath(shell.DetectShell()))
@@ -78,15 +78,15 @@ func runShellRemove(cmd *cobra.Command, args []string) error {
 func runShellStatus(cmd *cobra.Command, args []string) error {
 	s, err := state.Load()
 	if err != nil {
-		fmt.Println("Gas Town: not configured")
+		fmt.Println("GongShow: not configured")
 		fmt.Println("Shell integration: not installed")
 		return nil
 	}
 
 	if s.Enabled {
-		fmt.Println("Gas Town: enabled")
+		fmt.Println("GongShow: enabled")
 	} else {
-		fmt.Println("Gas Town: disabled")
+		fmt.Println("GongShow: disabled")
 	}
 
 	if s.ShellIntegration != "" {

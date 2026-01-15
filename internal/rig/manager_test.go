@@ -7,8 +7,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/git"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/git"
 )
 
 func setupTestTown(t *testing.T) (string, *config.RigsConfig) {
@@ -83,9 +83,9 @@ func TestDiscoverRigs(t *testing.T) {
 	root, rigsConfig := setupTestTown(t)
 
 	// Create test rig
-	createTestRig(t, root, "gastown")
-	rigsConfig.Rigs["gastown"] = config.RigEntry{
-		GitURL: "git@github.com:test/gastown.git",
+	createTestRig(t, root, "gongshow")
+	rigsConfig.Rigs["gongshow"] = config.RigEntry{
+		GitURL: "git@github.com:test/gongshow.git",
 	}
 
 	manager := NewManager(root, rigsConfig, git.NewGit(root))
@@ -100,8 +100,8 @@ func TestDiscoverRigs(t *testing.T) {
 	}
 
 	rig := rigs[0]
-	if rig.Name != "gastown" {
-		t.Errorf("Name = %q, want gastown", rig.Name)
+	if rig.Name != "gongshow" {
+		t.Errorf("Name = %q, want gongshow", rig.Name)
 	}
 	if len(rig.Polecats) != 2 {
 		t.Errorf("Polecats count = %d, want 2", len(rig.Polecats))
@@ -542,7 +542,7 @@ func TestIsValidBeadsPrefix(t *testing.T) {
 		{"gt", true},
 		{"bd", true},
 		{"hq", true},
-		{"gastown", true},
+		{"gongshow", true},
 		{"myProject", true},
 		{"my-project", true},
 		{"a", true},
@@ -606,7 +606,7 @@ func TestDeriveBeadsPrefix(t *testing.T) {
 		want string
 	}{
 		// Compound words with common suffixes should split
-		{"gastown", "gt"},       // gas + town
+		{"gongshow", "gt"},       // gas + town
 		{"nashville", "nv"},     // nash + ville
 		{"bridgeport", "bp"},    // bridge + port
 		{"someplace", "sp"},     // some + place
@@ -654,7 +654,7 @@ func TestSplitCompoundWord(t *testing.T) {
 		want []string
 	}{
 		// Known suffixes
-		{"gastown", []string{"gas", "town"}},
+		{"gongshow", []string{"gas", "town"}},
 		{"nashville", []string{"nash", "ville"}},
 		{"bridgeport", []string{"bridge", "port"}},
 		{"someplace", []string{"some", "place"}},

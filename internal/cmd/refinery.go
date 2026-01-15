@@ -6,12 +6,12 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/refinery"
-	"github.com/steveyegge/gastown/internal/rig"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/tmux"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/refinery"
+	"github.com/KeithWyatt/gongshow/internal/rig"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 // Refinery command flags
@@ -255,7 +255,7 @@ func getRefineryManager(rigName string) (*refinery.Manager, *rig.Rig, string, er
 	if rigName == "" {
 		townRoot, err := workspace.FindFromCwdOrError()
 		if err != nil {
-			return nil, nil, "", fmt.Errorf("not in a Gas Town workspace: %w", err)
+			return nil, nil, "", fmt.Errorf("not in a GongShow workspace: %w", err)
 		}
 		rigName, err = inferRigFromCwd(townRoot)
 		if err != nil {
@@ -551,7 +551,7 @@ func runRefineryClaim(cmd *cobra.Command, args []string) error {
 	// Find beads from current working directory
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 	rigName, err := inferRigFromCwd(townRoot)
 	if err != nil {
@@ -578,7 +578,7 @@ func runRefineryRelease(cmd *cobra.Command, args []string) error {
 	// Find beads from current working directory
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 	rigName, err := inferRigFromCwd(townRoot)
 	if err != nil {

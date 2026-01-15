@@ -7,11 +7,11 @@ import (
 	"path/filepath"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/constants"
-	"github.com/steveyegge/gastown/internal/git"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/constants"
+	"github.com/KeithWyatt/gongshow/internal/git"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 // Worktree command flags
@@ -31,16 +31,16 @@ crew/ directory with a name that identifies your source rig and identity.
 
 The worktree is created at: ~/gt/<target-rig>/crew/<source-rig>-<name>/
 
-For example, if you're gastown/crew/joe and run 'gt worktree beads':
-- Creates worktree at ~/gt/beads/crew/gastown-joe/
+For example, if you're gongshow/crew/joe and run 'gt worktree beads':
+- Creates worktree at ~/gt/beads/crew/gongshow-joe/
 - The worktree checks out main branch
-- Your identity (BD_ACTOR, GT_ROLE) remains gastown/crew/joe
+- Your identity (BD_ACTOR, GT_ROLE) remains gongshow/crew/joe
 
 Use --no-cd to just print the path without printing shell commands.
 
 Examples:
   gt worktree beads         # Create worktree in beads rig
-  gt worktree gastown       # Create worktree in gastown rig (from another rig)
+  gt worktree gongshow       # Create worktree in gongshow rig (from another rig)
   gt worktree beads --no-cd # Just print the path`,
 	Args: cobra.ExactArgs(1),
 	RunE: runWorktree,
@@ -56,10 +56,10 @@ that belong to the current crew member. Each worktree is shown with
 its git status summary.
 
 Example output:
-  Cross-rig worktrees for gastown/crew/joe:
+  Cross-rig worktrees for gongshow/crew/joe:
 
-    beads     ~/gt/beads/crew/gastown-joe/     (clean)
-    mayor     ~/gt/mayor/crew/gastown-joe/     (2 uncommitted)`,
+    beads     ~/gt/beads/crew/gongshow-joe/     (clean)
+    mayor     ~/gt/mayor/crew/gongshow-joe/     (2 uncommitted)`,
 	RunE: runWorktreeList,
 }
 
@@ -213,7 +213,7 @@ func runWorktreeList(cmd *cobra.Command, args []string) error {
 	// Find town root
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	// Load rigs config to list all rigs

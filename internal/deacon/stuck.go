@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/beads"
 )
 
 // Default parameters for stuck-session detection.
@@ -70,7 +70,7 @@ func LoadStuckConfig(townRoot string) *StuckConfig {
 
 // AgentHealthState tracks the health check state for a single agent.
 type AgentHealthState struct {
-	// AgentID is the identifier (e.g., "gastown/polecats/max" or "deacon")
+	// AgentID is the identifier (e.g., "gongshow/polecats/max" or "deacon")
 	AgentID string `json:"agent_id"`
 
 	// LastPingTime is when we last sent a HEALTH_CHECK nudge

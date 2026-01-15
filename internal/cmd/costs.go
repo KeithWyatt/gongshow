@@ -13,11 +13,11 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/constants"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/tmux"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/constants"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 var (
@@ -45,7 +45,7 @@ var costsCmd = &cobra.Command{
 	Use:     "costs",
 	GroupID: GroupDiag,
 	Short:   "Show costs for running Claude sessions",
-	Long: `Display costs for Claude Code sessions in Gas Town.
+	Long: `Display costs for Claude Code sessions in GongShow.
 
 By default, shows live costs scraped from running tmux sessions.
 
@@ -79,8 +79,8 @@ Session cost wisps are aggregated daily by 'gt costs digest' into a single
 permanent "Cost Report YYYY-MM-DD" bead for audit purposes.
 
 Examples:
-  gt costs record --session gt-gastown-toast
-  gt costs record --session gt-gastown-toast --work-item gt-abc123`,
+  gt costs record --session gt-gongshow-toast
+  gt costs record --session gt-gongshow-toast --work-item gt-abc123`,
 	RunE: runCostsRecord,
 }
 
@@ -206,7 +206,7 @@ func runLiveCosts() error {
 	var total float64
 
 	for _, session := range sessions {
-		// Only process Gas Town sessions (start with "gt-")
+		// Only process GongShow sessions (start with "gt-")
 		if !strings.HasPrefix(session, constants.SessionPrefix) {
 			continue
 		}
@@ -359,7 +359,7 @@ func querySessionEvents() []CostEntry {
 	// Discover town root for cwd-based bd discovery
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		// Not in a Gas Town workspace - return empty list
+		// Not in a GongShow workspace - return empty list
 		return nil
 	}
 
@@ -574,10 +574,10 @@ func queryDigestBeads(days int) ([]CostEntry, error) {
 // Examples:
 //   - gt-mayor -> role=mayor, rig="", worker="mayor"
 //   - gt-deacon -> role=deacon, rig="", worker="deacon"
-//   - gt-gastown-toast -> role=polecat, rig=gastown, worker=toast
-//   - gt-gastown-witness -> role=witness, rig=gastown, worker=""
-//   - gt-gastown-refinery -> role=refinery, rig=gastown, worker=""
-//   - gt-gastown-crew-joe -> role=crew, rig=gastown, worker=joe
+//   - gt-gongshow-toast -> role=polecat, rig=gongshow, worker=toast
+//   - gt-gongshow-witness -> role=witness, rig=gongshow, worker=""
+//   - gt-gongshow-refinery -> role=refinery, rig=gongshow, worker=""
+//   - gt-gongshow-crew-joe -> role=crew, rig=gongshow, worker=joe
 func parseSessionName(session string) (role, rig, worker string) {
 	// Remove gt- prefix
 	name := strings.TrimPrefix(session, constants.SessionPrefix)
@@ -643,7 +643,7 @@ func outputCostsJSON(output CostsOutput) error {
 
 func outputCostsHuman(costs []SessionCost, total float64) error {
 	if len(costs) == 0 {
-		fmt.Println(style.Dim.Render("No Gas Town sessions found"))
+		fmt.Println(style.Dim.Render("No GongShow sessions found"))
 		return nil
 	}
 
@@ -838,9 +838,9 @@ func runCostsRecord(cmd *cobra.Command, args []string) error {
 
 // deriveSessionName derives the tmux session name from GT_* environment variables.
 // Session naming patterns:
-//   - Polecats: gt-{rig}-{polecat} (e.g., gt-gastown-toast)
-//   - Crew: gt-{rig}-crew-{crew} (e.g., gt-gastown-crew-max)
-//   - Witness/Refinery: gt-{rig}-{role} (e.g., gt-gastown-witness)
+//   - Polecats: gt-{rig}-{polecat} (e.g., gt-gongshow-toast)
+//   - Crew: gt-{rig}-crew-{crew} (e.g., gt-gongshow-crew-max)
+//   - Witness/Refinery: gt-{rig}-{role} (e.g., gt-gongshow-witness)
 //   - Mayor/Deacon: gt-{town}-{role} (e.g., gt-ai-mayor)
 func deriveSessionName() string {
 	role := os.Getenv("GT_ROLE")
@@ -888,7 +888,7 @@ func detectCurrentTmuxSession() string {
 	}
 
 	session := strings.TrimSpace(string(output))
-	// Only return if it looks like a Gas Town session
+	// Only return if it looks like a GongShow session
 	// Accept both gt- (rig sessions) and hq- (town-level sessions like hq-mayor)
 	if strings.HasPrefix(session, constants.SessionPrefix) || strings.HasPrefix(session, constants.HQSessionPrefix) {
 		return session
@@ -897,7 +897,7 @@ func detectCurrentTmuxSession() string {
 }
 
 // buildAgentPath builds the agent path from role, rig, and worker.
-// Examples: "mayor", "gastown/witness", "gastown/polecats/toast"
+// Examples: "mayor", "gongshow/witness", "gongshow/polecats/toast"
 func buildAgentPath(role, rig, worker string) string {
 	switch role {
 	case constants.RoleMayor, constants.RoleDeacon:

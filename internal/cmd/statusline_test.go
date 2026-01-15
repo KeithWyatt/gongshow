@@ -8,23 +8,23 @@ func TestCategorizeSessionRig(t *testing.T) {
 		wantRig string
 	}{
 		// Standard polecat sessions
-		{"gt-gastown-slit", "gastown"},
-		{"gt-gastown-Toast", "gastown"},
+		{"gt-gongshow-slit", "gongshow"},
+		{"gt-gongshow-Toast", "gongshow"},
 		{"gt-myrig-worker", "myrig"},
 
 		// Crew sessions
-		{"gt-gastown-crew-max", "gastown"},
+		{"gt-gongshow-crew-max", "gongshow"},
 		{"gt-myrig-crew-user", "myrig"},
 
 		// Witness sessions (canonical format: gt-<rig>-witness)
-		{"gt-gastown-witness", "gastown"},
+		{"gt-gongshow-witness", "gongshow"},
 		{"gt-myrig-witness", "myrig"},
 		// Legacy format still works as fallback
-		{"gt-witness-gastown", "gastown"},
+		{"gt-witness-gongshow", "gongshow"},
 		{"gt-witness-myrig", "myrig"},
 
 		// Refinery sessions
-		{"gt-gastown-refinery", "gastown"},
+		{"gt-gongshow-refinery", "gongshow"},
 		{"gt-myrig-refinery", "myrig"},
 
 		// Edge cases
@@ -55,16 +55,16 @@ func TestCategorizeSessionType(t *testing.T) {
 		wantType AgentType
 	}{
 		// Polecat sessions
-		{"gt-gastown-slit", AgentPolecat},
-		{"gt-gastown-Toast", AgentPolecat},
+		{"gt-gongshow-slit", AgentPolecat},
+		{"gt-gongshow-Toast", AgentPolecat},
 		{"gt-myrig-worker", AgentPolecat},
 		{"gt-a-b", AgentPolecat},
 
 		// Non-polecat sessions
-		{"gt-gastown-witness", AgentWitness}, // canonical format
-		{"gt-witness-gastown", AgentWitness}, // legacy fallback
-		{"gt-gastown-refinery", AgentRefinery},
-		{"gt-gastown-crew-max", AgentCrew},
+		{"gt-gongshow-witness", AgentWitness}, // canonical format
+		{"gt-witness-gongshow", AgentWitness}, // legacy fallback
+		{"gt-gongshow-refinery", AgentRefinery},
+		{"gt-gongshow-crew-max", AgentCrew},
 		{"gt-myrig-crew-user", AgentCrew},
 
 		// Town-level agents (hq- prefix)

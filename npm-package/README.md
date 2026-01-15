@@ -1,11 +1,11 @@
-# @gastown/gt
+# @gongshow/gt
 
-Gas Town CLI - multi-agent workspace manager for coordinating AI coding agents.
+GongShow CLI - multi-agent workspace manager for coordinating AI coding agents.
 
 ## Installation
 
 ```bash
-npm install -g @gastown/gt
+npm install -g @gongshow/gt
 ```
 
 This will download the appropriate native binary for your platform during installation.
@@ -35,7 +35,7 @@ gt rig list
 ## Manual Installation
 
 If npm installation fails, you can download binaries directly from:
-https://github.com/steveyegge/gastown/releases
+https://github.com/KeithWyatt/gongshow/releases
 
 ## License
 

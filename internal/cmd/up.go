@@ -10,25 +10,25 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/crew"
-	"github.com/steveyegge/gastown/internal/daemon"
-	"github.com/steveyegge/gastown/internal/deacon"
-	"github.com/steveyegge/gastown/internal/events"
-	"github.com/steveyegge/gastown/internal/mayor"
-	"github.com/steveyegge/gastown/internal/polecat"
-	"github.com/steveyegge/gastown/internal/refinery"
-	"github.com/steveyegge/gastown/internal/rig"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/tmux"
-	"github.com/steveyegge/gastown/internal/witness"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/crew"
+	"github.com/KeithWyatt/gongshow/internal/daemon"
+	"github.com/KeithWyatt/gongshow/internal/deacon"
+	"github.com/KeithWyatt/gongshow/internal/events"
+	"github.com/KeithWyatt/gongshow/internal/mayor"
+	"github.com/KeithWyatt/gongshow/internal/polecat"
+	"github.com/KeithWyatt/gongshow/internal/refinery"
+	"github.com/KeithWyatt/gongshow/internal/rig"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/witness"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 // agentStartResult holds the result of starting an agent.
 type agentStartResult struct {
-	name   string // Display name like "Witness (gastown)"
+	name   string // Display name like "Witness (gongshow)"
 	ok     bool   // Whether start succeeded
 	detail string // Status detail (session name or error)
 }
@@ -39,10 +39,10 @@ const maxConcurrentAgentStarts = 10
 var upCmd = &cobra.Command{
 	Use:     "up",
 	GroupID: GroupServices,
-	Short:   "Bring up all Gas Town services",
-	Long: `Start all Gas Town long-lived services.
+	Short:   "Bring up all GongShow services",
+	Long: `Start all GongShow long-lived services.
 
-This is the idempotent "boot" command for Gas Town. It ensures all
+This is the idempotent "boot" command for GongShow. It ensures all
 infrastructure agents are running:
 
   • Daemon     - Go background process that pokes agents
@@ -77,7 +77,7 @@ func init() {
 func runUp(cmd *cobra.Command, args []string) error {
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	allOK := true

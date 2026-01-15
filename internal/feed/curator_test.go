@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/events"
+	"github.com/KeithWyatt/gongshow/internal/events"
 )
 
 func TestCurator_FiltersByVisibility(t *testing.T) {
@@ -28,7 +28,7 @@ func TestCurator_FiltersByVisibility(t *testing.T) {
 		Source:     "gt",
 		Type:       events.TypeSling,
 		Actor:      "mayor",
-		Payload:    map[string]interface{}{"bead": "gt-123", "target": "gastown/slit"},
+		Payload:    map[string]interface{}{"bead": "gt-123", "target": "gongshow/slit"},
 		Visibility: events.VisibilityFeed,
 	}
 	feedData, _ := json.Marshal(feedEvent)
@@ -125,7 +125,7 @@ func TestCurator_DedupesDoneEvents(t *testing.T) {
 			Timestamp:  time.Now().UTC().Format(time.RFC3339),
 			Source:     "gt",
 			Type:       events.TypeDone,
-			Actor:      "gastown/slit",
+			Actor:      "gongshow/slit",
 			Payload:    map[string]interface{}{"bead": "slit-12345"},
 			Visibility: events.VisibilityFeed,
 		}
@@ -166,24 +166,24 @@ func TestCurator_GeneratesSummary(t *testing.T) {
 			event: &events.Event{
 				Type:    events.TypeSling,
 				Actor:   "mayor",
-				Payload: map[string]interface{}{"bead": "gt-123", "target": "gastown/slit"},
+				Payload: map[string]interface{}{"bead": "gt-123", "target": "gongshow/slit"},
 			},
-			expected: "mayor assigned gt-123 to gastown/slit",
+			expected: "mayor assigned gt-123 to gongshow/slit",
 		},
 		{
 			event: &events.Event{
 				Type:    events.TypeDone,
-				Actor:   "gastown/slit",
+				Actor:   "gongshow/slit",
 				Payload: map[string]interface{}{"bead": "slit-12345"},
 			},
-			expected: "gastown/slit completed work on slit-12345",
+			expected: "gongshow/slit completed work on slit-12345",
 		},
 		{
 			event: &events.Event{
 				Type:  events.TypeHandoff,
-				Actor: "gastown/witness",
+				Actor: "gongshow/witness",
 			},
-			expected: "gastown/witness handed off to fresh session",
+			expected: "gongshow/witness handed off to fresh session",
 		},
 	}
 

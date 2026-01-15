@@ -11,11 +11,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/claude"
-	"github.com/steveyegge/gastown/internal/constants"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/git"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/claude"
+	"github.com/KeithWyatt/gongshow/internal/constants"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/git"
 )
 
 // Common errors
@@ -376,7 +376,7 @@ func (m *Manager) AddRig(opts AddRigOptions) (*Rig, error) {
 			if output, err := cmd.CombinedOutput(); err != nil {
 				fmt.Printf("  Warning: Could not init bd database: %v (%s)\n", err, strings.TrimSpace(string(output)))
 			}
-			// Configure custom types for Gas Town (beads v0.46.0+)
+			// Configure custom types for GongShow (beads v0.46.0+)
 			configCmd := exec.Command("bd", "config", "set", "types.custom", constants.BeadsCustomTypes)
 			configCmd.Dir = mayorRigPath
 			_, _ = configCmd.CombinedOutput() // Ignore errors - older beads don't need this
@@ -396,9 +396,9 @@ func (m *Manager) AddRig(opts AddRigOptions) (*Rig, error) {
 	}
 	fmt.Printf("   ✓ Initialized beads (prefix: %s)\n", opts.BeadsPrefix)
 
-	// Provision PRIME.md with Gas Town context for all workers in this rig.
+	// Provision PRIME.md with GongShow context for all workers in this rig.
 	// This is the fallback if SessionStart hook fails - ensures ALL workers
-	// (crew, polecats, refinery, witness) have GUPP and essential Gas Town context.
+	// (crew, polecats, refinery, witness) have GUPP and essential GongShow context.
 	// PRIME.md is read by bd prime and output to the agent.
 	rigBeadsPath := filepath.Join(rigPath, ".beads")
 	if err := beads.ProvisionPrimeMD(rigBeadsPath); err != nil {
@@ -618,7 +618,7 @@ func (m *Manager) initBeads(rigPath, prefix string) error {
 		}
 	}
 
-	// Configure custom types for Gas Town (agent, role, rig, convoy).
+	// Configure custom types for GongShow (agent, role, rig, convoy).
 	// These were extracted from beads core in v0.46.0 and now require explicit config.
 	configCmd := exec.Command("bd", "config", "set", "types.custom", constants.BeadsCustomTypes)
 	configCmd.Dir = rigPath
@@ -757,7 +757,7 @@ func (m *Manager) ensureGitignoreEntry(gitignorePath, entry string) error {
 }
 
 // deriveBeadsPrefix generates a beads prefix from a rig name.
-// Examples: "gastown" -> "gt", "my-project" -> "mp", "foo" -> "foo"
+// Examples: "gongshow" -> "gt", "my-project" -> "mp", "foo" -> "foo"
 func deriveBeadsPrefix(name string) string {
 	// Remove common suffixes
 	name = strings.TrimSuffix(name, "-py")
@@ -768,7 +768,7 @@ func deriveBeadsPrefix(name string) string {
 		return r == '-' || r == '_'
 	})
 
-	// If single part, try to detect compound words (e.g., "gastown" -> "gas" + "town")
+	// If single part, try to detect compound words (e.g., "gongshow" -> "gas" + "town")
 	if len(parts) == 1 {
 		parts = splitCompoundWord(parts[0])
 	}
@@ -793,7 +793,7 @@ func deriveBeadsPrefix(name string) string {
 
 // splitCompoundWord attempts to split a compound word into its components.
 // Common suffixes like "town", "ville", "port" are detected to split
-// compound names (e.g., "gastown" -> ["gas", "town"]).
+// compound names (e.g., "gongshow" -> ["gas", "town"]).
 func splitCompoundWord(word string) []string {
 	word = strings.ToLower(word)
 
@@ -1115,7 +1115,7 @@ func (m *Manager) createPluginDirectories(rigPath string) error {
 	// Create a README in town plugins if it doesn't exist
 	townReadme := filepath.Join(townPluginsDir, "README.md")
 	if _, err := os.Stat(townReadme); os.IsNotExist(err) {
-		content := `# Gas Town Plugins
+		content := `# GongShow Plugins
 
 This directory contains town-level plugins that run during Deacon patrol cycles.
 

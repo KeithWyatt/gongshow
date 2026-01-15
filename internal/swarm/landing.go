@@ -7,9 +7,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/mail"
-	"github.com/steveyegge/gastown/internal/polecat"
-	"github.com/steveyegge/gastown/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/mail"
+	"github.com/KeithWyatt/gongshow/internal/polecat"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
 )
 
 // LandingConfig configures the landing protocol.

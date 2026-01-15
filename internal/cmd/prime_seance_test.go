@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/events"
+	"github.com/KeithWyatt/gongshow/internal/events"
 )
 
 // =============================================================================
@@ -184,9 +184,9 @@ func TestIsEventForRig(t *testing.T) {
 		{
 			name: "actor starts with rig",
 			event: seanceEvent{
-				Actor: "gastown/crew/joe",
+				Actor: "gongshow/crew/joe",
 			},
-			rigName: "gastown",
+			rigName: "gongshow",
 			expect:  true,
 		},
 		{
@@ -194,68 +194,68 @@ func TestIsEventForRig(t *testing.T) {
 			event: seanceEvent{
 				Actor: "beads/crew/wolf",
 			},
-			rigName: "gastown",
+			rigName: "gongshow",
 			expect:  false,
 		},
 		{
 			name: "payload has rig field",
 			event: seanceEvent{
 				Actor:   "unknown",
-				Payload: map[string]interface{}{"rig": "gastown"},
+				Payload: map[string]interface{}{"rig": "gongshow"},
 			},
-			rigName: "gastown",
+			rigName: "gongshow",
 			expect:  true,
 		},
 		{
 			name: "cwd contains rig path",
 			event: seanceEvent{
 				Actor:   "unknown",
-				Payload: map[string]interface{}{"cwd": "/home/user/gt/gastown/crew/joe"},
+				Payload: map[string]interface{}{"cwd": "/home/user/gt/gongshow/crew/joe"},
 			},
-			rigName: "gastown",
+			rigName: "gongshow",
 			expect:  true,
 		},
 		{
 			name: "cwd ends with rig",
 			event: seanceEvent{
 				Actor:   "unknown",
-				Payload: map[string]interface{}{"cwd": "/home/user/gt/gastown"},
+				Payload: map[string]interface{}{"cwd": "/home/user/gt/gongshow"},
 			},
-			rigName: "gastown",
+			rigName: "gongshow",
 			expect:  true,
 		},
 		{
 			name: "target field matches rig",
 			event: seanceEvent{
 				Actor:   "unknown",
-				Payload: map[string]interface{}{"target": "gastown/crew/joe"},
+				Payload: map[string]interface{}{"target": "gongshow/crew/joe"},
 			},
-			rigName: "gastown",
+			rigName: "gongshow",
 			expect:  true,
 		},
 		{
 			name: "target field exact match",
 			event: seanceEvent{
 				Actor:   "unknown",
-				Payload: map[string]interface{}{"target": "gastown"},
+				Payload: map[string]interface{}{"target": "gongshow"},
 			},
-			rigName: "gastown",
+			rigName: "gongshow",
 			expect:  true,
 		},
 		{
 			name: "actor exact match",
 			event: seanceEvent{
-				Actor: "gastown",
+				Actor: "gongshow",
 			},
-			rigName: "gastown",
+			rigName: "gongshow",
 			expect:  true,
 		},
 		{
 			name: "case insensitive match",
 			event: seanceEvent{
-				Actor: "GASTOWN/crew/joe",
+				Actor: "GONGSHOW/crew/joe",
 			},
-			rigName: "gastown",
+			rigName: "gongshow",
 			expect:  true,
 		},
 		{
@@ -264,13 +264,13 @@ func TestIsEventForRig(t *testing.T) {
 				Actor:   "deacon",
 				Payload: map[string]interface{}{},
 			},
-			rigName: "gastown",
+			rigName: "gongshow",
 			expect:  false,
 		},
 		{
 			name: "empty rig name",
 			event: seanceEvent{
-				Actor: "gastown/crew/joe",
+				Actor: "gongshow/crew/joe",
 			},
 			rigName: "",
 			expect:  false,
@@ -279,10 +279,10 @@ func TestIsEventForRig(t *testing.T) {
 			name: "partial rig name in path should not match",
 			event: seanceEvent{
 				Actor:   "unknown",
-				Payload: map[string]interface{}{"cwd": "/home/user/gt/gastown-old/crew/joe"},
+				Payload: map[string]interface{}{"cwd": "/home/user/gt/gongshow-old/crew/joe"},
 			},
-			rigName: "gastown",
-			expect:  false, // gastown-old does NOT contain /gastown/ as a path segment
+			rigName: "gongshow",
+			expect:  false, // gongshow-old does NOT contain /gongshow/ as a path segment
 		},
 		{
 			name: "nil payload",
@@ -290,7 +290,7 @@ func TestIsEventForRig(t *testing.T) {
 				Actor:   "other",
 				Payload: nil,
 			},
-			rigName: "gastown",
+			rigName: "gongshow",
 			expect:  false,
 		},
 	}
@@ -843,12 +843,12 @@ func TestIsSameAgent(t *testing.T) {
 		current     string
 		expect      bool
 	}{
-		{"exact match", "gastown/crew/joe", "gastown/crew/joe", true},
-		{"case insensitive", "GASTOWN/CREW/JOE", "gastown/crew/joe", true},
-		{"different agent", "gastown/crew/joe", "gastown/crew/max", false},
-		{"different rig", "beads/crew/joe", "gastown/crew/joe", false},
-		{"empty predecessor", "", "gastown/crew/joe", false},
-		{"empty current", "gastown/crew/joe", "", false},
+		{"exact match", "gongshow/crew/joe", "gongshow/crew/joe", true},
+		{"case insensitive", "GONGSHOW/CREW/JOE", "gongshow/crew/joe", true},
+		{"different agent", "gongshow/crew/joe", "gongshow/crew/max", false},
+		{"different rig", "beads/crew/joe", "gongshow/crew/joe", false},
+		{"empty predecessor", "", "gongshow/crew/joe", false},
+		{"empty current", "gongshow/crew/joe", "", false},
 		{"both empty", "", "", false},
 	}
 
@@ -895,7 +895,7 @@ func TestFormatSeanceDuration(t *testing.T) {
 
 func TestFormatSeanceContext(t *testing.T) {
 	sc := &SeanceContext{
-		PredecessorActor:     "gastown/crew/max",
+		PredecessorActor:     "gongshow/crew/max",
 		PredecessorSessionID: "abc123",
 		LastActive:           time.Now().Add(-26 * time.Hour),
 		Summary:              "Working on feature X.\n- Completed task A\n- In progress: task B",
@@ -907,7 +907,7 @@ func TestFormatSeanceContext(t *testing.T) {
 	if !strings.Contains(output, "Auto-Seance Context Recovery") {
 		t.Error("expected header in output")
 	}
-	if !strings.Contains(output, "gastown/crew/max") {
+	if !strings.Contains(output, "gongshow/crew/max") {
 		t.Error("expected predecessor actor in output")
 	}
 	if !strings.Contains(output, "abc123") {
@@ -923,7 +923,7 @@ func TestFormatSeanceContext(t *testing.T) {
 
 func TestFormatSeanceContextLongSessionID(t *testing.T) {
 	sc := &SeanceContext{
-		PredecessorActor:     "gastown/crew/max",
+		PredecessorActor:     "gongshow/crew/max",
 		PredecessorSessionID: "very-long-session-id-that-should-be-truncated",
 		LastActive:           time.Now().Add(-1 * time.Hour),
 		Summary:              "Test summary",
@@ -942,7 +942,7 @@ func TestFormatSeanceContextLongSessionID(t *testing.T) {
 
 func TestFormatSeanceContextEmptySummary(t *testing.T) {
 	sc := &SeanceContext{
-		PredecessorActor:     "gastown/crew/max",
+		PredecessorActor:     "gongshow/crew/max",
 		PredecessorSessionID: "abc123",
 		LastActive:           time.Now().Add(-1 * time.Hour),
 		Summary:              "",
@@ -957,7 +957,7 @@ func TestFormatSeanceContextEmptySummary(t *testing.T) {
 
 func TestFormatSeanceContextWhitespaceSummary(t *testing.T) {
 	sc := &SeanceContext{
-		PredecessorActor:     "gastown/crew/max",
+		PredecessorActor:     "gongshow/crew/max",
 		PredecessorSessionID: "abc123",
 		LastActive:           time.Now().Add(-1 * time.Hour),
 		Summary:              "   \n\t\n   ",
@@ -972,7 +972,7 @@ func TestFormatSeanceContextWhitespaceSummary(t *testing.T) {
 
 func TestFormatSeanceContextZeroTime(t *testing.T) {
 	sc := &SeanceContext{
-		PredecessorActor:     "gastown/crew/max",
+		PredecessorActor:     "gongshow/crew/max",
 		PredecessorSessionID: "abc123",
 		LastActive:           time.Time{}, // Zero time
 		Summary:              "Test summary",

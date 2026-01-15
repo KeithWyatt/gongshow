@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/constants"
+	"github.com/KeithWyatt/gongshow/internal/constants"
 )
 
 // skipIfAgentBinaryMissing skips the test if any of the specified agent binaries
@@ -60,8 +60,8 @@ func TestRigsConfigRoundTrip(t *testing.T) {
 	original := &RigsConfig{
 		Version: 1,
 		Rigs: map[string]RigEntry{
-			"gastown": {
-				GitURL:    "git@github.com:steveyegge/gastown.git",
+			"gongshow": {
+				GitURL:    "git@github.com:KeithWyatt/gongshow.git",
 				LocalRepo: "/tmp/local-repo",
 				AddedAt:   time.Now().Truncate(time.Second),
 				BeadsConfig: &BeadsConfig{
@@ -85,9 +85,9 @@ func TestRigsConfigRoundTrip(t *testing.T) {
 		t.Errorf("Rigs count = %d, want 1", len(loaded.Rigs))
 	}
 
-	rig, ok := loaded.Rigs["gastown"]
+	rig, ok := loaded.Rigs["gongshow"]
 	if !ok {
-		t.Fatal("missing 'gastown' rig")
+		t.Fatal("missing 'gongshow' rig")
 	}
 	if rig.BeadsConfig == nil || rig.BeadsConfig.Prefix != "gt-" {
 		t.Errorf("BeadsConfig.Prefix = %v, want 'gt-'", rig.BeadsConfig)
@@ -125,7 +125,7 @@ func TestRigConfigRoundTrip(t *testing.T) {
 	dir := t.TempDir()
 	path := filepath.Join(dir, "config.json")
 
-	original := NewRigConfig("gastown", "git@github.com:test/gastown.git")
+	original := NewRigConfig("gongshow", "git@github.com:test/gongshow.git")
 	original.CreatedAt = time.Now().Truncate(time.Second)
 	original.Beads = &BeadsConfig{Prefix: "gt-"}
 	original.LocalRepo = "/tmp/local-repo"
@@ -145,10 +145,10 @@ func TestRigConfigRoundTrip(t *testing.T) {
 	if loaded.Version != CurrentRigConfigVersion {
 		t.Errorf("Version = %d, want %d", loaded.Version, CurrentRigConfigVersion)
 	}
-	if loaded.Name != "gastown" {
-		t.Errorf("Name = %q, want 'gastown'", loaded.Name)
+	if loaded.Name != "gongshow" {
+		t.Errorf("Name = %q, want 'gongshow'", loaded.Name)
 	}
-	if loaded.GitURL != "git@github.com:test/gastown.git" {
+	if loaded.GitURL != "git@github.com:test/gongshow.git" {
 		t.Errorf("GitURL = %q, want expected URL", loaded.GitURL)
 	}
 	if loaded.LocalRepo != "/tmp/local-repo" {
@@ -562,17 +562,17 @@ func TestMessagingConfigRoundTrip(t *testing.T) {
 	path := filepath.Join(dir, "config", "messaging.json")
 
 	original := NewMessagingConfig()
-	original.Lists["oncall"] = []string{"mayor/", "gastown/witness"}
-	original.Lists["cleanup"] = []string{"gastown/witness", "deacon/"}
-	original.Queues["work/gastown"] = QueueConfig{
-		Workers:   []string{"gastown/polecats/*"},
+	original.Lists["oncall"] = []string{"mayor/", "gongshow/witness"}
+	original.Lists["cleanup"] = []string{"gongshow/witness", "deacon/"}
+	original.Queues["work/gongshow"] = QueueConfig{
+		Workers:   []string{"gongshow/polecats/*"},
 		MaxClaims: 5,
 	}
 	original.Announces["alerts"] = AnnounceConfig{
 		Readers:     []string{"@town"},
 		RetainCount: 100,
 	}
-	original.NudgeChannels["workers"] = []string{"gastown/polecats/*", "gastown/crew/*"}
+	original.NudgeChannels["workers"] = []string{"gongshow/polecats/*", "gongshow/crew/*"}
 	original.NudgeChannels["witnesses"] = []string{"*/witness"}
 
 	if err := SaveMessagingConfig(path, original); err != nil {
@@ -603,7 +603,7 @@ func TestMessagingConfigRoundTrip(t *testing.T) {
 	if len(loaded.Queues) != 1 {
 		t.Errorf("Queues count = %d, want 1", len(loaded.Queues))
 	}
-	if q, ok := loaded.Queues["work/gastown"]; !ok || q.MaxClaims != 5 {
+	if q, ok := loaded.Queues["work/gongshow"]; !ok || q.MaxClaims != 5 {
 		t.Error("queue not preserved")
 	}
 
@@ -645,7 +645,7 @@ func TestMessagingConfigValidation(t *testing.T) {
 				Type:    "messaging",
 				Version: 1,
 				Lists: map[string][]string{
-					"oncall": {"mayor/", "gastown/witness"},
+					"oncall": {"mayor/", "gongshow/witness"},
 				},
 			},
 			wantErr: false,
@@ -722,7 +722,7 @@ func TestMessagingConfigValidation(t *testing.T) {
 				Type:    "messaging",
 				Version: 1,
 				NudgeChannels: map[string][]string{
-					"workers": {"gastown/polecats/*", "gastown/crew/*"},
+					"workers": {"gongshow/polecats/*", "gongshow/crew/*"},
 				},
 			},
 			wantErr: false,
@@ -940,7 +940,7 @@ func TestBuildAgentStartupCommand(t *testing.T) {
 
 	// Test without rig config (uses defaults)
 	// New signature: (role, rig, townRoot, rigPath, prompt)
-	cmd := BuildAgentStartupCommand("witness", "gastown", "", "", "")
+	cmd := BuildAgentStartupCommand("witness", "gongshow", "", "", "")
 
 	// Should contain environment exports and claude command
 	if !strings.Contains(cmd, "export") {
@@ -949,7 +949,7 @@ func TestBuildAgentStartupCommand(t *testing.T) {
 	if !strings.Contains(cmd, "GT_ROLE=witness") {
 		t.Error("expected GT_ROLE=witness in command")
 	}
-	if !strings.Contains(cmd, "BD_ACTOR=gastown/witness") {
+	if !strings.Contains(cmd, "BD_ACTOR=gongshow/witness") {
 		t.Error("expected BD_ACTOR in command")
 	}
 	if !strings.Contains(cmd, "claude --dangerously-skip-permissions") {
@@ -959,36 +959,36 @@ func TestBuildAgentStartupCommand(t *testing.T) {
 
 func TestBuildPolecatStartupCommand(t *testing.T) {
 	t.Parallel()
-	cmd := BuildPolecatStartupCommand("gastown", "toast", "", "")
+	cmd := BuildPolecatStartupCommand("gongshow", "toast", "", "")
 
 	if !strings.Contains(cmd, "GT_ROLE=polecat") {
 		t.Error("expected GT_ROLE=polecat in command")
 	}
-	if !strings.Contains(cmd, "GT_RIG=gastown") {
-		t.Error("expected GT_RIG=gastown in command")
+	if !strings.Contains(cmd, "GT_RIG=gongshow") {
+		t.Error("expected GT_RIG=gongshow in command")
 	}
 	if !strings.Contains(cmd, "GT_POLECAT=toast") {
 		t.Error("expected GT_POLECAT=toast in command")
 	}
-	if !strings.Contains(cmd, "BD_ACTOR=gastown/polecats/toast") {
+	if !strings.Contains(cmd, "BD_ACTOR=gongshow/polecats/toast") {
 		t.Error("expected BD_ACTOR in command")
 	}
 }
 
 func TestBuildCrewStartupCommand(t *testing.T) {
 	t.Parallel()
-	cmd := BuildCrewStartupCommand("gastown", "max", "", "")
+	cmd := BuildCrewStartupCommand("gongshow", "max", "", "")
 
 	if !strings.Contains(cmd, "GT_ROLE=crew") {
 		t.Error("expected GT_ROLE=crew in command")
 	}
-	if !strings.Contains(cmd, "GT_RIG=gastown") {
-		t.Error("expected GT_RIG=gastown in command")
+	if !strings.Contains(cmd, "GT_RIG=gongshow") {
+		t.Error("expected GT_RIG=gongshow in command")
 	}
 	if !strings.Contains(cmd, "GT_CREW=max") {
 		t.Error("expected GT_CREW=max in command")
 	}
-	if !strings.Contains(cmd, "BD_ACTOR=gastown/crew/max") {
+	if !strings.Contains(cmd, "BD_ACTOR=gongshow/crew/max") {
 		t.Error("expected BD_ACTOR in command")
 	}
 }
@@ -1580,7 +1580,7 @@ func TestDaemonPatrolConfigPath(t *testing.T) {
 		expected string
 	}{
 		{"/home/user/gt", "/home/user/gt/mayor/daemon.json"},
-		{"/var/lib/gastown", "/var/lib/gastown/mayor/daemon.json"},
+		{"/var/lib/gongshow", "/var/lib/gongshow/mayor/daemon.json"},
 		{"/tmp/test-workspace", "/tmp/test-workspace/mayor/daemon.json"},
 		{"~/gt", "~/gt/mayor/daemon.json"},
 	}

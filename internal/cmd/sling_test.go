@@ -79,7 +79,7 @@ func TestFormatTrackBeadID(t *testing.T) {
 
 		// Cross-rig beads get external: prefix
 		{
-			name:     "gastown rig bead",
+			name:     "gongshow rig bead",
 			beadID:   "gt-mol-abc123",
 			expected: "external:gt-mol:gt-mol-abc123",
 		},
@@ -198,7 +198,7 @@ func TestSlingFormulaOnBeadRoutesBDCommandsToTargetRig(t *testing.T) {
 	}
 
 	// Create a rig path that owns gt-* beads, and a routes.jsonl pointing to it.
-	rigDir := filepath.Join(townRoot, "gastown", "mayor", "rig")
+	rigDir := filepath.Join(townRoot, "gongshow", "mayor", "rig")
 	if err := os.MkdirAll(filepath.Join(townRoot, ".beads"), 0755); err != nil {
 		t.Fatalf("mkdir .beads: %v", err)
 	}
@@ -206,7 +206,7 @@ func TestSlingFormulaOnBeadRoutesBDCommandsToTargetRig(t *testing.T) {
 		t.Fatalf("mkdir rigDir: %v", err)
 	}
 	routes := strings.Join([]string{
-		`{"prefix":"gt-","path":"gastown/mayor/rig"}`,
+		`{"prefix":"gt-","path":"gongshow/mayor/rig"}`,
 		`{"prefix":"hq-","path":"."}`,
 		"",
 	}, "\n")
@@ -359,7 +359,7 @@ func TestSlingFormulaOnBeadPassesFeatureAndIssueVars(t *testing.T) {
 	}
 
 	// Create a rig path that owns gt-* beads, and a routes.jsonl pointing to it.
-	rigDir := filepath.Join(townRoot, "gastown", "mayor", "rig")
+	rigDir := filepath.Join(townRoot, "gongshow", "mayor", "rig")
 	if err := os.MkdirAll(filepath.Join(townRoot, ".beads"), 0755); err != nil {
 		t.Fatalf("mkdir .beads: %v", err)
 	}
@@ -367,7 +367,7 @@ func TestSlingFormulaOnBeadPassesFeatureAndIssueVars(t *testing.T) {
 		t.Fatalf("mkdir rigDir: %v", err)
 	}
 	routes := strings.Join([]string{
-		`{"prefix":"gt-","path":"gastown/mayor/rig"}`,
+		`{"prefix":"gt-","path":"gongshow/mayor/rig"}`,
 		`{"prefix":"hq-","path":"."}`,
 		"",
 	}, "\n")
@@ -733,7 +733,7 @@ func TestLooksLikeBeadID(t *testing.T) {
 		// Non-bead strings - should return false
 		{"formula-name", false},  // "formula" is 7 chars (> 5)
 		{"mayor", false},         // no hyphen
-		{"gastown", false},       // no hyphen
+		{"gongshow", false},       // no hyphen
 		{"deacon/dogs", false},   // contains slash
 		{"", false},              // empty
 		{"-abc", false},          // starts with hyphen

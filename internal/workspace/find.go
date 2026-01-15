@@ -8,13 +8,13 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/steveyegge/gastown/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/config"
 )
 
 // ErrNotFound indicates no workspace was found.
-var ErrNotFound = errors.New("not in a Gas Town workspace")
+var ErrNotFound = errors.New("not in a GongShow workspace")
 
-// Markers used to detect a Gas Town workspace.
+// Markers used to detect a GongShow workspace.
 const (
 	// PrimaryMarker is the main config file that identifies a workspace.
 	// The town.json file lives in mayor/ along with other mayor config.
@@ -132,7 +132,7 @@ func FindFromCwdWithFallback() (townRoot string, cwd string, err error) {
 	return townRoot, cwd, nil
 }
 
-// IsWorkspace checks if the given directory is a Gas Town workspace root.
+// IsWorkspace checks if the given directory is a GongShow workspace root.
 // A directory is a workspace if it has a primary marker (mayor/town.json)
 // or a secondary marker (mayor/ directory).
 func IsWorkspace(dir string) (bool, error) {
@@ -159,7 +159,7 @@ func IsWorkspace(dir string) (bool, error) {
 
 // GetTownName loads the town name from the workspace's town.json config.
 // This is used for generating unique tmux session names that avoid collisions
-// when running multiple Gas Town instances.
+// when running multiple GongShow instances.
 func GetTownName(townRoot string) (string, error) {
 	townConfigPath := filepath.Join(townRoot, PrimaryMarker)
 	townConfig, err := config.LoadTownConfig(townConfigPath)

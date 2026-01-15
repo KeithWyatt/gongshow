@@ -2,7 +2,7 @@
 
 > **If you find something on your hook, YOU RUN IT.**
 
-Gas Town is a steam engine. Agents are pistons. The entire system's throughput
+GongShow is a steam engine. Agents are pistons. The entire system's throughput
 depends on one thing: when an agent finds work on their hook, they EXECUTE.
 
 ## Why This Matters
@@ -77,7 +77,7 @@ Polecat restarts with work on hook
   → Polecat waits for confirmation
   → Witness assumes work is progressing
   → Nothing happens
-  → Gas Town stops
+  → GongShow stops
 ```
 
 ## Startup Behavior

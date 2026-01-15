@@ -6,9 +6,9 @@ import (
 	"os/exec"
 	"path/filepath"
 
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/events"
-	"github.com/steveyegge/gastown/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/events"
+	"github.com/KeithWyatt/gongshow/internal/style"
 )
 
 // runBatchSling handles slinging multiple beads to a rig.
@@ -91,7 +91,7 @@ func runBatchSling(beadIDs []string, rigName string, townBeadsDir string) error 
 			}
 		}
 
-		// Hook the bead. See: https://github.com/steveyegge/gastown/issues/148
+		// Hook the bead. See: https://github.com/KeithWyatt/gongshow/issues/148
 		townRoot := filepath.Dir(townBeadsDir)
 		hookCmd := exec.Command("bd", "--no-daemon", "update", beadID, "--status=hooked", "--assignee="+targetAgent)
 		hookCmd.Dir = beads.ResolveHookDir(townRoot, beadID, hookWorkDir)

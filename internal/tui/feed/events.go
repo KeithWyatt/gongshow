@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/beads"
 )
 
 // EventSource represents a source of events
@@ -174,7 +174,7 @@ func parseSimpleLine(line string) *Event {
 
 // parseBeadContext extracts actor/rig/role from a bead ID
 // Uses canonical naming: prefix-rig-role-name
-// Examples: gt-gastown-crew-joe, gt-gastown-witness, gt-mayor
+// Examples: gt-gongshow-crew-joe, gt-gongshow-witness, gt-mayor
 func parseBeadContext(beadID string) (actor, rig, role string) {
 	if beadID == "" {
 		return
@@ -319,7 +319,7 @@ func parseGtEventLine(line string) *Event {
 		}
 	}
 	if rig == "" && ge.Actor != "" {
-		// Extract rig from actor like "gastown/witness"
+		// Extract rig from actor like "gongshow/witness"
 		parts := strings.Split(ge.Actor, "/")
 		if len(parts) > 0 && parts[0] != "mayor" && parts[0] != "deacon" {
 			rig = parts[0]

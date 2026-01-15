@@ -30,7 +30,7 @@ func TestWitnessSessionName(t *testing.T) {
 		rig  string
 		want string
 	}{
-		{"gastown", "gt-gastown-witness"},
+		{"gongshow", "gt-gongshow-witness"},
 		{"beads", "gt-beads-witness"},
 		{"foo", "gt-foo-witness"},
 	}
@@ -49,7 +49,7 @@ func TestRefinerySessionName(t *testing.T) {
 		rig  string
 		want string
 	}{
-		{"gastown", "gt-gastown-refinery"},
+		{"gongshow", "gt-gongshow-refinery"},
 		{"beads", "gt-beads-refinery"},
 		{"foo", "gt-foo-refinery"},
 	}
@@ -69,7 +69,7 @@ func TestCrewSessionName(t *testing.T) {
 		name string
 		want string
 	}{
-		{"gastown", "max", "gt-gastown-crew-max"},
+		{"gongshow", "max", "gt-gongshow-crew-max"},
 		{"beads", "alice", "gt-beads-crew-alice"},
 		{"foo", "bar", "gt-foo-crew-bar"},
 	}
@@ -89,8 +89,8 @@ func TestPolecatSessionName(t *testing.T) {
 		name string
 		want string
 	}{
-		{"gastown", "Toast", "gt-gastown-Toast"},
-		{"gastown", "Furiosa", "gt-gastown-Furiosa"},
+		{"gongshow", "Toast", "gt-gongshow-Toast"},
+		{"gongshow", "Furiosa", "gt-gongshow-Furiosa"},
 		{"beads", "worker1", "gt-beads-worker1"},
 	}
 	for _, tt := range tests {

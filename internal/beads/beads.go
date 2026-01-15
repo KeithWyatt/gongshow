@@ -11,7 +11,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/steveyegge/gastown/internal/runtime"
+	"github.com/KeithWyatt/gongshow/internal/runtime"
 )
 
 // Common errors
@@ -74,7 +74,7 @@ type ListOptions struct {
 	Label      string // Label filter (e.g., "gt:agent", "gt:merge-request")
 	Priority   int    // 0-4, -1 for no filter
 	Parent     string // filter by parent ID
-	Assignee   string // filter by assignee (e.g., "gastown/Toast")
+	Assignee   string // filter by assignee (e.g., "gongshow/Toast")
 	NoAssignee bool   // filter for issues with no assignee
 }
 
@@ -237,7 +237,7 @@ func (b *Beads) List(opts ListOptions) ([]*Issue, error) {
 }
 
 // ListByAssignee returns all issues assigned to a specific assignee.
-// The assignee is typically in the format "rig/polecatName" (e.g., "gastown/Toast").
+// The assignee is typically in the format "rig/polecatName" (e.g., "gongshow/Toast").
 func (b *Beads) ListByAssignee(assignee string) ([]*Issue, error) {
 	return b.List(ListOptions{
 		Status:   "all", // Include both open and closed for state derivation
@@ -620,9 +620,9 @@ func (b *Beads) IsBeadsRepo() bool {
 	return err == nil && info.IsDir()
 }
 
-// primeContent is the Gas Town PRIME.md content that provides essential context
+// primeContent is the GongShow PRIME.md content that provides essential context
 // for crew workers. This is the fallback if the SessionStart hook fails.
-const primeContent = `# Gas Town Worker Context
+const primeContent = `# GongShow Worker Context
 
 > **Context Recovery**: Run ` + "`gt prime`" + ` for full context after compaction or new session.
 
@@ -631,7 +631,7 @@ const primeContent = `# Gas Town Worker Context
 **If you find work on your hook, YOU RUN IT.**
 
 No confirmation. No waiting. No announcements. The hook having work IS the assignment.
-This is physics, not politeness. Gas Town is a steam engine - you are a piston.
+This is physics, not politeness. GongShow is a steam engine - you are a piston.
 
 **Failure mode we're preventing:**
 - Agent starts with work on hook
@@ -668,8 +668,8 @@ Before signaling completion:
 **Polecats MUST call ` + "`gt done`" + ` - this submits work and exits the session.**
 `
 
-// ProvisionPrimeMD writes the Gas Town PRIME.md file to the specified beads directory.
-// This provides essential Gas Town context (GUPP, startup protocol) as a fallback
+// ProvisionPrimeMD writes the GongShow PRIME.md file to the specified beads directory.
+// This provides essential GongShow context (GUPP, startup protocol) as a fallback
 // if the SessionStart hook fails. The PRIME.md is read by bd prime.
 //
 // The beadsDir should be the actual beads directory (after following any redirect).

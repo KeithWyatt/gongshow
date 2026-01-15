@@ -10,7 +10,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/steveyegge/gastown/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/config"
 )
 
 // TestInstallCreatesCorrectStructure validates that a fresh gt install
@@ -184,8 +184,8 @@ func TestInstallIdempotent(t *testing.T) {
 	if err == nil {
 		t.Fatal("second install should have failed without --force")
 	}
-	if !strings.Contains(string(output), "already a Gas Town HQ") {
-		t.Errorf("expected 'already a Gas Town HQ' error, got: %s", output)
+	if !strings.Contains(string(output), "already a GongShow HQ") {
+		t.Errorf("expected 'already a GongShow HQ' error, got: %s", output)
 	}
 
 	// Third install with --force should succeed

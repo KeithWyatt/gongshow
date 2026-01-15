@@ -286,7 +286,7 @@ gt mail send mayor/ -s "Convoy complete: <convoy-title>" \\
 When a cross-rig dependency resolves, notify the affected rig:
 ```bash
 # Issue bd-xxx closed, unblocking gt-yyy
-gt mail send gastown/witness -s "Dependency resolved: <bd-xxx>" \\
+gt mail send gongshow/witness -s "Dependency resolved: <bd-xxx>" \\
   -m "External dependency bd-xxx has closed.
       Unblocked: gt-yyy (<title>)
       This issue may now proceed."

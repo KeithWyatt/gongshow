@@ -5,11 +5,11 @@ import (
 	"os/exec"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/refinery"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/tmux"
-	"github.com/steveyegge/gastown/internal/witness"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/refinery"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/witness"
 )
 
 // RigDockedLabel is the label set on rig identity beads when docked.
@@ -34,7 +34,7 @@ This is a Level 2 (global/persistent) operation:
 Use 'gt rig undock' to resume normal operation.
 
 Examples:
-  gt rig dock gastown
+  gt rig dock gongshow
   gt rig dock beads`,
 	Args: cobra.ExactArgs(1),
 	RunE: runRigDock,
@@ -52,7 +52,7 @@ Undocking a rig:
   - Does NOT automatically start agents (use 'gt rig start' for that)
 
 Examples:
-  gt rig undock gastown
+  gt rig undock gongshow
   gt rig undock beads`,
 	Args: cobra.ExactArgs(1),
 	RunE: runRigUndock,

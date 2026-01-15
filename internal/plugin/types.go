@@ -1,4 +1,4 @@
-// Package plugin provides plugin discovery and management for Gas Town.
+// Package plugin provides plugin discovery and management for GongShow.
 //
 // Plugins are periodic automation tasks that run during Deacon patrol cycles.
 // Each plugin is defined by a plugin.md file with TOML frontmatter.

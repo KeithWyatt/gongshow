@@ -11,21 +11,21 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/wisp"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/wisp"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 var configCmd = &cobra.Command{
 	Use:     "config",
 	GroupID: GroupConfig,
-	Short:   "Manage Gas Town configuration",
+	Short:   "Manage GongShow configuration",
 	RunE:    requireSubcommand,
-	Long: `Manage Gas Town configuration settings.
+	Long: `Manage GongShow configuration settings.
 
 This command allows you to view and modify configuration settings
-for your Gas Town workspace, including agent aliases and defaults.
+for your GongShow workspace, including agent aliases and defaults.
 
 Commands:
   gt config agent list              List all agents (built-in and custom)
@@ -128,17 +128,17 @@ var configAgentEmailDomainCmd = &cobra.Command{
 	Long: `Get or set the domain used for agent git commit emails.
 
 When agents commit code via 'gt commit', their identity is converted
-to a git email address. For example, "gastown/crew/jack" becomes
-"gastown.crew.jack@{domain}".
+to a git email address. For example, "gongshow/crew/jack" becomes
+"gongshow.crew.jack@{domain}".
 
 With no arguments, shows the current domain.
 With an argument, sets the domain.
 
-Default: gastown.local
+Default: gongshow.local
 
 Examples:
   gt config agent-email-domain                 # Show current domain
-  gt config agent-email-domain gastown.local   # Set to gastown.local
+  gt config agent-email-domain gongshow.local   # Set to gongshow.local
   gt config agent-email-domain example.com     # Set custom domain`,
 	RunE: runConfigAgentEmailDomain,
 }
@@ -488,7 +488,7 @@ func runConfigAgentEmailDomain(cmd *cobra.Command, args []string) error {
 			domain = DefaultAgentEmailDomain
 		}
 		fmt.Printf("Agent email domain: %s\n", style.Bold.Render(domain))
-		fmt.Printf("\nExample: gastown/crew/jack → gastown.crew.jack@%s\n", domain)
+		fmt.Printf("\nExample: gongshow/crew/jack → gongshow.crew.jack@%s\n", domain)
 		return nil
 	}
 
@@ -512,7 +512,7 @@ func runConfigAgentEmailDomain(cmd *cobra.Command, args []string) error {
 	}
 
 	fmt.Printf("Agent email domain set to '%s'\n", style.Bold.Render(domain))
-	fmt.Printf("\nExample: gastown/crew/jack → gastown.crew.jack@%s\n", domain)
+	fmt.Printf("\nExample: gongshow/crew/jack → gongshow.crew.jack@%s\n", domain)
 	return nil
 }
 

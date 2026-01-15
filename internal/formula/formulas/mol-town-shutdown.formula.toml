@@ -1,5 +1,5 @@
 description = """
-Full Gas Town shutdown and restart.
+Full GongShow shutdown and restart.
 
 This is an idempotent shutdown - it stops Claude sessions but preserves
 polecat sandboxes and hooks. Polecats can resume their work after restart.
@@ -103,7 +103,7 @@ id = "stop-daemon"
 title = "Stop the daemon"
 needs = ["clear-inboxes"]
 description = """
-Stop the Gas Town daemon gracefully.
+Stop the GongShow daemon gracefully.
 
 ```bash
 gt daemon stop

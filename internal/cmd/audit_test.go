@@ -45,10 +45,10 @@ func TestExtractAuthorName(t *testing.T) {
 		input    string
 		expected string
 	}{
-		{"gastown/crew/joe", "joe"},
-		{"gastown/polecats/toast", "toast"},
+		{"gongshow/crew/joe", "joe"},
+		{"gongshow/polecats/toast", "toast"},
 		{"mayor", "mayor"},
-		{"gastown/witness", "witness"},
+		{"gongshow/witness", "witness"},
 		{"", ""},
 	}
 
@@ -74,17 +74,17 @@ func TestMatchesActor(t *testing.T) {
 		{"JOE", "joe", true},
 
 		// Actor as path, name as simple name
-		{"joe", "gastown/crew/joe", true},
-		{"Joe", "gastown/crew/joe", true},
+		{"joe", "gongshow/crew/joe", true},
+		{"Joe", "gongshow/crew/joe", true},
 
 		// Partial matches
 		{"joe-session1", "joe", true},
-		{"gastown-joe", "joe", true},
+		{"gongshow-joe", "joe", true},
 
 		// Non-matches
 		{"bob", "joe", false},
 		{"", "joe", false},
-		{"witness", "gastown/crew/joe", false},
+		{"witness", "gongshow/crew/joe", false},
 	}
 
 	for _, tt := range tests {

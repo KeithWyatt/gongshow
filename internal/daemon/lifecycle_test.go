@@ -141,7 +141,7 @@ func TestParseLifecycleRequest_UsesFromField(t *testing.T) {
 		expectedFrom string
 	}{
 		{"LIFECYCLE: action", `{"action": "cycle"}`, "mayor", "mayor"},
-		{"LIFECYCLE: action", "restart", "gastown-witness", "gastown-witness"},
+		{"LIFECYCLE: action", "restart", "gongshow-witness", "gongshow-witness"},
 		{"lifecycle: action", "shutdown", "my-rig-refinery", "my-rig-refinery"},
 	}
 
@@ -198,7 +198,7 @@ func TestIdentityToSession_Witness(t *testing.T) {
 		identity string
 		expected string
 	}{
-		{"gastown-witness", "gt-gastown-witness"},
+		{"gongshow-witness", "gt-gongshow-witness"},
 		{"myrig-witness", "gt-myrig-witness"},
 		{"my-rig-name-witness", "gt-my-rig-name-witness"},
 	}
@@ -218,7 +218,7 @@ func TestIdentityToSession_Unknown(t *testing.T) {
 		"unknown",
 		"polecat",
 		"refinery",
-		"gastown", // rig name without -witness
+		"gongshow", // rig name without -witness
 		"",
 	}
 

@@ -7,15 +7,15 @@ import (
 	"strings"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/mail"
-	"github.com/steveyegge/gastown/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/mail"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
 )
 
 // PendingSpawn represents a polecat that has been spawned but not yet triggered.
 // This is discovered from POLECAT_STARTED messages in the Deacon inbox (ZFC).
 type PendingSpawn struct {
-	// Rig is the rig name (e.g., "gastown")
+	// Rig is the rig name (e.g., "gongshow")
 	Rig string `json:"rig"`
 
 	// Polecat is the polecat name (e.g., "p-abc123")

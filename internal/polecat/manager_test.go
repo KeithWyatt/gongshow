@@ -7,8 +7,8 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/steveyegge/gastown/internal/git"
-	"github.com/steveyegge/gastown/internal/rig"
+	"github.com/KeithWyatt/gongshow/internal/git"
+	"github.com/KeithWyatt/gongshow/internal/rig"
 )
 
 func TestStateIsActive(t *testing.T) {
@@ -277,7 +277,7 @@ func TestClearIssueWithoutAssignment(t *testing.T) {
 }
 
 // NOTE: TestInstallCLAUDETemplate tests were removed.
-// We no longer write CLAUDE.md to worktrees - Gas Town context is injected
+// We no longer write CLAUDE.md to worktrees - GongShow context is injected
 // ephemerally via SessionStart hook (gt prime) to prevent leaking internal
 // architecture into project repos.
 

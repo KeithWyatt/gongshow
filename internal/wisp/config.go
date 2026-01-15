@@ -35,7 +35,7 @@ type Config struct {
 
 // NewConfig creates a new Config for the given rig.
 // townRoot is the path to the town directory (e.g., ~/gt).
-// rigName is the rig identifier (e.g., "gastown").
+// rigName is the rig identifier (e.g., "gongshow").
 func NewConfig(townRoot, rigName string) *Config {
 	filePath := filepath.Join(townRoot, WispConfigDir, ConfigSubdir, rigName+".json")
 	return &Config{

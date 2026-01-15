@@ -32,7 +32,7 @@ so you can see when it lands and what was included.
             ▼            ▼            ▼
        ┌─────────┐  ┌─────────┐  ┌─────────┐
        │ gt-xyz  │  │ gt-def  │  │ bd-abc  │
-       │ gastown │  │ gastown │  │  beads  │
+       │ gongshow │  │ gongshow │  │  beads  │
        └────┬────┘  └────┬────┘  └────┬────┘
             │            │            │
             ▼            ▼            ▼
@@ -81,7 +81,7 @@ Adding issues to a closed convoy reopens it automatically.
 
 ```bash
 # Track multiple issues across rigs
-gt convoy create "Deploy v2.0" gt-abc bd-xyz --notify gastown/joe
+gt convoy create "Deploy v2.0" gt-abc bd-xyz --notify gongshow/joe
 
 # Track a single issue (still creates convoy for dashboard visibility)
 gt convoy create "Fix auth bug" gt-auth-fix
@@ -160,7 +160,7 @@ When a convoy lands (all tracked issues closed), subscribers are notified:
 
 ```bash
 # Explicit subscriber
-gt convoy create "Feature X" gt-abc --notify gastown/joe
+gt convoy create "Feature X" gt-abc --notify gongshow/joe
 
 # Multiple subscribers
 gt convoy create "Feature X" gt-abc --notify mayor/ --notify --human

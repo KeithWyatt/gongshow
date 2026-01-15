@@ -21,27 +21,27 @@ func TestFormatLogLine(t *testing.T) {
 			event: Event{
 				Timestamp: ts,
 				Type:      EventSpawn,
-				Agent:     "gastown/crew/max",
+				Agent:     "gongshow/crew/max",
 				Context:   "gt-xyz",
 			},
-			contains: []string{"2025-12-26 15:30:45", "[spawn]", "gastown/crew/max", "spawned for gt-xyz"},
+			contains: []string{"2025-12-26 15:30:45", "[spawn]", "gongshow/crew/max", "spawned for gt-xyz"},
 		},
 		{
 			name: "nudge event",
 			event: Event{
 				Timestamp: ts,
 				Type:      EventNudge,
-				Agent:     "gastown/crew/max",
+				Agent:     "gongshow/crew/max",
 				Context:   "start work",
 			},
-			contains: []string{"[nudge]", "gastown/crew/max", "nudged with"},
+			contains: []string{"[nudge]", "gongshow/crew/max", "nudged with"},
 		},
 		{
 			name: "done event",
 			event: Event{
 				Timestamp: ts,
 				Type:      EventDone,
-				Agent:     "gastown/crew/max",
+				Agent:     "gongshow/crew/max",
 				Context:   "gt-abc",
 			},
 			contains: []string{"[done]", "completed gt-abc"},
@@ -51,7 +51,7 @@ func TestFormatLogLine(t *testing.T) {
 			event: Event{
 				Timestamp: ts,
 				Type:      EventCrash,
-				Agent:     "gastown/polecats/Toast",
+				Agent:     "gongshow/polecats/Toast",
 				Context:   "signal 9",
 			},
 			contains: []string{"[crash]", "exited unexpectedly", "signal 9"},
@@ -61,7 +61,7 @@ func TestFormatLogLine(t *testing.T) {
 			event: Event{
 				Timestamp: ts,
 				Type:      EventKill,
-				Agent:     "gastown/polecats/Toast",
+				Agent:     "gongshow/polecats/Toast",
 				Context:   "gt stop",
 			},
 			contains: []string{"[kill]", "killed", "gt stop"},
@@ -89,16 +89,16 @@ func TestParseLogLine(t *testing.T) {
 	}{
 		{
 			name: "valid spawn line",
-			line: "2025-12-26 15:30:45 [spawn] gastown/crew/max spawned for gt-xyz",
+			line: "2025-12-26 15:30:45 [spawn] gongshow/crew/max spawned for gt-xyz",
 			check: func(e Event) bool {
-				return e.Type == EventSpawn && e.Agent == "gastown/crew/max"
+				return e.Type == EventSpawn && e.Agent == "gongshow/crew/max"
 			},
 		},
 		{
 			name: "valid nudge line",
-			line: "2025-12-26 15:31:02 [nudge] gastown/crew/max nudged with \"start\"",
+			line: "2025-12-26 15:31:02 [nudge] gongshow/crew/max nudged with \"start\"",
 			check: func(e Event) bool {
-				return e.Type == EventNudge && e.Agent == "gastown/crew/max"
+				return e.Type == EventNudge && e.Agent == "gongshow/crew/max"
 			},
 		},
 		{
@@ -108,7 +108,7 @@ func TestParseLogLine(t *testing.T) {
 		},
 		{
 			name:    "missing bracket",
-			line:    "2025-12-26 15:30:45 spawn gastown/crew/max",
+			line:    "2025-12-26 15:30:45 spawn gongshow/crew/max",
 			wantErr: true,
 		},
 	}
@@ -144,7 +144,7 @@ func TestLoggerLogEvent(t *testing.T) {
 	logger := NewLogger(tmpDir)
 
 	// Log an event
-	err = logger.Log(EventSpawn, "gastown/crew/max", "gt-xyz")
+	err = logger.Log(EventSpawn, "gongshow/crew/max", "gt-xyz")
 	if err != nil {
 		t.Fatalf("Log() error: %v", err)
 	}
@@ -159,7 +159,7 @@ func TestLoggerLogEvent(t *testing.T) {
 	if !strings.Contains(string(content), "[spawn]") {
 		t.Errorf("log file should contain [spawn], got: %s", content)
 	}
-	if !strings.Contains(string(content), "gastown/crew/max") {
+	if !strings.Contains(string(content), "gongshow/crew/max") {
 		t.Errorf("log file should contain agent name, got: %s", content)
 	}
 }
@@ -167,9 +167,9 @@ func TestLoggerLogEvent(t *testing.T) {
 func TestFilterEvents(t *testing.T) {
 	now := time.Now()
 	events := []Event{
-		{Timestamp: now.Add(-2 * time.Hour), Type: EventSpawn, Agent: "gastown/crew/max", Context: "gt-1"},
-		{Timestamp: now.Add(-1 * time.Hour), Type: EventNudge, Agent: "gastown/crew/max", Context: "hi"},
-		{Timestamp: now.Add(-30 * time.Minute), Type: EventDone, Agent: "gastown/polecats/Toast", Context: "gt-2"},
+		{Timestamp: now.Add(-2 * time.Hour), Type: EventSpawn, Agent: "gongshow/crew/max", Context: "gt-1"},
+		{Timestamp: now.Add(-1 * time.Hour), Type: EventNudge, Agent: "gongshow/crew/max", Context: "hi"},
+		{Timestamp: now.Add(-30 * time.Minute), Type: EventDone, Agent: "gongshow/polecats/Toast", Context: "gt-2"},
 		{Timestamp: now.Add(-10 * time.Minute), Type: EventSpawn, Agent: "wyvern/crew/joe", Context: "gt-3"},
 	}
 
@@ -190,7 +190,7 @@ func TestFilterEvents(t *testing.T) {
 		},
 		{
 			name:      "filter by agent prefix",
-			filter:    Filter{Agent: "gastown/"},
+			filter:    Filter{Agent: "gongshow/"},
 			wantCount: 3,
 		},
 		{
@@ -200,7 +200,7 @@ func TestFilterEvents(t *testing.T) {
 		},
 		{
 			name:      "combined filters",
-			filter:    Filter{Type: EventSpawn, Agent: "gastown/"},
+			filter:    Filter{Type: EventSpawn, Agent: "gongshow/"},
 			wantCount: 1,
 		},
 	}

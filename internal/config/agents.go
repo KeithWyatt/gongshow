@@ -1,4 +1,4 @@
-// Package config provides configuration types and serialization for Gas Town.
+// Package config provides configuration types and serialization for GongShow.
 package config
 
 import (

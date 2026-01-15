@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/session"
-	"github.com/steveyegge/gastown/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/session"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
 )
 
 // StaleHookConfig holds configurable parameters for stale hook detection.
@@ -147,7 +147,7 @@ func listHookedBeads(townRoot string) ([]*HookedBead, error) {
 }
 
 // assigneeToSessionName converts an assignee address to a tmux session name.
-// Supports formats like "gastown/polecats/max", "gastown/crew/joe", etc.
+// Supports formats like "gongshow/polecats/max", "gongshow/crew/joe", etc.
 func assigneeToSessionName(assignee string) string {
 	parts := strings.Split(assignee, "/")
 
@@ -163,7 +163,7 @@ func assigneeToSessionName(assignee string) string {
 			return ""
 		}
 	case 2:
-		// rig/role: "gastown/witness", "gastown/refinery"
+		// rig/role: "gongshow/witness", "gongshow/refinery"
 		rig, role := parts[0], parts[1]
 		switch role {
 		case "witness", "refinery":
@@ -172,7 +172,7 @@ func assigneeToSessionName(assignee string) string {
 			return ""
 		}
 	case 3:
-		// rig/type/name: "gastown/polecats/max", "gastown/crew/joe"
+		// rig/type/name: "gongshow/polecats/max", "gongshow/crew/joe"
 		rig, agentType, name := parts[0], parts[1], parts[2]
 		switch agentType {
 		case "polecats":

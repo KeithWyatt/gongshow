@@ -9,10 +9,10 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 // Note: Agent field parsing is now in internal/beads/fields.go (AgentFields, ParseAgentFieldsFromDescription)
@@ -23,10 +23,10 @@ import (
 // Examples:
 //   - "mayor" -> "hq-mayor"
 //   - "deacon" -> "hq-deacon"
-//   - "gastown/witness" -> "gt-gastown-witness"
-//   - "gastown/refinery" -> "gt-gastown-refinery"
-//   - "gastown/nux" (polecat) -> "gt-gastown-polecat-nux"
-//   - "gastown/crew/max" -> "gt-gastown-crew-max"
+//   - "gongshow/witness" -> "gt-gongshow-witness"
+//   - "gongshow/refinery" -> "gt-gongshow-refinery"
+//   - "gongshow/nux" (polecat) -> "gt-gongshow-polecat-nux"
+//   - "gongshow/crew/max" -> "gt-gongshow-crew-max"
 //
 // If role is unknown, it tries to infer from the identity string.
 // townRoot is needed to look up the rig's configured prefix.
@@ -287,7 +287,7 @@ func runMoleculeStatus(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("finding workspace: %w", err)
 	}
 	if townRoot == "" {
-		return fmt.Errorf("not in a Gas Town workspace")
+		return fmt.Errorf("not in a GongShow workspace")
 	}
 
 	// Determine target agent
@@ -688,7 +688,7 @@ func runMoleculeCurrent(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("finding workspace: %w", err)
 	}
 	if townRoot == "" {
-		return fmt.Errorf("not in a Gas Town workspace")
+		return fmt.Errorf("not in a GongShow workspace")
 	}
 
 	// Determine target agent identity

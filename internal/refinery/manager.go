@@ -11,16 +11,16 @@ import (
 	"strings"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/constants"
-	"github.com/steveyegge/gastown/internal/events"
-	"github.com/steveyegge/gastown/internal/mail"
-	"github.com/steveyegge/gastown/internal/rig"
-	"github.com/steveyegge/gastown/internal/runtime"
-	"github.com/steveyegge/gastown/internal/session"
-	"github.com/steveyegge/gastown/internal/tmux"
-	"github.com/steveyegge/gastown/internal/util"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/constants"
+	"github.com/KeithWyatt/gongshow/internal/events"
+	"github.com/KeithWyatt/gongshow/internal/mail"
+	"github.com/KeithWyatt/gongshow/internal/rig"
+	"github.com/KeithWyatt/gongshow/internal/runtime"
+	"github.com/KeithWyatt/gongshow/internal/session"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/util"
 )
 
 // Common errors
@@ -187,7 +187,7 @@ func (m *Manager) Start(foreground bool, agentOverride string) error {
 	}
 
 	// Create session with command directly to avoid send-keys race condition.
-	// See: https://github.com/anthropics/gastown/issues/280
+	// See: https://github.com/anthropics/gongshow/issues/280
 	if err := t.NewSessionWithCommand(sessionID, refineryRigDir, command); err != nil {
 		return fmt.Errorf("creating tmux session: %w", err)
 	}
@@ -244,7 +244,7 @@ func (m *Manager) Start(foreground bool, agentOverride string) error {
 		Topic:     "patrol",
 	}) // Non-fatal
 
-	// GUPP: Gas Town Universal Propulsion Principle
+	// GUPP: GongShow Universal Propulsion Principle
 	// Send the propulsion nudge to trigger autonomous patrol execution.
 	// Wait for beacon to be fully processed (needs to be separate prompt)
 	time.Sleep(2 * time.Second)

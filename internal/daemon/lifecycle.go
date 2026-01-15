@@ -10,12 +10,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/constants"
-	"github.com/steveyegge/gastown/internal/rig"
-	"github.com/steveyegge/gastown/internal/session"
-	"github.com/steveyegge/gastown/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/constants"
+	"github.com/KeithWyatt/gongshow/internal/rig"
+	"github.com/KeithWyatt/gongshow/internal/session"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
 )
 
 // BeadsMessage represents a message from gt mail inbox --json.
@@ -391,7 +391,7 @@ func (d *Daemon) restartSession(sessionName, identity string) error {
 	_ = d.tmux.AcceptBypassPermissionsWarning(sessionName)
 	time.Sleep(constants.ShutdownNotifyDelay)
 
-	// GUPP: Gas Town Universal Propulsion Principle
+	// GUPP: GongShow Universal Propulsion Principle
 	// Send startup nudge for predecessor discovery via /resume
 	recipient := identityToBDActor(identity)
 	_ = session.StartupNudge(d.tmux, sessionName, session.StartupNudgeConfig{
@@ -776,7 +776,7 @@ func identityToBDActor(identity string) string {
 }
 
 // GUPPViolationTimeout is how long an agent can have work on hook without
-// progressing before it's considered a GUPP (Gas Town Universal Propulsion
+// progressing before it's considered a GUPP (GongShow Universal Propulsion
 // Principle) violation. GUPP states: if you have work on your hook, you run it.
 const GUPPViolationTimeout = 30 * time.Minute
 
@@ -794,7 +794,7 @@ func (d *Daemon) checkGUPPViolations() {
 // checkRigGUPPViolations checks polecats in a specific rig for GUPP violations.
 func (d *Daemon) checkRigGUPPViolations(rigName string) {
 	// List polecat agent beads for this rig
-	// Pattern: <prefix>-<rig>-polecat-<name> (e.g., gt-gastown-polecat-Toast)
+	// Pattern: <prefix>-<rig>-polecat-<name> (e.g., gt-gongshow-polecat-Toast)
 	cmd := exec.Command("bd", "list", "--type=agent", "--json")
 	cmd.Dir = d.config.TownRoot
 
@@ -817,7 +817,7 @@ func (d *Daemon) checkRigGUPPViolations(rigName string) {
 		return
 	}
 
-	// Use the rig's configured prefix (e.g., "gt" for gastown, "bd" for beads)
+	// Use the rig's configured prefix (e.g., "gt" for gongshow, "bd" for beads)
 	rigPrefix := config.GetRigPrefix(d.config.TownRoot, rigName)
 	// Pattern: <prefix>-<rig>-polecat-<name>
 	prefix := rigPrefix + "-" + rigName + "-polecat-"
@@ -911,7 +911,7 @@ func (d *Daemon) checkRigOrphanedWork(rigName string) {
 		return
 	}
 
-	// Use the rig's configured prefix (e.g., "gt" for gastown, "bd" for beads)
+	// Use the rig's configured prefix (e.g., "gt" for gongshow, "bd" for beads)
 	rigPrefix := config.GetRigPrefix(d.config.TownRoot, rigName)
 	// Pattern: <prefix>-<rig>-polecat-<name>
 	prefix := rigPrefix + "-" + rigName + "-polecat-"
@@ -944,10 +944,10 @@ func (d *Daemon) checkRigOrphanedWork(rigName string) {
 }
 
 // extractRigFromAgentID extracts the rig name from a polecat agent ID.
-// Example: gt-gastown-polecat-max → gastown
+// Example: gt-gongshow-polecat-max → gongshow
 func (d *Daemon) extractRigFromAgentID(agentID string) string {
 	// Use the beads package helper to correctly parse agent bead IDs.
-	// Pattern: <prefix>-<rig>-polecat-<name> (e.g., gt-gastown-polecat-Toast)
+	// Pattern: <prefix>-<rig>-polecat-<name> (e.g., gt-gongshow-polecat-Toast)
 	rig, role, _, ok := beads.ParseAgentBeadID(agentID)
 	if !ok || role != "polecat" {
 		return ""

@@ -7,10 +7,10 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/session"
-	"github.com/steveyegge/gastown/internal/tmux"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/session"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 var (
@@ -23,7 +23,7 @@ var themeCmd = &cobra.Command{
 	Use:     "theme [name]",
 	GroupID: GroupConfig,
 	Short:   "View or set tmux theme for the current rig",
-	Long: `Manage tmux status bar themes for Gas Town sessions.
+	Long: `Manage tmux status bar themes for GongShow sessions.
 
 Without arguments, shows the current theme assignment.
 With a name argument, sets the theme for this rig.
@@ -39,7 +39,7 @@ Examples:
 var themeApplyCmd = &cobra.Command{
 	Use:   "apply",
 	Short: "Apply theme to running sessions",
-	Long: `Apply theme to running Gas Town sessions.
+	Long: `Apply theme to running GongShow sessions.
 
 By default, only applies to sessions in the current rig.
 Use --all to apply to sessions across all rigs.`,
@@ -333,7 +333,7 @@ func saveRigTheme(rigName, themeName string) error {
 		return fmt.Errorf("finding workspace: %w", err)
 	}
 	if townRoot == "" {
-		return fmt.Errorf("not in a Gas Town workspace")
+		return fmt.Errorf("not in a GongShow workspace")
 	}
 
 	settingsPath := filepath.Join(townRoot, rigName, "settings", "config.json")

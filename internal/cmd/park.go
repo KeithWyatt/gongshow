@@ -10,8 +10,8 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/style"
 )
 
 // Park command parks work on a gate, allowing agent to exit safely.
@@ -63,7 +63,7 @@ func init() {
 
 // ParkedWork represents work state saved when parking on a gate.
 type ParkedWork struct {
-	// AgentID is the agent that parked (e.g., "gastown/crew/max")
+	// AgentID is the agent that parked (e.g., "gongshow/crew/max")
 	AgentID string `json:"agent_id"`
 
 	// GateID is the gate we're parked on

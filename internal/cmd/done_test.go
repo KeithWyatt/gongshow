@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/steveyegge/gastown/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/beads"
 )
 
 // TestDoneUsesResolveBeadsDir verifies that the done command correctly uses
@@ -23,13 +23,13 @@ func TestDoneUsesResolveBeadsDir(t *testing.T) {
 	tmpDir := t.TempDir()
 
 	// Create structure like:
-	//   gastown/
+	//   gongshow/
 	//     mayor/rig/.beads/          <- shared beads directory
 	//     polecats/fixer/.beads/     <- polecat with redirect
 	//       redirect -> ../../mayor/rig/.beads
 
-	mayorRigBeadsDir := filepath.Join(tmpDir, "gastown", "mayor", "rig", ".beads")
-	polecatDir := filepath.Join(tmpDir, "gastown", "polecats", "fixer")
+	mayorRigBeadsDir := filepath.Join(tmpDir, "gongshow", "mayor", "rig", ".beads")
+	polecatDir := filepath.Join(tmpDir, "gongshow", "polecats", "fixer")
 	polecatBeadsDir := filepath.Join(polecatDir, ".beads")
 
 	// Create directories
@@ -66,7 +66,7 @@ func TestDoneUsesResolveBeadsDir(t *testing.T) {
 
 	t.Run("redirect not present uses local beads", func(t *testing.T) {
 		// Without redirect, should use local .beads
-		localDir := filepath.Join(tmpDir, "gastown", "mayor", "rig")
+		localDir := filepath.Join(tmpDir, "gongshow", "mayor", "rig")
 		resolvedDir := beads.ResolveBeadsDir(localDir)
 
 		if resolvedDir != mayorRigBeadsDir {

@@ -1,4 +1,4 @@
-// Package constants defines shared constant values used throughout Gas Town.
+// Package constants defines shared constant values used throughout GongShow.
 // Centralizing these magic strings improves maintainability and consistency.
 package constants
 
@@ -28,7 +28,7 @@ const (
 	PollInterval = 100 * time.Millisecond
 )
 
-// Directory names within a Gas Town workspace.
+// Directory names within a GongShow workspace.
 const (
 	// DirMayor is the directory containing mayor configuration and state.
 	DirMayor = "mayor"
@@ -81,7 +81,7 @@ const (
 // Beads configuration constants.
 const (
 	// BeadsCustomTypes is the comma-separated list of custom issue types that
-	// Gas Town registers with beads. These types were extracted from beads core
+	// GongShow registers with beads. These types were extracted from beads core
 	// in v0.46.0 and now require explicit configuration.
 	BeadsCustomTypes = "agent,role,rig,convoy,slot,queue"
 )
@@ -111,7 +111,7 @@ const (
 // Rig-level services use gt- prefix: gt-<rig>-witness, gt-<rig>-refinery, etc.
 // Use session.MayorSessionName() and session.DeaconSessionName().
 const (
-	// SessionPrefix is the prefix for rig-level Gas Town tmux sessions.
+	// SessionPrefix is the prefix for rig-level GongShow tmux sessions.
 	SessionPrefix = "gt-"
 
 	// HQSessionPrefix is the prefix for town-level services (Mayor, Deacon).
@@ -140,7 +140,7 @@ const (
 )
 
 // Role emojis - centralized for easy customization.
-// These match the Gas Town visual identity (see ~/Desktop/Gas Town/ prompts).
+// These match the GongShow visual identity (see ~/Desktop/GongShow/ prompts).
 const (
 	// EmojiMayor is the mayor emoji (fox conductor).
 	EmojiMayor = "🎩"
@@ -181,7 +181,7 @@ func RoleEmoji(role string) string {
 	}
 }
 
-// SupportedShells lists shell binaries that Gas Town can detect and work with.
+// SupportedShells lists shell binaries that GongShow can detect and work with.
 // Used to identify if a tmux pane is at a shell prompt vs running a command.
 var SupportedShells = []string{"bash", "zsh", "sh", "fish", "tcsh", "ksh"}
 

@@ -1,11 +1,11 @@
 # Plugin System Design
 
-> Design document for the Gas Town plugin system.
+> Design document for the GongShow plugin system.
 > Written 2026-01-11, crew/george session.
 
 ## Problem Statement
 
-Gas Town needs extensible, project-specific automation that runs during Deacon patrol cycles. The immediate use case is rebuilding stale binaries (gt, bd, wv), but the pattern generalizes to any periodic maintenance task.
+GongShow needs extensible, project-specific automation that runs during Deacon patrol cycles. The immediate use case is rebuilding stale binaries (gt, bd, wv), but the pattern generalizes to any periodic maintenance task.
 
 Current state:
 - Plugin infrastructure exists conceptually (patrol step mentions it)
@@ -44,7 +44,7 @@ The Deacon (agent) evaluates gates and decides whether to dispatch. Go code prov
 ~/gt/
 ├── plugins/                      # Town-level plugins (universal)
 │   └── README.md
-├── gastown/
+├── gongshow/
 │   └── plugins/                  # Rig-level plugins
 │       └── rebuild-gt/
 │           └── plugin.md
@@ -97,7 +97,7 @@ Each plugin run creates a wisp:
 bd wisp create \
   --label type:plugin-run \
   --label plugin:rebuild-gt \
-  --label rig:gastown \
+  --label rig:gongshow \
   --label result:success \
   --body "Rebuilt gt: abc123 → def456 (5 commits)"
 ```
@@ -155,7 +155,7 @@ type = "cooldown"
 duration = "1h"
 
 [tracking]
-labels = ["plugin:rebuild-gt", "rig:gastown", "category:maintenance"]
+labels = ["plugin:rebuild-gt", "rig:gongshow", "category:maintenance"]
 digest = true
 
 [execution]
@@ -383,7 +383,7 @@ gt plugin history <name>          # Show execution history
 
 ### Phase 5: First Plugin
 
-13. **`rebuild-gt` plugin** - The actual gastown plugin
+13. **`rebuild-gt` plugin** - The actual gongshow plugin
 14. **Documentation** - So Beads/Wyvern can create theirs
 
 ---
@@ -393,7 +393,7 @@ gt plugin history <name>          # Show execution history
 ```markdown
 +++
 name = "rebuild-gt"
-description = "Rebuild stale gt binary from gastown source"
+description = "Rebuild stale gt binary from gongshow source"
 version = 1
 
 [gate]
@@ -401,7 +401,7 @@ type = "cooldown"
 duration = "1h"
 
 [tracking]
-labels = ["plugin:rebuild-gt", "rig:gastown", "category:maintenance"]
+labels = ["plugin:rebuild-gt", "rig:gongshow", "category:maintenance"]
 digest = true
 
 [execution]
@@ -433,7 +433,7 @@ If `"stale": false`, record success wisp and exit early.
 Rebuild from source:
 
 ```bash
-cd ~/gt/gastown/crew/george && make build && make install
+cd ~/gt/gongshow/crew/george && make build && make install
 ```
 
 ## Record Result
@@ -443,7 +443,7 @@ On success:
 bd wisp create \
   --label type:plugin-run \
   --label plugin:rebuild-gt \
-  --label rig:gastown \
+  --label rig:gongshow \
   --label result:success \
   --body "Rebuilt gt: $OLD → $NEW ($N commits)"
 ```
@@ -453,7 +453,7 @@ On failure:
 bd wisp create \
   --label type:plugin-run \
   --label plugin:rebuild-gt \
-  --label rig:gastown \
+  --label rig:gongshow \
   --label result:failure \
   --body "Build failed: $ERROR"
 
@@ -468,7 +468,7 @@ gt escalate --severity=medium \
 
 ## Open Questions
 
-1. **Plugin discovery in multiple clones**: If gastown has crew/george, crew/max, crew/joe - which clone's plugins/ dir is canonical? Probably: scan all, dedupe by name, prefer rig-root if exists.
+1. **Plugin discovery in multiple clones**: If gongshow has crew/george, crew/max, crew/joe - which clone's plugins/ dir is canonical? Probably: scan all, dedupe by name, prefer rig-root if exists.
 
 2. **Dog assignment**: Should specific plugins prefer specific dogs? Or any idle dog?
 

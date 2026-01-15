@@ -8,13 +8,13 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/steveyegge/gastown/internal/events"
-	"github.com/steveyegge/gastown/internal/session"
-	"github.com/steveyegge/gastown/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/events"
+	"github.com/KeithWyatt/gongshow/internal/session"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
 )
 
 // OrphanSessionCheck detects orphaned tmux sessions that don't match
-// the expected Gas Town session naming patterns.
+// the expected GongShow session naming patterns.
 type OrphanSessionCheck struct {
 	FixableCheck
 	sessionLister  SessionLister
@@ -54,7 +54,7 @@ func NewOrphanSessionCheckWithSessionLister(lister SessionLister) *OrphanSession
 	return check
 }
 
-// Run checks for orphaned Gas Town tmux sessions.
+// Run checks for orphaned GongShow tmux sessions.
 func (c *OrphanSessionCheck) Run(ctx *CheckContext) *CheckResult {
 	lister := c.sessionLister
 	if lister == nil {
@@ -95,7 +95,7 @@ func (c *OrphanSessionCheck) Run(ctx *CheckContext) *CheckResult {
 			continue
 		}
 
-		// Only check gt-* sessions (Gas Town sessions)
+		// Only check gt-* sessions (GongShow sessions)
 		if !strings.HasPrefix(sess, "gt-") {
 			continue
 		}
@@ -114,7 +114,7 @@ func (c *OrphanSessionCheck) Run(ctx *CheckContext) *CheckResult {
 		return &CheckResult{
 			Name:    c.Name(),
 			Status:  StatusOK,
-			Message: fmt.Sprintf("All %d Gas Town sessions are valid", validCount),
+			Message: fmt.Sprintf("All %d GongShow sessions are valid", validCount),
 		}
 	}
 
@@ -162,7 +162,7 @@ func (c *OrphanSessionCheck) Fix(ctx *CheckContext) error {
 // Crew sessions are gt-<rig>-crew-<name> and are protected from auto-cleanup.
 func isCrewSession(session string) bool {
 	// Pattern: gt-<rig>-crew-<name>
-	// Example: gt-gastown-crew-joe
+	// Example: gt-gongshow-crew-joe
 	parts := strings.Split(session, "-")
 	if len(parts) >= 4 && parts[0] == "gt" && parts[2] == "crew" {
 		return true
@@ -198,7 +198,7 @@ func (c *OrphanSessionCheck) getValidRigs(townRoot string) []string {
 	return rigs
 }
 
-// isValidSession checks if a session name matches expected Gas Town patterns.
+// isValidSession checks if a session name matches expected GongShow patterns.
 // Valid patterns:
 //   - gt-{town}-mayor (dynamic based on town name)
 //   - gt-{town}-deacon (dynamic based on town name)
@@ -256,9 +256,9 @@ func (c *OrphanSessionCheck) isValidSession(sess string, validRigs []string, may
 
 // OrphanProcessCheck detects runtime processes that are not
 // running inside a tmux session. These may be user's personal sessions
-// or legitimately orphaned processes from crashed Gas Town sessions.
+// or legitimately orphaned processes from crashed GongShow sessions.
 // This check is informational only - it does not auto-fix since we cannot
-// distinguish user sessions from orphaned Gas Town processes.
+// distinguish user sessions from orphaned GongShow processes.
 type OrphanProcessCheck struct {
 	BaseCheck
 }
@@ -327,7 +327,7 @@ func (c *OrphanProcessCheck) Run(ctx *CheckContext) *CheckResult {
 	}
 
 	details := make([]string, 0, len(outsideTmux)+2)
-	details = append(details, "These may be your personal sessions or orphaned Gas Town processes.")
+	details = append(details, "These may be your personal sessions or orphaned GongShow processes.")
 	details = append(details, "Verify these are expected before manually killing any:")
 	for _, proc := range outsideTmux {
 		details = append(details, fmt.Sprintf("  PID %d: %s (parent: %d)", proc.pid, proc.cmd, proc.ppid))

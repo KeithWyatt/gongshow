@@ -8,7 +8,7 @@ import (
 	"sort"
 	"sync"
 
-	"github.com/steveyegge/gastown/internal/util"
+	"github.com/KeithWyatt/gongshow/internal/util"
 )
 
 const (
@@ -32,7 +32,7 @@ var BuiltinThemes = map[string][]string{
 		"immortan", "bullet", "toecutter", "goose", "nightrider",
 		"glory", "scrotus", "chumbucket", "corpus", "dinki",
 		"prime", "vuvalini", "rockryder", "wretched", "buzzard",
-		"gastown", "bullet-farmer", "citadel", "wasteland", "fury",
+		"gongshow", "bullet-farmer", "citadel", "wasteland", "fury",
 		"road-warrior", "interceptor", "blackfinger", "wraith", "witness",
 		"chrome", "shiny", "mediocre", "guzzoline", "aqua-cola",
 	},

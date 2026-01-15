@@ -8,11 +8,11 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 // filterGTEnv removes GT_* and BD_* environment variables to isolate test subprocess.
-// This prevents tests from inheriting the parent workspace's Gas Town configuration.
+// This prevents tests from inheriting the parent workspace's GongShow configuration.
 func filterGTEnv(env []string) []string {
 	filtered := make([]string, 0, len(env))
 	for _, e := range env {
@@ -45,11 +45,11 @@ func TestQuerySessionEvents_FindsEventsFromAllLocations(t *testing.T) {
 		t.Skip("bd not installed, skipping integration test")
 	}
 
-	// Skip when running inside a Gas Town workspace - this integration test
+	// Skip when running inside a GongShow workspace - this integration test
 	// creates a separate workspace and the subprocesses can interact with
 	// the parent workspace's daemon, causing hangs.
 	if os.Getenv("GT_TOWN_ROOT") != "" || os.Getenv("BD_ACTOR") != "" {
-		t.Skip("skipping integration test inside Gas Town workspace (use 'go test' outside workspace)")
+		t.Skip("skipping integration test inside GongShow workspace (use 'go test' outside workspace)")
 	}
 
 	// Create a temporary directory structure

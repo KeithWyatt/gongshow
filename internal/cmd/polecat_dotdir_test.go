@@ -9,12 +9,12 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/config"
 )
 
 func TestDiscoverHooksSkipsPolecatDotDirs(t *testing.T) {
 	townRoot := setupTestTownForDotDir(t)
-	rigPath := filepath.Join(townRoot, "gastown")
+	rigPath := filepath.Join(townRoot, "gongshow")
 
 	settingsPath := filepath.Join(rigPath, "polecats", ".claude", ".claude", "settings.json")
 	if err := os.MkdirAll(filepath.Dir(settingsPath), 0755); err != nil {
@@ -38,7 +38,7 @@ func TestDiscoverHooksSkipsPolecatDotDirs(t *testing.T) {
 
 func TestStartPolecatsWithWorkSkipsDotDirs(t *testing.T) {
 	townRoot := setupTestTownForDotDir(t)
-	rigName := "gastown"
+	rigName := "gongshow"
 	rigPath := filepath.Join(townRoot, rigName)
 
 	addRigEntry(t, townRoot, rigName)
@@ -104,7 +104,7 @@ exit 0
 
 func TestRunSessionCheckSkipsDotDirs(t *testing.T) {
 	townRoot := setupTestTownForDotDir(t)
-	rigName := "gastown"
+	rigName := "gongshow"
 	rigPath := filepath.Join(townRoot, rigName)
 
 	addRigEntry(t, townRoot, rigName)

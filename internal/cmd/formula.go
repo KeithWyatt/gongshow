@@ -11,9 +11,9 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 )
@@ -109,7 +109,7 @@ the rig's settings/config.json under workflow.default_formula.
 
 Options:
   --pr=N      Run formula on GitHub PR #N
-  --rig=NAME  Target specific rig (default: current or gastown)
+  --rig=NAME  Target specific rig (default: current or gongshow)
   --dry-run   Show what would happen without executing
 
 Examples:
@@ -152,7 +152,7 @@ func init() {
 
 	// Run flags
 	formulaRunCmd.Flags().IntVar(&formulaRunPR, "pr", 0, "GitHub PR number to run formula on")
-	formulaRunCmd.Flags().StringVar(&formulaRunRig, "rig", "", "Target rig (default: current or gastown)")
+	formulaRunCmd.Flags().StringVar(&formulaRunRig, "rig", "", "Target rig (default: current or gongshow)")
 	formulaRunCmd.Flags().BoolVar(&formulaRunDryRun, "dry-run", false, "Preview execution without running")
 
 	// Create flags
@@ -212,14 +212,14 @@ func runFormulaRun(cmd *cobra.Command, args []string) error {
 					rigPath = r.Path
 				}
 			}
-			// If we still don't have a target rig but have townRoot, use gastown
+			// If we still don't have a target rig but have townRoot, use gongshow
 			if targetRig == "" {
-				targetRig = "gastown"
-				rigPath = filepath.Join(townRoot, "gastown")
+				targetRig = "gongshow"
+				rigPath = filepath.Join(townRoot, "gongshow")
 			}
 		} else {
-			// No town root found, fall back to gastown without rigPath
-			targetRig = "gastown"
+			// No town root found, fall back to gongshow without rigPath
+			targetRig = "gongshow"
 		}
 	} else {
 		// If rig specified, construct path

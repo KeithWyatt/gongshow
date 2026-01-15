@@ -11,8 +11,8 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
 )
 
 // SessionName is the tmux session name for Boot.
@@ -184,7 +184,7 @@ func (b *Boot) spawnTmux(agentOverride string) error {
 	}
 
 	// Create session with command directly to avoid send-keys race condition.
-	// See: https://github.com/anthropics/gastown/issues/280
+	// See: https://github.com/anthropics/gongshow/issues/280
 	if err := b.tmux.NewSessionWithCommand(SessionName, b.bootDir, startCmd); err != nil {
 		return fmt.Errorf("creating boot session: %w", err)
 	}

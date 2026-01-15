@@ -9,8 +9,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/constants"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/constants"
 )
 
 // PrimingCheck verifies the priming subsystem is correctly configured.
@@ -21,7 +21,7 @@ type PrimingCheck struct {
 }
 
 type primingIssue struct {
-	location    string // e.g., "mayor", "gastown/crew/max", "gastown/witness"
+	location    string // e.g., "mayor", "gongshow/crew/max", "gongshow/witness"
 	issueType   string // e.g., "no_hook", "no_prime", "large_claude_md", "missing_prime_md"
 	description string
 	fixable     bool
@@ -200,7 +200,7 @@ func (c *PrimingCheck) checkRigPriming(townRoot string) []primingIssue {
 			issues = append(issues, primingIssue{
 				location:    rigName,
 				issueType:   "missing_prime_md",
-				description: "Missing .beads/PRIME.md (Gas Town context fallback)",
+				description: "Missing .beads/PRIME.md (GongShow context fallback)",
 				fixable:     true,
 			})
 		}
@@ -249,7 +249,7 @@ func (c *PrimingCheck) checkRigPriming(townRoot string) []primingIssue {
 					issues = append(issues, primingIssue{
 						location:    fmt.Sprintf("%s/crew/%s", rigName, crewEntry.Name()),
 						issueType:   "missing_prime_md",
-						description: "Missing PRIME.md (Gas Town context fallback)",
+						description: "Missing PRIME.md (GongShow context fallback)",
 						fixable:     true,
 					})
 				}
@@ -272,7 +272,7 @@ func (c *PrimingCheck) checkRigPriming(townRoot string) []primingIssue {
 					issues = append(issues, primingIssue{
 						location:    fmt.Sprintf("%s/polecats/%s", rigName, pcEntry.Name()),
 						issueType:   "missing_prime_md",
-						description: "Missing PRIME.md (Gas Town context fallback)",
+						description: "Missing PRIME.md (GongShow context fallback)",
 						fixable:     true,
 					})
 				}

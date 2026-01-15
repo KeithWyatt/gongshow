@@ -7,10 +7,10 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/config"
 )
 
-// setupTestTownForAccount creates a minimal Gas Town workspace with accounts.
+// setupTestTownForAccount creates a minimal GongShow workspace with accounts.
 func setupTestTownForAccount(t *testing.T) (townRoot string, accountsDir string) {
 	t.Helper()
 

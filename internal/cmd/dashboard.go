@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/web"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/web"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 var (
@@ -45,7 +45,7 @@ func init() {
 func runDashboard(cmd *cobra.Command, args []string) error {
 	// Verify we're in a workspace
 	if _, err := workspace.FindFromCwdOrError(); err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	// Create the live convoy fetcher
@@ -69,7 +69,7 @@ func runDashboard(cmd *cobra.Command, args []string) error {
 	}
 
 	// Start the server with timeouts
-	fmt.Printf("🚚 Gas Town Dashboard starting at %s\n", url)
+	fmt.Printf("🚚 GongShow Dashboard starting at %s\n", url)
 	fmt.Printf("   Press Ctrl+C to stop\n")
 
 	server := &http.Server{

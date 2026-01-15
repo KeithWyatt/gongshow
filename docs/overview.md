@@ -1,9 +1,9 @@
-# Understanding Gas Town
+# Understanding GongShow
 
-This document provides a conceptual overview of Gas Town's architecture, focusing on
+This document provides a conceptual overview of GongShow's architecture, focusing on
 the role taxonomy and how different agents interact.
 
-## Why Gas Town Exists
+## Why GongShow Exists
 
 As AI agents become central to engineering workflows, teams face new challenges:
 
@@ -12,17 +12,17 @@ As AI agents become central to engineering workflows, teams face new challenges:
 - **Efficiency:** How do you route work to the right agent?
 - **Scale:** How do you coordinate agents across repos and teams?
 
-Gas Town is an orchestration layer that treats AI agent work as structured data.
+GongShow is an orchestration layer that treats AI agent work as structured data.
 Every action is attributed. Every agent has a track record. Every piece of work
 has provenance. See [Why These Features](why-these-features.md) for the full rationale.
 
 ## Role Taxonomy
 
-Gas Town has several agent types, each with distinct responsibilities and lifecycles.
+GongShow has several agent types, each with distinct responsibilities and lifecycles.
 
 ### Infrastructure Roles
 
-These roles manage the Gas Town system itself:
+These roles manage the GongShow system itself:
 
 | Role | Description | Lifecycle |
 |------|-------------|-----------|
@@ -43,7 +43,7 @@ These roles do actual project work:
 
 ## Convoys: Tracking Work
 
-A **convoy** (🚚) is how you track batched work in Gas Town. When you kick off work -
+A **convoy** (🚚) is how you track batched work in GongShow. When you kick off work -
 even a single issue - create a convoy to track it.
 
 ```bash
@@ -118,16 +118,16 @@ When a crew member needs to work on another rig:
 Create a worktree in the target rig:
 
 ```bash
-# gastown/crew/joe needs to fix a beads bug
+# gongshow/crew/joe needs to fix a beads bug
 gt worktree beads
-# Creates ~/gt/beads/crew/gastown-joe/
-# Identity preserved: BD_ACTOR = gastown/crew/joe
+# Creates ~/gt/beads/crew/gongshow-joe/
+# Identity preserved: BD_ACTOR = gongshow/crew/joe
 ```
 
 Directory structure:
 ```
-~/gt/beads/crew/gastown-joe/     # joe from gastown working on beads
-~/gt/gastown/crew/beads-wolf/    # wolf from beads working on gastown
+~/gt/beads/crew/gongshow-joe/     # joe from gongshow working on beads
+~/gt/gongshow/crew/beads-wolf/    # wolf from beads working on gongshow
 ```
 
 ### Option 2: Dispatch to Local Workers
@@ -181,36 +181,36 @@ gt sling bd-xyz beads
 All work is attributed to the actor who performed it:
 
 ```
-Git commits:      Author: gastown/crew/joe <owner@example.com>
-Beads issues:     created_by: gastown/crew/joe
-Events:           actor: gastown/crew/joe
+Git commits:      Author: gongshow/crew/joe <owner@example.com>
+Beads issues:     created_by: gongshow/crew/joe
+Events:           actor: gongshow/crew/joe
 ```
 
 Identity is preserved even when working cross-rig:
-- `gastown/crew/joe` working in `~/gt/beads/crew/gastown-joe/`
-- Commits still attributed to `gastown/crew/joe`
+- `gongshow/crew/joe` working in `~/gt/beads/crew/gongshow-joe/`
+- Commits still attributed to `gongshow/crew/joe`
 - Work appears on joe's CV, not beads rig's workers
 
 ## The Propulsion Principle
 
-All Gas Town agents follow the same core principle:
+All GongShow agents follow the same core principle:
 
 > **If you find something on your hook, YOU RUN IT.**
 
 This applies regardless of role. The hook is your assignment. Execute it immediately
-without waiting for confirmation. Gas Town is a steam engine - agents are pistons.
+without waiting for confirmation. GongShow is a steam engine - agents are pistons.
 
 ## Model Evaluation and A/B Testing
 
-Gas Town's attribution and work history features enable objective model comparison:
+GongShow's attribution and work history features enable objective model comparison:
 
 ```bash
 # Deploy different models on similar tasks
-gt sling gt-abc gastown --model=claude-sonnet
-gt sling gt-def gastown --model=gpt-4
+gt sling gt-abc gongshow --model=claude-sonnet
+gt sling gt-def gongshow --model=gpt-4
 
 # Compare outcomes
-bd stats --actor=gastown/polecats/* --group-by=model
+bd stats --actor=gongshow/polecats/* --group-by=model
 ```
 
 Because every task has completion time, quality signals, and revision count,
@@ -225,6 +225,6 @@ This is particularly valuable for:
 
 1. **Using dogs for user work**: Dogs are Deacon infrastructure. Use crew or polecats.
 2. **Confusing crew with polecats**: Crew is persistent and human-managed. Polecats are transient and Witness-managed.
-3. **Working in wrong directory**: Gas Town uses cwd for identity detection. Stay in your home directory.
+3. **Working in wrong directory**: GongShow uses cwd for identity detection. Stay in your home directory.
 4. **Waiting for confirmation when work is hooked**: The hook IS your assignment. Execute immediately.
 5. **Creating worktrees when dispatch is better**: If work should be owned by the target rig, dispatch it instead.

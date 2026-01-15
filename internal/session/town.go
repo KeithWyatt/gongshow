@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/boot"
-	"github.com/steveyegge/gastown/internal/events"
-	"github.com/steveyegge/gastown/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/boot"
+	"github.com/KeithWyatt/gongshow/internal/events"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
 )
 
 // TownSession represents a town-level tmux session.

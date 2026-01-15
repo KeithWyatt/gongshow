@@ -1,4 +1,4 @@
-// ABOUTME: Global state management for Gas Town enable/disable toggle.
+// ABOUTME: Global state management for GongShow enable/disable toggle.
 // ABOUTME: Uses XDG-compliant paths for per-machine state storage.
 
 package state
@@ -12,7 +12,7 @@ import (
 	"github.com/google/uuid"
 )
 
-// State represents the global Gas Town state.
+// State represents the global GongShow state.
 type State struct {
 	Enabled          bool      `json:"enabled"`
 	Version          string    `json:"version"`
@@ -24,34 +24,34 @@ type State struct {
 }
 
 // StateDir returns the XDG-compliant state directory.
-// Uses ~/.local/state/gastown/ (per XDG Base Directory Specification).
+// Uses ~/.local/state/gongshow/ (per XDG Base Directory Specification).
 func StateDir() string {
 	// Check XDG_STATE_HOME first
 	if xdg := os.Getenv("XDG_STATE_HOME"); xdg != "" {
-		return filepath.Join(xdg, "gastown")
+		return filepath.Join(xdg, "gongshow")
 	}
 	home, _ := os.UserHomeDir()
-	return filepath.Join(home, ".local", "state", "gastown")
+	return filepath.Join(home, ".local", "state", "gongshow")
 }
 
 // ConfigDir returns the XDG-compliant config directory.
-// Uses ~/.config/gastown/
+// Uses ~/.config/gongshow/
 func ConfigDir() string {
 	if xdg := os.Getenv("XDG_CONFIG_HOME"); xdg != "" {
-		return filepath.Join(xdg, "gastown")
+		return filepath.Join(xdg, "gongshow")
 	}
 	home, _ := os.UserHomeDir()
-	return filepath.Join(home, ".config", "gastown")
+	return filepath.Join(home, ".config", "gongshow")
 }
 
 // CacheDir returns the XDG-compliant cache directory.
-// Uses ~/.cache/gastown/
+// Uses ~/.cache/gongshow/
 func CacheDir() string {
 	if xdg := os.Getenv("XDG_CACHE_HOME"); xdg != "" {
-		return filepath.Join(xdg, "gastown")
+		return filepath.Join(xdg, "gongshow")
 	}
 	home, _ := os.UserHomeDir()
-	return filepath.Join(home, ".cache", "gastown")
+	return filepath.Join(home, ".cache", "gongshow")
 }
 
 // StatePath returns the path to state.json.
@@ -59,14 +59,14 @@ func StatePath() string {
 	return filepath.Join(StateDir(), "state.json")
 }
 
-// IsEnabled checks if Gas Town is globally enabled.
+// IsEnabled checks if GongShow is globally enabled.
 // Priority: env override > state file > default (false)
 func IsEnabled() bool {
 	// Environment overrides take priority
-	if os.Getenv("GASTOWN_DISABLED") == "1" {
+	if os.Getenv("GONGSHOW_DISABLED") == "1" {
 		return false
 	}
-	if os.Getenv("GASTOWN_ENABLED") == "1" {
+	if os.Getenv("GONGSHOW_ENABLED") == "1" {
 		return true
 	}
 
@@ -117,7 +117,7 @@ func Save(s *State) error {
 	return os.Rename(tmp, StatePath())
 }
 
-// Enable enables Gas Town globally.
+// Enable enables GongShow globally.
 func Enable(version string) error {
 	s, err := Load()
 	if err != nil {
@@ -133,7 +133,7 @@ func Enable(version string) error {
 	return Save(s)
 }
 
-// Disable disables Gas Town globally.
+// Disable disables GongShow globally.
 func Disable() error {
 	s, err := Load()
 	if err != nil {

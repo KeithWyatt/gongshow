@@ -137,7 +137,7 @@ func WriteRoutes(beadsDir string, routes []Route) error {
 
 // GetTownBeadsPath returns the path to town-level beads directory.
 // Town beads store hq-* prefixed issues including Mayor, Deacon, and role beads.
-// The townRoot should be the Gas Town root directory (e.g., ~/gt).
+// The townRoot should be the GongShow root directory (e.g., ~/gt).
 func GetTownBeadsPath(townRoot string) string {
 	return filepath.Join(townRoot, ".beads")
 }
@@ -145,7 +145,7 @@ func GetTownBeadsPath(townRoot string) string {
 // GetPrefixForRig returns the beads prefix for a given rig name.
 // The prefix is returned without the trailing hyphen (e.g., "bd" not "bd-").
 // If the rig is not found in routes, returns "gt" as the default.
-// The townRoot should be the Gas Town root directory (e.g., ~/gt).
+// The townRoot should be the GongShow root directory (e.g., ~/gt).
 func GetPrefixForRig(townRoot, rigName string) string {
 	beadsDir := filepath.Join(townRoot, ".beads")
 	routes, err := LoadRoutes(beadsDir)
@@ -154,7 +154,7 @@ func GetPrefixForRig(townRoot, rigName string) string {
 	}
 
 	// Look for a route where the path starts with the rig name
-	// Routes paths are like "gastown/mayor/rig" or "beads/mayor/rig"
+	// Routes paths are like "gongshow/mayor/rig" or "beads/mayor/rig"
 	for _, r := range routes {
 		parts := strings.SplitN(r.Path, "/", 2)
 		if len(parts) > 0 && parts[0] == rigName {
@@ -209,7 +209,7 @@ func ExtractPrefix(beadID string) string {
 }
 
 // GetRigPathForPrefix returns the rig path for a given bead ID prefix.
-// The townRoot should be the Gas Town root directory (e.g., ~/gt).
+// The townRoot should be the GongShow root directory (e.g., ~/gt).
 // Returns the full absolute path to the rig directory, or empty string if not found.
 // For town-level beads (path="."), returns townRoot.
 func GetRigPathForPrefix(townRoot, prefix string) string {

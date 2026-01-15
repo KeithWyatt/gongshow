@@ -10,8 +10,8 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/style"
 )
 
 var (
@@ -55,11 +55,11 @@ EXAMPLES:
   gt mol await-signal --timeout 60s
 
   # Backoff mode with agent bead tracking:
-  gt mol await-signal --agent-bead gt-gastown-witness \
+  gt mol await-signal --agent-bead gt-gongshow-witness \
     --backoff-base 30s --backoff-mult 2 --backoff-max 5m
 
   # On timeout, the agent bead's idle:N label is auto-incremented
-  # On signal, caller should reset: gt agent state gt-gastown-witness --set idle=0
+  # On signal, caller should reset: gt agent state gt-gongshow-witness --set idle=0
 
   # Quiet mode (no output, for scripting)
   gt mol await-signal --timeout 30s --quiet`,

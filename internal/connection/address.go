@@ -9,10 +9,10 @@ import (
 // Format: [machine:]rig[/polecat]
 //
 // Examples:
-//   - "gastown/rictus"        -> local machine, gastown rig, rictus polecat
-//   - "vm:gastown/rictus"     -> vm machine, gastown rig, rictus polecat
-//   - "gastown/"              -> local machine, gastown rig, broadcast
-//   - "vm:gastown/"           -> vm machine, gastown rig, broadcast
+//   - "gongshow/rictus"        -> local machine, gongshow rig, rictus polecat
+//   - "vm:gongshow/rictus"     -> vm machine, gongshow rig, rictus polecat
+//   - "gongshow/"              -> local machine, gongshow rig, broadcast
+//   - "vm:gongshow/"           -> vm machine, gongshow rig, broadcast
 type Address struct {
 	Machine string // Machine name (empty = local)
 	Rig     string // Rig name (required)

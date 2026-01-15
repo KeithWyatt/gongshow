@@ -1,10 +1,10 @@
-# Gas Town Escalation Protocol
+# GongShow Escalation Protocol
 
-> Reference for escalation paths in Gas Town
+> Reference for escalation paths in GongShow
 
 ## Overview
 
-Gas Town agents can escalate issues when automated resolution isn't possible.
+GongShow agents can escalate issues when automated resolution isn't possible.
 This document covers:
 
 - Severity levels and routing

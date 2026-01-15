@@ -11,8 +11,8 @@ import (
 	"sort"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/runtime"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/runtime"
 )
 
 // timeNow is a function that returns the current time. It can be overridden in tests.
@@ -26,7 +26,7 @@ var (
 
 // Mailbox manages messages for an identity via beads.
 type Mailbox struct {
-	identity string // beads identity (e.g., "gastown/polecats/Toast")
+	identity string // beads identity (e.g., "gongshow/polecats/Toast")
 	workDir  string // directory to run bd commands in
 	beadsDir string // explicit .beads directory path (set via BEADS_DIR)
 	path     string // for legacy JSONL mode (crew workers)

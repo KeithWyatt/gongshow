@@ -16,9 +16,9 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/tui/convoy"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/tui/convoy"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 // generateShortID generates a short random ID (5 lowercase chars).
@@ -92,7 +92,7 @@ you can see when it lands and what was included.
 
 WHAT IS A CONVOY:
   - Persistent tracking unit with an ID (hq-*)
-  - Tracks issues across rigs (frontend+backend, beads+gastown, etc.)
+  - Tracks issues across rigs (frontend+backend, beads+gongshow, etc.)
   - Auto-closes when all tracked issues complete → notifies subscribers
   - Can be reopened by adding more issues
 
@@ -270,7 +270,7 @@ func init() {
 func getTownBeadsDir() (string, error) {
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return "", fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return "", fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 	return filepath.Join(townRoot, ".beads"), nil
 }
@@ -959,7 +959,7 @@ func runConvoyStatus(cmd *cobra.Command, args []string) error {
 				status = "▶"
 			}
 
-			// Show assignee in brackets (extract short name from path like gastown/polecats/goose -> goose)
+			// Show assignee in brackets (extract short name from path like gongshow/polecats/goose -> goose)
 			bracketContent := t.IssueType
 			if t.Assignee != "" {
 				parts := strings.Split(t.Assignee, "/")
@@ -1161,8 +1161,8 @@ type trackedIssueInfo struct {
 	Status    string `json:"status"`
 	Type      string `json:"dependency_type"`
 	IssueType string `json:"issue_type"`
-	Assignee  string `json:"assignee,omitempty"`   // Assigned agent (e.g., gastown/polecats/goose)
-	Worker    string `json:"worker,omitempty"`     // Worker currently assigned (e.g., gastown/nux)
+	Assignee  string `json:"assignee,omitempty"`   // Assigned agent (e.g., gongshow/polecats/goose)
+	Worker    string `json:"worker,omitempty"`     // Worker currently assigned (e.g., gongshow/nux)
 	WorkerAge string `json:"worker_age,omitempty"` // How long worker has been on this issue
 }
 
@@ -1352,7 +1352,7 @@ func getIssueDetails(issueID string) *issueDetails {
 
 // workerInfo holds info about a worker assigned to an issue.
 type workerInfo struct {
-	Worker string // Agent identity (e.g., gastown/nux)
+	Worker string // Agent identity (e.g., gongshow/nux)
 	Age    string // How long assigned (e.g., "12m")
 }
 
@@ -1474,7 +1474,7 @@ func getWorkersForIssues(issueIDs []string) map[string]*workerInfo {
 }
 
 // parseWorkerFromAgentBead extracts worker identity from agent bead ID.
-// Input: "gt-gastown-polecat-nux" -> Output: "gastown/nux"
+// Input: "gt-gongshow-polecat-nux" -> Output: "gongshow/nux"
 // Input: "gt-beads-crew-amber" -> Output: "beads/crew/amber"
 func parseWorkerFromAgentBead(agentID string) string {
 	// Remove prefix (gt-, bd-, etc.)

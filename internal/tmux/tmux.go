@@ -11,8 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/constants"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/constants"
 )
 
 // versionPattern matches Claude Code version numbers like "2.0.76"
@@ -88,7 +88,7 @@ func (t *Tmux) NewSession(name, workDir string) error {
 // Unlike NewSession + SendKeys, this avoids race conditions where the shell isn't ready
 // or the command arrives before the shell prompt. The command runs directly as the
 // initial process of the pane.
-// See: https://github.com/anthropics/gastown/issues/280
+// See: https://github.com/anthropics/gongshow/issues/280
 func (t *Tmux) NewSessionWithCommand(name, workDir, command string) error {
 	args := []string{"new-session", "-d", "-s", name}
 	if workDir != "" {
@@ -434,7 +434,7 @@ func (t *Tmux) NudgeSession(session, message string) error {
 	time.Sleep(500 * time.Millisecond)
 
 	// 3. Send Escape to exit vim INSERT mode if enabled (harmless in normal mode)
-	// See: https://github.com/anthropics/gastown/issues/307
+	// See: https://github.com/anthropics/gongshow/issues/307
 	_, _ = t.run("send-keys", "-t", session, "Escape")
 	time.Sleep(100 * time.Millisecond)
 
@@ -465,7 +465,7 @@ func (t *Tmux) NudgePane(pane, message string) error {
 	time.Sleep(500 * time.Millisecond)
 
 	// 3. Send Escape to exit vim INSERT mode if enabled (harmless in normal mode)
-	// See: https://github.com/anthropics/gastown/issues/307
+	// See: https://github.com/anthropics/gongshow/issues/307
 	_, _ = t.run("send-keys", "-t", pane, "Escape")
 	time.Sleep(100 * time.Millisecond)
 
@@ -1014,8 +1014,8 @@ func (t *Tmux) SetStatusFormat(session, rig, worker, role string) error {
 
 	// Compact format - icon already identifies role
 	// Mayor: 🎩 Mayor
-	// Crew:  👷 gastown/crew/max (full path)
-	// Polecat: 😺 gastown/Toast
+	// Crew:  👷 gongshow/crew/max (full path)
+	// Polecat: 😺 gongshow/Toast
 	var left string
 	if rig == "" {
 		// Town-level agent (Mayor, Deacon)
@@ -1058,7 +1058,7 @@ func (t *Tmux) SetDynamicStatus(session string) error {
 	return err
 }
 
-// ConfigureGasTownSession applies full Gas Town theming to a session.
+// ConfigureGasTownSession applies full GongShow theming to a session.
 // This is a convenience method that applies theme, status format, and dynamic status.
 func (t *Tmux) ConfigureGasTownSession(session string, theme Theme, rig, worker, role string) error {
 	if err := t.ApplyTheme(session, theme); err != nil {
@@ -1157,9 +1157,9 @@ func (t *Tmux) SetTownCycleBindings(session string) error {
 // - Crew sessions: All crew members in the same rig
 //
 // IMPORTANT: These bindings are conditional - they only run gt cycle for
-// Gas Town sessions (those starting with "gt-" or "hq-"). For non-GT sessions,
+// GongShow sessions (those starting with "gt-" or "hq-"). For non-GT sessions,
 // the default tmux behavior (next-window/previous-window) is preserved.
-// See: https://github.com/steveyegge/gastown/issues/13
+// See: https://github.com/KeithWyatt/gongshow/issues/13
 //
 // IMPORTANT: We pass #{session_name} to the command because run-shell doesn't
 // reliably preserve the session context. tmux expands #{session_name} at binding
@@ -1187,21 +1187,21 @@ func (t *Tmux) SetCycleBindings(session string) error {
 // This creates the feed window if it doesn't exist, or switches to it if it does.
 // Uses `gt feed --window` which handles both creation and switching.
 //
-// IMPORTANT: This binding is conditional - it only runs for Gas Town sessions
+// IMPORTANT: This binding is conditional - it only runs for GongShow sessions
 // (those starting with "gt-" or "hq-"). For non-GT sessions, a help message is shown.
-// See: https://github.com/steveyegge/gastown/issues/13
+// See: https://github.com/KeithWyatt/gongshow/issues/13
 func (t *Tmux) SetFeedBinding(session string) error {
 	// C-b a → gt feed --window for GT sessions, help message otherwise
 	_, err := t.run("bind-key", "-T", "prefix", "a",
 		"if-shell", "echo '#{session_name}' | grep -Eq '^(gt|hq)-'",
 		"run-shell 'gt feed --window'",
-		"display-message 'C-b a is for Gas Town sessions only'")
+		"display-message 'C-b a is for GongShow sessions only'")
 	return err
 }
 
 // SetPaneDiedHook sets a pane-died hook on a session to detect crashes.
 // When the pane exits, tmux runs the hook command with exit status info.
-// The agentID is used to identify the agent in crash logs (e.g., "gastown/Toast").
+// The agentID is used to identify the agent in crash logs (e.g., "gongshow/Toast").
 func (t *Tmux) SetPaneDiedHook(session, agentID string) error {
 	// Sanitize inputs to prevent shell injection
 	session = strings.ReplaceAll(session, "'", "'\\''")

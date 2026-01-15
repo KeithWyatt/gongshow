@@ -9,14 +9,14 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/dog"
-	"github.com/steveyegge/gastown/internal/mail"
-	"github.com/steveyegge/gastown/internal/plugin"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/tmux"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/dog"
+	"github.com/KeithWyatt/gongshow/internal/mail"
+	"github.com/KeithWyatt/gongshow/internal/plugin"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 // Dog command flags
@@ -55,7 +55,7 @@ var dogAddCmd = &cobra.Command{
 	Short: "Create a new dog in the kennel",
 	Long: `Create a new dog in the kennel with multi-rig worktrees.
 
-Each dog gets a worktree per configured rig (e.g., gastown, beads).
+Each dog gets a worktree per configured rig (e.g., gongshow, beads).
 The dog starts in idle state, ready to receive work from the Deacon.
 
 Example:
@@ -166,7 +166,7 @@ instructions. On completion, the dog sends DOG_DONE mail to deacon/.
 
 Examples:
   gt dog dispatch --plugin rebuild-gt
-  gt dog dispatch --plugin rebuild-gt --rig gastown
+  gt dog dispatch --plugin rebuild-gt --rig gongshow
   gt dog dispatch --plugin rebuild-gt --dog alpha
   gt dog dispatch --plugin rebuild-gt --create
   gt dog dispatch --plugin rebuild-gt --dry-run

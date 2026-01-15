@@ -11,26 +11,26 @@ func TestMatchPattern(t *testing.T) {
 		want    bool
 	}{
 		// Exact matches
-		{"gastown/witness", "gastown/witness", true},
+		{"gongshow/witness", "gongshow/witness", true},
 		{"mayor/", "mayor/", true},
 
 		// Wildcard matches
-		{"*/witness", "gastown/witness", true},
+		{"*/witness", "gongshow/witness", true},
 		{"*/witness", "beads/witness", true},
-		{"gastown/*", "gastown/witness", true},
-		{"gastown/*", "gastown/refinery", true},
-		{"gastown/crew/*", "gastown/crew/max", true},
+		{"gongshow/*", "gongshow/witness", true},
+		{"gongshow/*", "gongshow/refinery", true},
+		{"gongshow/crew/*", "gongshow/crew/max", true},
 
 		// Non-matches
-		{"*/witness", "gastown/refinery", false},
-		{"gastown/*", "beads/witness", false},
-		{"gastown/crew/*", "gastown/polecats/Toast", false},
+		{"*/witness", "gongshow/refinery", false},
+		{"gongshow/*", "beads/witness", false},
+		{"gongshow/crew/*", "gongshow/polecats/Toast", false},
 
 		// Different path lengths
-		{"gastown/*", "gastown/crew/max", false},      // * matches single segment
-		{"gastown/*/*", "gastown/crew/max", true},     // Multiple wildcards
-		{"*/*", "gastown/witness", true},              // Both wildcards
-		{"*/*/*", "gastown/crew/max", true},           // Three-level wildcard
+		{"gongshow/*", "gongshow/crew/max", false},      // * matches single segment
+		{"gongshow/*/*", "gongshow/crew/max", true},     // Multiple wildcards
+		{"*/*", "gongshow/witness", true},              // Both wildcards
+		{"*/*/*", "gongshow/crew/max", true},           // Three-level wildcard
 	}
 
 	for _, tt := range tests {
@@ -53,18 +53,18 @@ func TestAgentBeadIDToAddress(t *testing.T) {
 		{"gt-deacon", "deacon/"},
 
 		// Rig singletons
-		{"gt-gastown-witness", "gastown/witness"},
-		{"gt-gastown-refinery", "gastown/refinery"},
+		{"gt-gongshow-witness", "gongshow/witness"},
+		{"gt-gongshow-refinery", "gongshow/refinery"},
 		{"gt-beads-witness", "beads/witness"},
 
 		// Named agents
-		{"gt-gastown-crew-max", "gastown/crew/max"},
-		{"gt-gastown-polecat-Toast", "gastown/polecat/Toast"},
+		{"gt-gongshow-crew-max", "gongshow/crew/max"},
+		{"gt-gongshow-polecat-Toast", "gongshow/polecat/Toast"},
 		{"gt-beads-crew-wolf", "beads/crew/wolf"},
 
 		// Agent with hyphen in name
-		{"gt-gastown-crew-max-v2", "gastown/crew/max-v2"},
-		{"gt-gastown-polecat-my-agent", "gastown/polecat/my-agent"},
+		{"gt-gongshow-crew-max-v2", "gongshow/crew/max-v2"},
+		{"gt-gongshow-polecat-my-agent", "gongshow/polecat/my-agent"},
 
 		// Invalid
 		{"invalid", ""},
@@ -92,8 +92,8 @@ func TestResolverResolve_DirectAddresses(t *testing.T) {
 		wantLen int
 	}{
 		// Direct agent addresses
-		{"direct agent", "gastown/witness", RecipientAgent, 1},
-		{"direct crew", "gastown/crew/max", RecipientAgent, 1},
+		{"direct agent", "gongshow/witness", RecipientAgent, 1},
+		{"direct crew", "gongshow/crew/max", RecipientAgent, 1},
 		{"mayor", "mayor/", RecipientAgent, 1},
 
 		// Legacy prefixes (pass-through)
@@ -130,7 +130,7 @@ func TestResolverResolve_AtPatterns(t *testing.T) {
 	}{
 		{"@town"},
 		{"@witnesses"},
-		{"@rig/gastown"},
+		{"@rig/gongshow"},
 		{"@overseer"},
 	}
 

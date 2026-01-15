@@ -13,11 +13,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/git"
-	"github.com/steveyegge/gastown/internal/mail"
-	"github.com/steveyegge/gastown/internal/protocol"
-	"github.com/steveyegge/gastown/internal/rig"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/git"
+	"github.com/KeithWyatt/gongshow/internal/mail"
+	"github.com/KeithWyatt/gongshow/internal/protocol"
+	"github.com/KeithWyatt/gongshow/internal/rig"
 )
 
 // MergeQueueConfig holds configuration for the merge queue processor.
@@ -907,7 +907,7 @@ func (e *Engineer) ListBlockedMRs() ([]*MRInfo, error) {
 
 // ClaimMR claims an MR for processing by setting the assignee field.
 // This replaces mrqueue.Claim() for beads-based MRs.
-// The workerID is typically the refinery's identifier (e.g., "gastown/refinery").
+// The workerID is typically the refinery's identifier (e.g., "gongshow/refinery").
 func (e *Engineer) ClaimMR(mrID, workerID string) error {
 	return e.beads.Update(mrID, beads.UpdateOptions{
 		Assignee: &workerID,

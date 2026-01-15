@@ -8,9 +8,9 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 // Environment variables for role detection
@@ -132,7 +132,7 @@ func GetRole() (RoleInfo, error) {
 		return RoleInfo{}, fmt.Errorf("finding workspace: %w", err)
 	}
 	if townRoot == "" {
-		return RoleInfo{}, fmt.Errorf("not in a Gas Town workspace")
+		return RoleInfo{}, fmt.Errorf("not in a GongShow workspace")
 	}
 
 	return GetRoleWithContext(cwd, townRoot)
@@ -155,7 +155,7 @@ func GetRoleWithContext(cwd, townRoot string) (RoleInfo, error) {
 
 	// Determine authoritative role
 	if envRole != "" {
-		// Parse env role - it might be simple ("mayor") or compound ("gastown/witness")
+		// Parse env role - it might be simple ("mayor") or compound ("gongshow/witness")
 		parsedRole, rig, polecat := parseRoleString(envRole)
 		info.Role = parsedRole
 		info.Rig = rig
@@ -209,7 +209,7 @@ func GetRoleWithContext(cwd, townRoot string) (RoleInfo, error) {
 	return info, nil
 }
 
-// parseRoleString parses a role string like "mayor", "gastown/witness", or "gastown/polecats/alpha".
+// parseRoleString parses a role string like "mayor", "gongshow/witness", or "gongshow/polecats/alpha".
 func parseRoleString(s string) (Role, string, string) {
 	s = strings.TrimSpace(s)
 
@@ -254,8 +254,8 @@ func parseRoleString(s string) (Role, string, string) {
 // ActorString returns the actor identity string for beads attribution.
 // Format matches beads created_by convention:
 //   - Simple roles: "mayor", "deacon"
-//   - Rig-specific: "gastown/witness", "gastown/refinery"
-//   - Workers: "gastown/crew/max", "gastown/polecats/Toast"
+//   - Rig-specific: "gongshow/witness", "gongshow/refinery"
+//   - Workers: "gongshow/crew/max", "gongshow/polecats/Toast"
 func (info RoleInfo) ActorString() string {
 	switch info.Role {
 	case RoleMayor:
@@ -366,7 +366,7 @@ func runRoleHome(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("finding workspace: %w", err)
 	}
 	if townRoot == "" {
-		return fmt.Errorf("not in a Gas Town workspace")
+		return fmt.Errorf("not in a GongShow workspace")
 	}
 
 	// Validate flag combinations: --polecat requires --rig to prevent strange merges
@@ -419,7 +419,7 @@ func runRoleDetect(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("finding workspace: %w", err)
 	}
 	if townRoot == "" {
-		return fmt.Errorf("not in a Gas Town workspace")
+		return fmt.Errorf("not in a GongShow workspace")
 	}
 
 	ctx := detectRole(cwd, townRoot)
@@ -481,7 +481,7 @@ func runRoleEnv(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("finding workspace: %w", err)
 	}
 	if townRoot == "" {
-		return fmt.Errorf("not in a Gas Town workspace")
+		return fmt.Errorf("not in a GongShow workspace")
 	}
 
 	// Get current role (read-only - from env vars or cwd)

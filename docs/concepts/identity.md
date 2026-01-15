@@ -1,6 +1,6 @@
 # Agent Identity and Attribution
 
-> Canonical format for agent identity in Gas Town
+> Canonical format for agent identity in GongShow
 
 ## Why Identity Matters
 
@@ -11,7 +11,7 @@ When you deploy AI agents at scale, anonymous work creates real problems:
 - **Compliance:** Auditors ask "who approved this code?" - you need an answer.
 - **Performance management:** Some agents are better than others at certain tasks.
 
-Gas Town solves this with **universal attribution**: every action, every commit,
+GongShow solves this with **universal attribution**: every action, every commit,
 every bead update is linked to a specific agent identity. This enables work
 history tracking, capability-based routing, and objective quality measurement.
 
@@ -26,37 +26,37 @@ This is set automatically when agents are spawned and used for all attribution.
 |-----------|--------|---------|
 | **Mayor** | `mayor` | `mayor` |
 | **Deacon** | `deacon` | `deacon` |
-| **Witness** | `{rig}/witness` | `gastown/witness` |
-| **Refinery** | `{rig}/refinery` | `gastown/refinery` |
-| **Crew** | `{rig}/crew/{name}` | `gastown/crew/joe` |
-| **Polecat** | `{rig}/polecats/{name}` | `gastown/polecats/toast` |
+| **Witness** | `{rig}/witness` | `gongshow/witness` |
+| **Refinery** | `{rig}/refinery` | `gongshow/refinery` |
+| **Crew** | `{rig}/crew/{name}` | `gongshow/crew/joe` |
+| **Polecat** | `{rig}/polecats/{name}` | `gongshow/polecats/toast` |
 
 ### Why Slashes?
 
 The slash format mirrors filesystem paths and enables:
 - Hierarchical parsing (extract rig, role, name)
-- Consistent mail addressing (`gt mail send gastown/witness`)
+- Consistent mail addressing (`gt mail send gongshow/witness`)
 - Path-like routing in beads operations
 - Visual clarity about agent location
 
 ## Attribution Model
 
-Gas Town uses three fields for complete provenance:
+GongShow uses three fields for complete provenance:
 
 ### Git Commits
 
 ```bash
-GIT_AUTHOR_NAME="gastown/crew/joe"      # Who did the work (agent)
+GIT_AUTHOR_NAME="gongshow/crew/joe"      # Who did the work (agent)
 GIT_AUTHOR_EMAIL="steve@example.com"    # Who owns the work (overseer)
 ```
 
 Result in git log:
 ```
-abc123 Fix bug (gastown/crew/joe <steve@example.com>)
+abc123 Fix bug (gongshow/crew/joe <steve@example.com>)
 ```
 
 **Interpretation**:
-- The agent `gastown/crew/joe` authored the change
+- The agent `gongshow/crew/joe` authored the change
 - The work belongs to the workspace owner (`steve@example.com`)
 - Both are preserved in git history forever
 
@@ -65,8 +65,8 @@ abc123 Fix bug (gastown/crew/joe <steve@example.com>)
 ```json
 {
   "id": "gt-xyz",
-  "created_by": "gastown/crew/joe",
-  "updated_by": "gastown/witness"
+  "created_by": "gongshow/crew/joe",
+  "updated_by": "gongshow/witness"
 }
 ```
 
@@ -81,43 +81,43 @@ All events include actor attribution:
 {
   "ts": "2025-01-15T10:30:00Z",
   "type": "sling",
-  "actor": "gastown/crew/joe",
-  "payload": { "bead": "gt-xyz", "target": "gastown/polecats/toast" }
+  "actor": "gongshow/crew/joe",
+  "payload": { "bead": "gt-xyz", "target": "gongshow/polecats/toast" }
 }
 ```
 
 ## Environment Setup
 
-Gas Town uses a centralized `config.AgentEnv()` function to set environment
+GongShow uses a centralized `config.AgentEnv()` function to set environment
 variables consistently across all agent spawn paths (managers, daemon, boot).
 
 ### Example: Polecat Environment
 
 ```bash
-# Set automatically for polecat 'toast' in rig 'gastown'
+# Set automatically for polecat 'toast' in rig 'gongshow'
 export GT_ROLE="polecat"
-export GT_RIG="gastown"
+export GT_RIG="gongshow"
 export GT_POLECAT="toast"
-export BD_ACTOR="gastown/polecats/toast"
-export GIT_AUTHOR_NAME="gastown/polecats/toast"
+export BD_ACTOR="gongshow/polecats/toast"
+export GIT_AUTHOR_NAME="gongshow/polecats/toast"
 export GT_ROOT="/home/user/gt"
-export BEADS_DIR="/home/user/gt/gastown/.beads"
-export BEADS_AGENT_NAME="gastown/toast"
+export BEADS_DIR="/home/user/gt/gongshow/.beads"
+export BEADS_AGENT_NAME="gongshow/toast"
 export BEADS_NO_DAEMON="1"  # Polecats use isolated beads context
 ```
 
 ### Example: Crew Environment
 
 ```bash
-# Set automatically for crew member 'joe' in rig 'gastown'
+# Set automatically for crew member 'joe' in rig 'gongshow'
 export GT_ROLE="crew"
-export GT_RIG="gastown"
+export GT_RIG="gongshow"
 export GT_CREW="joe"
-export BD_ACTOR="gastown/crew/joe"
-export GIT_AUTHOR_NAME="gastown/crew/joe"
+export BD_ACTOR="gongshow/crew/joe"
+export GIT_AUTHOR_NAME="gongshow/crew/joe"
 export GT_ROOT="/home/user/gt"
-export BEADS_DIR="/home/user/gt/gastown/.beads"
-export BEADS_AGENT_NAME="gastown/joe"
+export BEADS_DIR="/home/user/gt/gongshow/.beads"
+export BEADS_AGENT_NAME="gongshow/joe"
 export BEADS_NO_DAEMON="1"  # Crew uses isolated beads context
 ```
 
@@ -126,8 +126,8 @@ export BEADS_NO_DAEMON="1"  # Crew uses isolated beads context
 For local testing or debugging:
 
 ```bash
-export BD_ACTOR="gastown/crew/debug"
-bd create --title="Test issue"  # Will show created_by: gastown/crew/debug
+export BD_ACTOR="gongshow/crew/debug"
+bd create --title="Test issue"  # Will show created_by: gongshow/crew/debug
 ```
 
 See [reference.md](reference.md#environment-variables) for the complete
@@ -148,10 +148,10 @@ The format supports programmatic parsing:
 |-------|-------------------|
 | `mayor` | role=mayor |
 | `deacon` | role=deacon |
-| `gastown/witness` | rig=gastown, role=witness |
-| `gastown/refinery` | rig=gastown, role=refinery |
-| `gastown/crew/joe` | rig=gastown, role=crew, name=joe |
-| `gastown/polecats/toast` | rig=gastown, role=polecat, name=toast |
+| `gongshow/witness` | rig=gongshow, role=witness |
+| `gongshow/refinery` | rig=gongshow, role=refinery |
+| `gongshow/crew/joe` | rig=gongshow, role=crew, name=joe |
+| `gongshow/polecats/toast` | rig=gongshow, role=polecat, name=toast |
 
 ## Audit Queries
 
@@ -159,16 +159,16 @@ Attribution enables powerful audit queries:
 
 ```bash
 # All work by an agent
-bd audit --actor=gastown/crew/joe
+bd audit --actor=gongshow/crew/joe
 
 # All work in a rig
-bd audit --actor=gastown/*
+bd audit --actor=gongshow/*
 
 # All polecat work
 bd audit --actor=*/polecats/*
 
 # Git history by agent
-git log --author="gastown/crew/joe"
+git log --author="gongshow/crew/joe"
 ```
 
 ## Design Principles
@@ -188,8 +188,8 @@ The global identifier is your **email** - it's already in every git commit. No s
 ```
 steve@example.com                ← global identity (from git author)
 ├── Town A (home)                ← workspace
-│   ├── gastown/crew/joe         ← agent executor
-│   └── gastown/polecats/toast   ← agent executor
+│   ├── gongshow/crew/joe         ← agent executor
+│   └── gongshow/polecats/toast   ← agent executor
 └── Town B (work)                ← workspace
     └── acme/polecats/nux        ← agent executor
 ```
@@ -203,7 +203,7 @@ steve@example.com                ← global identity (from git author)
 | `created_by` | Local | Who created the bead |
 | `owner` | Global | Who owns the work |
 
-**Agents execute. Humans own.** The polecat name in `completed-by: gastown/polecats/toast` is executor attribution. The CV credits the human owner (`steve@example.com`).
+**Agents execute. Humans own.** The polecat name in `completed-by: gongshow/polecats/toast` is executor attribution. The CV credits the human owner (`steve@example.com`).
 
 ### Polecats Have Persistent Identities
 
@@ -258,7 +258,7 @@ See `~/gt/docs/hop/decisions/008-identity-model.md` for architectural rationale.
 git log --since="90 days ago" -- path/to/sensitive/file.go
 
 # All changes by a specific agent
-bd audit --actor=gastown/polecats/toast --since=2025-01-01
+bd audit --actor=gongshow/polecats/toast --since=2025-01-01
 ```
 
 ### Performance Tracking
@@ -268,7 +268,7 @@ bd audit --actor=gastown/polecats/toast --since=2025-01-01
 bd stats --group-by=actor
 
 # Average time to completion
-bd stats --actor=gastown/polecats/* --metric=cycle-time
+bd stats --actor=gongshow/polecats/* --metric=cycle-time
 ```
 
 ### Model Comparison
@@ -277,12 +277,12 @@ When agents use different underlying models, attribution enables A/B comparison:
 
 ```bash
 # Tag agents by model
-# gastown/polecats/claude-1 uses Claude
-# gastown/polecats/gpt-1 uses GPT-4
+# gongshow/polecats/claude-1 uses Claude
+# gongshow/polecats/gpt-1 uses GPT-4
 
 # Compare quality signals
-bd stats --actor=gastown/polecats/claude-* --metric=revision-count
-bd stats --actor=gastown/polecats/gpt-* --metric=revision-count
+bd stats --actor=gongshow/polecats/claude-* --metric=revision-count
+bd stats --actor=gongshow/polecats/gpt-* --metric=revision-count
 ```
 
 Lower revision counts suggest higher first-pass quality.

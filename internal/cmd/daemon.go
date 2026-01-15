@@ -8,17 +8,17 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/daemon"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/daemon"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 var daemonCmd = &cobra.Command{
 	Use:     "daemon",
 	GroupID: GroupServices,
-	Short:   "Manage the Gas Town daemon",
+	Short:   "Manage the GongShow daemon",
 	RunE:    requireSubcommand,
-	Long: `Manage the Gas Town background daemon.
+	Long: `Manage the GongShow background daemon.
 
 The daemon is a simple Go process that:
 - Pokes agents periodically (heartbeat)
@@ -31,7 +31,7 @@ The daemon is a "dumb scheduler" - all intelligence is in agents.`,
 var daemonStartCmd = &cobra.Command{
 	Use:   "start",
 	Short: "Start the daemon",
-	Long: `Start the Gas Town daemon in the background.
+	Long: `Start the GongShow daemon in the background.
 
 The daemon will run until stopped with 'gt daemon stop'.`,
 	RunE: runDaemonStart,
@@ -40,14 +40,14 @@ The daemon will run until stopped with 'gt daemon stop'.`,
 var daemonStopCmd = &cobra.Command{
 	Use:   "stop",
 	Short: "Stop the daemon",
-	Long:  `Stop the running Gas Town daemon.`,
+	Long:  `Stop the running GongShow daemon.`,
 	RunE:  runDaemonStop,
 }
 
 var daemonStatusCmd = &cobra.Command{
 	Use:   "status",
 	Short: "Show daemon status",
-	Long:  `Show the current status of the Gas Town daemon.`,
+	Long:  `Show the current status of the GongShow daemon.`,
 	RunE:  runDaemonStatus,
 }
 
@@ -86,7 +86,7 @@ func init() {
 func runDaemonStart(cmd *cobra.Command, args []string) error {
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	// Check if already running
@@ -145,7 +145,7 @@ func runDaemonStart(cmd *cobra.Command, args []string) error {
 func runDaemonStop(cmd *cobra.Command, args []string) error {
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	running, pid, err := daemon.IsRunning(townRoot)
@@ -167,7 +167,7 @@ func runDaemonStop(cmd *cobra.Command, args []string) error {
 func runDaemonStatus(cmd *cobra.Command, args []string) error {
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	running, pid, err := daemon.IsRunning(townRoot)
@@ -227,7 +227,7 @@ func getBinaryModTime() (time.Time, error) {
 func runDaemonLogs(cmd *cobra.Command, args []string) error {
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	logFile := filepath.Join(townRoot, "daemon", "daemon.log")
@@ -254,7 +254,7 @@ func runDaemonLogs(cmd *cobra.Command, args []string) error {
 func runDaemonRun(cmd *cobra.Command, args []string) error {
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	config := daemon.DefaultConfig(townRoot)

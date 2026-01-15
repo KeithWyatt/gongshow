@@ -11,9 +11,9 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 // runMailClaim claims the oldest unclaimed message from a work queue.
@@ -23,7 +23,7 @@ func runMailClaim(cmd *cobra.Command, args []string) error {
 	// Find workspace
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	// Get caller identity
@@ -253,7 +253,7 @@ func runMailRelease(cmd *cobra.Command, args []string) error {
 	// Find workspace
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	beadsDir := beads.ResolveBeadsDir(townRoot)
@@ -438,7 +438,7 @@ COMMANDS:
   delete    Delete a queue
 
 Examples:
-  gt mail queue create work --claimers 'gastown/polecats/*'
+  gt mail queue create work --claimers 'gongshow/polecats/*'
   gt mail queue show work
   gt mail queue list
   gt mail queue delete work`,
@@ -451,11 +451,11 @@ var mailQueueCreateCmd = &cobra.Command{
 	Long: `Create a new beads-native mail queue.
 
 The --claimers flag specifies a pattern for who can claim messages from this queue.
-Patterns support wildcards: 'gastown/polecats/*' matches any polecat in gastown rig.
+Patterns support wildcards: 'gongshow/polecats/*' matches any polecat in gongshow rig.
 
 Examples:
-  gt mail queue create work --claimers 'gastown/polecats/*'
-  gt mail queue create dispatch --claimers 'gastown/crew/*'
+  gt mail queue create work --claimers 'gongshow/polecats/*'
+  gt mail queue create dispatch --claimers 'gongshow/crew/*'
   gt mail queue create urgent --claimers '*'`,
 	Args: cobra.ExactArgs(1),
 	RunE: runMailQueueCreate,
@@ -527,7 +527,7 @@ func runMailQueueCreate(cmd *cobra.Command, args []string) error {
 	// Find workspace
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	// Get caller identity for created_by
@@ -577,7 +577,7 @@ func runMailQueueShow(cmd *cobra.Command, args []string) error {
 	// Find workspace
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	// Get queue bead
@@ -639,7 +639,7 @@ func runMailQueueList(cmd *cobra.Command, args []string) error {
 	// Find workspace
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	// List queue beads
@@ -693,7 +693,7 @@ func runMailQueueDelete(cmd *cobra.Command, args []string) error {
 	// Find workspace
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	// Delete queue bead

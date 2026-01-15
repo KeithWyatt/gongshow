@@ -8,11 +8,11 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/events"
-	"github.com/steveyegge/gastown/internal/mail"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/events"
+	"github.com/KeithWyatt/gongshow/internal/mail"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 func runMailSend(cmd *cobra.Command, args []string) error {
@@ -26,7 +26,7 @@ func runMailSend(cmd *cobra.Command, args []string) error {
 		}
 		townRoot, err := workspace.FindFromCwd()
 		if err != nil || townRoot == "" {
-			return fmt.Errorf("not in a Gas Town workspace")
+			return fmt.Errorf("not in a GongShow workspace")
 		}
 		roleInfo, err := GetRoleWithContext(cwd, townRoot)
 		if err != nil {
@@ -52,7 +52,7 @@ func runMailSend(cmd *cobra.Command, args []string) error {
 	// All mail uses town beads (two-level architecture)
 	workDir, err := findMailWorkDir()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	// Determine sender

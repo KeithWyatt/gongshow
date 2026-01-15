@@ -5,8 +5,8 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/doctor"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/doctor"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 var (
@@ -20,7 +20,7 @@ var doctorCmd = &cobra.Command{
 	Use:     "doctor",
 	GroupID: GroupDiag,
 	Short:   "Run health checks on the workspace",
-	Long: `Run diagnostic checks on the Gas Town workspace.
+	Long: `Run diagnostic checks on the GongShow workspace.
 
 Doctor checks for common configuration issues, missing files,
 and other problems that could affect workspace operation.
@@ -58,7 +58,7 @@ Crew workspace checks:
 
 Rig checks (with --rig flag):
   - rig-is-git-repo          Verify rig is a valid git repository
-  - git-exclude-configured   Check .git/info/exclude has Gas Town dirs (fixable)
+  - git-exclude-configured   Check .git/info/exclude has GongShow dirs (fixable)
   - witness-exists           Verify witness/ structure exists (fixable)
   - refinery-exists          Verify refinery/ structure exists (fixable)
   - mayor-clone-exists       Verify mayor/rig/ clone exists (fixable)
@@ -97,7 +97,7 @@ func runDoctor(cmd *cobra.Command, args []string) error {
 	// Find town root
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	// Create check context
@@ -161,7 +161,7 @@ func runDoctor(cmd *cobra.Command, args []string) error {
 	d.Register(doctor.NewSettingsCheck())
 	d.Register(doctor.NewSessionHookCheck())
 	d.Register(doctor.NewRuntimeGitignoreCheck())
-	d.Register(doctor.NewLegacyGastownCheck())
+	d.Register(doctor.NewLegacyGongshowCheck())
 	d.Register(doctor.NewClaudeSettingsCheck())
 
 	// Priming subsystem check

@@ -6,14 +6,14 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/checkpoint"
-	"github.com/steveyegge/gastown/internal/deacon"
-	"github.com/steveyegge/gastown/internal/rig"
-	"github.com/steveyegge/gastown/internal/session"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/templates"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/checkpoint"
+	"github.com/KeithWyatt/gongshow/internal/deacon"
+	"github.com/KeithWyatt/gongshow/internal/rig"
+	"github.com/KeithWyatt/gongshow/internal/session"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/templates"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 // outputPrimeContext outputs the role-specific context using templates or fallback.
@@ -100,7 +100,7 @@ func outputPrimeContextFallback(ctx RoleContext) error {
 
 func outputMayorContext(ctx RoleContext) {
 	fmt.Printf("%s\n\n", style.Bold.Render("# Mayor Context"))
-	fmt.Println("You are the **Mayor** - the global coordinator of Gas Town.")
+	fmt.Println("You are the **Mayor** - the global coordinator of GongShow.")
 	fmt.Println()
 	fmt.Println("## Responsibilities")
 	fmt.Println("- Coordinate work across all rigs")
@@ -211,7 +211,7 @@ func outputCrewContext(ctx RoleContext) {
 }
 
 func outputUnknownContext(ctx RoleContext) {
-	fmt.Printf("%s\n\n", style.Bold.Render("# Gas Town Context"))
+	fmt.Printf("%s\n\n", style.Bold.Render("# GongShow Context"))
 	fmt.Println("Could not determine specific role from current directory.")
 	fmt.Println()
 	if ctx.Rig != "" {

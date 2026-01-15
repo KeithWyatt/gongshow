@@ -236,7 +236,7 @@ func TestParseMRFields(t *testing.T) {
 target: main
 source_issue: gt-xyz
 worker: Nux
-rig: gastown
+rig: gongshow
 merge_commit: abc123def
 close_reason: merged`,
 			},
@@ -245,7 +245,7 @@ close_reason: merged`,
 				Target:      "main",
 				SourceIssue: "gt-xyz",
 				Worker:      "Nux",
-				Rig:         "gastown",
+				Rig:         "gongshow",
 				MergeCommit: "abc123def",
 				CloseReason: "merged",
 			},
@@ -305,13 +305,13 @@ merge-commit: 789xyz`,
 				Description: `Branch: polecat/Furiosa/gt-jkl
 TARGET: main
 Worker: Furiosa
-RIG: gastown`,
+RIG: gongshow`,
 			},
 			wantFields: &MRFields{
 				Branch: "polecat/Furiosa/gt-jkl",
 				Target: "main",
 				Worker: "Furiosa",
-				Rig:    "gastown",
+				Rig:    "gongshow",
 			},
 		},
 		{
@@ -405,7 +405,7 @@ func TestFormatMRFields(t *testing.T) {
 				Target:      "main",
 				SourceIssue: "gt-xyz",
 				Worker:      "Nux",
-				Rig:         "gastown",
+				Rig:         "gongshow",
 				MergeCommit: "abc123def",
 				CloseReason: "merged",
 			},
@@ -413,7 +413,7 @@ func TestFormatMRFields(t *testing.T) {
 target: main
 source_issue: gt-xyz
 worker: Nux
-rig: gastown
+rig: gongshow
 merge_commit: abc123def
 close_reason: merged`,
 		},
@@ -565,7 +565,7 @@ func TestMRFieldsRoundTrip(t *testing.T) {
 		Target:      "main",
 		SourceIssue: "gt-xyz",
 		Worker:      "Nux",
-		Rig:         "gastown",
+		Rig:         "gongshow",
 		MergeCommit: "abc123def789",
 		CloseReason: "merged",
 	}
@@ -593,7 +593,7 @@ func TestParseMRFieldsFromDesignDoc(t *testing.T) {
 target: main
 source_issue: gt-xyz
 worker: Nux
-rig: gastown`
+rig: gongshow`
 
 	issue := &Issue{Description: description}
 	fields := ParseMRFields(issue)
@@ -615,8 +615,8 @@ rig: gastown`
 	if fields.Worker != "Nux" {
 		t.Errorf("Worker = %q, want Nux", fields.Worker)
 	}
-	if fields.Rig != "gastown" {
-		t.Errorf("Rig = %q, want gastown", fields.Rig)
+	if fields.Rig != "gongshow" {
+		t.Errorf("Rig = %q, want gongshow", fields.Rig)
 	}
 }
 
@@ -1029,14 +1029,14 @@ func TestParseAgentBeadID(t *testing.T) {
 		{"gt-mayor", "", "mayor", "", true},
 		{"gt-deacon", "", "deacon", "", true},
 		// Rig-level singletons
-		{"gt-gastown-witness", "gastown", "witness", "", true},
-		{"gt-gastown-refinery", "gastown", "refinery", "", true},
+		{"gt-gongshow-witness", "gongshow", "witness", "", true},
+		{"gt-gongshow-refinery", "gongshow", "refinery", "", true},
 		// Rig-level named agents
-		{"gt-gastown-crew-joe", "gastown", "crew", "joe", true},
-		{"gt-gastown-crew-max", "gastown", "crew", "max", true},
-		{"gt-gastown-polecat-capable", "gastown", "polecat", "capable", true},
+		{"gt-gongshow-crew-joe", "gongshow", "crew", "joe", true},
+		{"gt-gongshow-crew-max", "gongshow", "crew", "max", true},
+		{"gt-gongshow-polecat-capable", "gongshow", "polecat", "capable", true},
 		// Names with hyphens
-		{"gt-gastown-polecat-my-agent", "gastown", "polecat", "my-agent", true},
+		{"gt-gongshow-polecat-my-agent", "gongshow", "polecat", "my-agent", true},
 		// Parseable but not valid agent roles (IsAgentSessionBead will reject)
 		{"gt-abc123", "", "abc123", "", true}, // Parses as town-level but not valid role
 		// Other prefixes (bd-, hq-)
@@ -1078,10 +1078,10 @@ func TestIsAgentSessionBead(t *testing.T) {
 		// Agent session beads with gt- prefix (should return true)
 		{"gt-mayor", true},
 		{"gt-deacon", true},
-		{"gt-gastown-witness", true},
-		{"gt-gastown-refinery", true},
-		{"gt-gastown-crew-joe", true},
-		{"gt-gastown-polecat-capable", true},
+		{"gt-gongshow-witness", true},
+		{"gt-gongshow-refinery", true},
+		{"gt-gongshow-crew-joe", true},
+		{"gt-gongshow-polecat-capable", true},
 		// Agent session beads with bd- prefix (should return true)
 		{"bd-mayor", true},
 		{"bd-deacon", true},
@@ -1259,37 +1259,37 @@ func TestExpandRolePattern(t *testing.T) {
 		{
 			pattern:  "gt-{rig}-{role}",
 			townRoot: "/Users/stevey/gt",
-			rig:      "gastown",
+			rig:      "gongshow",
 			role:     "witness",
-			want:     "gt-gastown-witness",
+			want:     "gt-gongshow-witness",
 		},
 		{
 			pattern:  "gt-{rig}-{name}",
 			townRoot: "/Users/stevey/gt",
-			rig:      "gastown",
+			rig:      "gongshow",
 			name:     "toast",
-			want:     "gt-gastown-toast",
+			want:     "gt-gongshow-toast",
 		},
 		{
 			pattern:  "{town}/{rig}/polecats/{name}",
 			townRoot: "/Users/stevey/gt",
-			rig:      "gastown",
+			rig:      "gongshow",
 			name:     "toast",
-			want:     "/Users/stevey/gt/gastown/polecats/toast",
+			want:     "/Users/stevey/gt/gongshow/polecats/toast",
 		},
 		{
 			pattern:  "{town}/{rig}/refinery/rig",
 			townRoot: "/Users/stevey/gt",
-			rig:      "gastown",
-			want:     "/Users/stevey/gt/gastown/refinery/rig",
+			rig:      "gongshow",
+			want:     "/Users/stevey/gt/gongshow/refinery/rig",
 		},
 		{
 			pattern:  "export GT_ROLE={role} GT_RIG={rig} BD_ACTOR={rig}/polecats/{name}",
 			townRoot: "/Users/stevey/gt",
-			rig:      "gastown",
+			rig:      "gongshow",
 			name:     "toast",
 			role:     "polecat",
-			want:     "export GT_ROLE=polecat GT_RIG=gastown BD_ACTOR=gastown/polecats/toast",
+			want:     "export GT_ROLE=polecat GT_RIG=gongshow BD_ACTOR=gongshow/polecats/toast",
 		},
 	}
 
@@ -1423,7 +1423,7 @@ func TestDelegationStruct(t *testing.T) {
 			name: "full delegation",
 			delegation: Delegation{
 				Parent:      "hop://accenture.com/eng/proj-123/task-a",
-				Child:       "hop://alice@example.com/main-town/gastown/gt-xyz",
+				Child:       "hop://alice@example.com/main-town/gongshow/gt-xyz",
 				DelegatedBy: "hop://accenture.com",
 				DelegatedTo: "hop://alice@example.com",
 				Terms: &DelegationTerms{
@@ -1433,7 +1433,7 @@ func TestDelegationStruct(t *testing.T) {
 				},
 				CreatedAt: "2025-01-15T10:00:00Z",
 			},
-			wantJSON: `{"parent":"hop://accenture.com/eng/proj-123/task-a","child":"hop://alice@example.com/main-town/gastown/gt-xyz","delegated_by":"hop://accenture.com","delegated_to":"hop://alice@example.com","terms":{"portion":"backend-api","deadline":"2025-06-01","credit_share":80},"created_at":"2025-01-15T10:00:00Z"}`,
+			wantJSON: `{"parent":"hop://accenture.com/eng/proj-123/task-a","child":"hop://alice@example.com/main-town/gongshow/gt-xyz","delegated_by":"hop://accenture.com","delegated_to":"hop://alice@example.com","terms":{"portion":"backend-api","deadline":"2025-06-01","credit_share":80},"created_at":"2025-01-15T10:00:00Z"}`,
 		},
 		{
 			name: "minimal delegation",

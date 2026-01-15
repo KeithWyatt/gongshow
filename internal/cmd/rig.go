@@ -9,19 +9,19 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/crew"
-	"github.com/steveyegge/gastown/internal/deps"
-	"github.com/steveyegge/gastown/internal/git"
-	"github.com/steveyegge/gastown/internal/polecat"
-	"github.com/steveyegge/gastown/internal/refinery"
-	"github.com/steveyegge/gastown/internal/rig"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/tmux"
-	"github.com/steveyegge/gastown/internal/wisp"
-	"github.com/steveyegge/gastown/internal/witness"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/crew"
+	"github.com/KeithWyatt/gongshow/internal/deps"
+	"github.com/KeithWyatt/gongshow/internal/git"
+	"github.com/KeithWyatt/gongshow/internal/polecat"
+	"github.com/KeithWyatt/gongshow/internal/refinery"
+	"github.com/KeithWyatt/gongshow/internal/rig"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/wisp"
+	"github.com/KeithWyatt/gongshow/internal/witness"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 var rigCmd = &cobra.Command{
@@ -29,7 +29,7 @@ var rigCmd = &cobra.Command{
 	GroupID: GroupWorkspace,
 	Short:   "Manage rigs in the workspace",
 	RunE:    requireSubcommand,
-	Long: `Manage rigs (project containers) in the Gas Town workspace.
+	Long: `Manage rigs (project containers) in the GongShow workspace.
 
 A rig is a container for managing a project and its agents:
   - refinery/rig/  Canonical main clone (Refinery's working copy)
@@ -61,7 +61,7 @@ The command also:
   - Creates <rig>/plugins/ (rig-level)
 
 Example:
-  gt rig add gastown https://github.com/steveyegge/gastown
+  gt rig add gongshow https://github.com/KeithWyatt/gongshow
   gt rig add my-project git@github.com:user/repo.git --prefix mp`,
 	Args: cobra.ExactArgs(2),
 	RunE: runRigAdd,
@@ -128,9 +128,9 @@ Polecats are NOT started by this command - they are spawned
 on demand when work is assigned.
 
 Examples:
-  gt rig start gastown
-  gt rig start gastown beads
-  gt rig start gastown beads myproject`,
+  gt rig start gongshow
+  gt rig start gongshow beads
+  gt rig start gongshow beads myproject`,
 	Args: cobra.MinimumNArgs(1),
 	RunE: runRigStart,
 }
@@ -192,7 +192,7 @@ Displays:
 
 Examples:
   gt rig status           # Infer rig from current directory
-  gt rig status gastown
+  gt rig status gongshow
   gt rig status beads`,
 	Args: cobra.MaximumNArgs(1),
 	RunE: runRigStatus,
@@ -218,10 +218,10 @@ Use --force to skip graceful shutdown and kill immediately.
 Use --nuclear to bypass ALL safety checks (will lose work!).
 
 Examples:
-  gt rig stop gastown
-  gt rig stop gastown beads
-  gt rig stop --force gastown beads
-  gt rig stop --nuclear gastown  # DANGER: loses uncommitted work`,
+  gt rig stop gongshow
+  gt rig stop gongshow beads
+  gt rig stop --force gongshow beads
+  gt rig stop --nuclear gongshow  # DANGER: loses uncommitted work`,
 	Args: cobra.MinimumNArgs(1),
 	RunE: runRigStop,
 }
@@ -243,10 +243,10 @@ Use --force to skip graceful shutdown and kill immediately.
 Use --nuclear to bypass ALL safety checks (will lose work!).
 
 Examples:
-  gt rig restart gastown
-  gt rig restart gastown beads
-  gt rig restart --force gastown beads
-  gt rig restart --nuclear gastown  # DANGER: loses uncommitted work`,
+  gt rig restart gongshow
+  gt rig restart gongshow beads
+  gt rig restart --force gongshow beads
+  gt rig restart --nuclear gongshow  # DANGER: loses uncommitted work`,
 	Args: cobra.MinimumNArgs(1),
 	RunE: runRigRestart,
 }
@@ -317,7 +317,7 @@ func runRigAdd(cmd *cobra.Command, args []string) error {
 	// Find workspace
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	// Load rigs config
@@ -436,7 +436,7 @@ func runRigList(cmd *cobra.Command, args []string) error {
 	// Find workspace
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	// Load rigs config
@@ -495,7 +495,7 @@ func runRigRemove(cmd *cobra.Command, args []string) error {
 	// Find workspace
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	// Load rigs config
@@ -529,7 +529,7 @@ func runRigReset(cmd *cobra.Command, args []string) error {
 	// Find workspace
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	cwd, err := os.Getwd()
@@ -726,7 +726,7 @@ func runRigBoot(cmd *cobra.Command, args []string) error {
 	// Find workspace
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	// Load rigs config and get rig
@@ -800,7 +800,7 @@ func runRigStart(cmd *cobra.Command, args []string) error {
 	// Find workspace once
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	// Load rigs config
@@ -901,7 +901,7 @@ func runRigShutdown(cmd *cobra.Command, args []string) error {
 	// Find workspace
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	// Load rigs config and get rig
@@ -1169,7 +1169,7 @@ func runRigStop(cmd *cobra.Command, args []string) error {
 	// Find workspace
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	// Load rigs config
@@ -1298,7 +1298,7 @@ func runRigRestart(cmd *cobra.Command, args []string) error {
 	// Find workspace
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	// Load rigs config

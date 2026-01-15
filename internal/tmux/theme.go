@@ -1,4 +1,4 @@
-// Package tmux provides theme support for Gas Town tmux sessions.
+// Package tmux provides theme support for GongShow tmux sessions.
 package tmux
 
 import (

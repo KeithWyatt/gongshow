@@ -10,8 +10,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/config"
 )
 
 // RecipientType indicates the type of resolved recipient.
@@ -25,7 +25,7 @@ const (
 
 // Recipient represents a resolved message recipient.
 type Recipient struct {
-	Address      string        // The resolved address (e.g., "gastown/crew/max")
+	Address      string        // The resolved address (e.g., "gongshow/crew/max")
 	Type         RecipientType // Type of recipient (agent, queue, channel)
 	OriginalName string        // Original name before resolution (for queues/channels)
 }
@@ -101,7 +101,7 @@ func (r *Resolver) resolveAgentAddress(address string) ([]Recipient, error) {
 }
 
 // resolvePattern expands a wildcard pattern to matching agents.
-// Patterns like "*/witness" or "gastown/*" are expanded.
+// Patterns like "*/witness" or "gongshow/*" are expanded.
 func (r *Resolver) resolvePattern(pattern string) ([]Recipient, error) {
 	if r.beads == nil {
 		return nil, fmt.Errorf("beads not available for pattern resolution")
@@ -319,7 +319,7 @@ func (r *Resolver) resolveChannel(name string) ([]Recipient, error) {
 }
 
 // agentBeadIDToAddress converts an agent bead ID to a mail address.
-// E.g., "gt-gastown-crew-max" → "gastown/crew/max"
+// E.g., "gt-gongshow-crew-max" → "gongshow/crew/max"
 func agentBeadIDToAddress(id string) string {
 	if !strings.HasPrefix(id, "gt-") {
 		return ""
@@ -333,10 +333,10 @@ func agentBeadIDToAddress(id string) string {
 		// Town-level: gt-mayor → mayor/
 		return parts[0] + "/"
 	case 2:
-		// Rig singleton: gt-gastown-witness → gastown/witness
+		// Rig singleton: gt-gongshow-witness → gongshow/witness
 		return parts[0] + "/" + parts[1]
 	default:
-		// Rig named agent: gt-gastown-crew-max → gastown/crew/max
+		// Rig named agent: gt-gongshow-crew-max → gongshow/crew/max
 		if len(parts) >= 3 {
 			name := strings.Join(parts[2:], "-")
 			return parts[0] + "/" + parts[1] + "/" + name

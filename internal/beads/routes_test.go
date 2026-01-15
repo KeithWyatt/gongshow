@@ -14,7 +14,7 @@ func TestGetPrefixForRig(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	routesContent := `{"prefix": "gt-", "path": "gastown/mayor/rig"}
+	routesContent := `{"prefix": "gt-", "path": "gongshow/mayor/rig"}
 {"prefix": "bd-", "path": "beads/mayor/rig"}
 {"prefix": "hq-", "path": "."}
 `
@@ -26,7 +26,7 @@ func TestGetPrefixForRig(t *testing.T) {
 		rig      string
 		expected string
 	}{
-		{"gastown", "gt"},
+		{"gongshow", "gt"},
 		{"beads", "bd"},
 		{"unknown", "gt"}, // default
 		{"", "gt"},        // empty rig -> default
@@ -87,7 +87,7 @@ func TestGetRigPathForPrefix(t *testing.T) {
 	}
 
 	routesContent := `{"prefix": "ap-", "path": "ai_platform/mayor/rig"}
-{"prefix": "gt-", "path": "gastown/mayor/rig"}
+{"prefix": "gt-", "path": "gongshow/mayor/rig"}
 {"prefix": "hq-", "path": "."}
 `
 	if err := os.WriteFile(filepath.Join(beadsDir, "routes.jsonl"), []byte(routesContent), 0644); err != nil {
@@ -99,7 +99,7 @@ func TestGetRigPathForPrefix(t *testing.T) {
 		expected string
 	}{
 		{"ap-", filepath.Join(tmpDir, "ai_platform/mayor/rig")},
-		{"gt-", filepath.Join(tmpDir, "gastown/mayor/rig")},
+		{"gt-", filepath.Join(tmpDir, "gongshow/mayor/rig")},
 		{"hq-", tmpDir}, // Town-level beads return townRoot
 		{"unknown-", ""}, // Unknown prefix returns empty
 		{"", ""},         // Empty prefix returns empty
@@ -198,9 +198,9 @@ func TestAgentBeadIDsWithPrefix(t *testing.T) {
 		{"PolecatBeadIDWithPrefix bd beads obsidian",
 			func() string { return PolecatBeadIDWithPrefix("bd", "beads", "obsidian") },
 			"bd-beads-polecat-obsidian"},
-		{"PolecatBeadIDWithPrefix gt gastown Toast",
-			func() string { return PolecatBeadIDWithPrefix("gt", "gastown", "Toast") },
-			"gt-gastown-polecat-Toast"},
+		{"PolecatBeadIDWithPrefix gt gongshow Toast",
+			func() string { return PolecatBeadIDWithPrefix("gt", "gongshow", "Toast") },
+			"gt-gongshow-polecat-Toast"},
 		{"WitnessBeadIDWithPrefix bd beads",
 			func() string { return WitnessBeadIDWithPrefix("bd", "beads") },
 			"bd-beads-witness"},

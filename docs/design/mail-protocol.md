@@ -1,10 +1,10 @@
-# Gas Town Mail Protocol
+# GongShow Mail Protocol
 
-> Reference for inter-agent mail communication in Gas Town
+> Reference for inter-agent mail communication in GongShow
 
 ## Overview
 
-Gas Town agents coordinate via mail messages routed through the beads system.
+GongShow agents coordinate via mail messages routed through the beads system.
 Mail uses `type=message` beads with routing handled by `gt mail`.
 
 ## Message Types

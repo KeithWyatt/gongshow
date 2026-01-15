@@ -5,7 +5,7 @@ import (
 	"os/exec"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/daemon"
+	"github.com/KeithWyatt/gongshow/internal/daemon"
 )
 
 // DaemonCheck verifies the daemon is running.
@@ -19,7 +19,7 @@ func NewDaemonCheck() *DaemonCheck {
 		FixableCheck: FixableCheck{
 			BaseCheck: BaseCheck{
 				CheckName:        "daemon",
-				CheckDescription: "Check if Gas Town daemon is running",
+				CheckDescription: "Check if GongShow daemon is running",
 				CheckCategory:    CategoryInfrastructure,
 			},
 		},

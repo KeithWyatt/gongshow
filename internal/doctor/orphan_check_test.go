@@ -83,12 +83,12 @@ func TestIsCrewSession(t *testing.T) {
 		session string
 		want    bool
 	}{
-		{"gt-gastown-crew-joe", true},
+		{"gt-gongshow-crew-joe", true},
 		{"gt-beads-crew-max", true},
 		{"gt-rig-crew-a", true},
-		{"gt-gastown-witness", false},
-		{"gt-gastown-refinery", false},
-		{"gt-gastown-polecat1", false},
+		{"gt-gongshow-witness", false},
+		{"gt-gongshow-refinery", false},
+		{"gt-gongshow-polecat1", false},
 		{"hq-deacon", false},
 		{"hq-mayor", false},
 		{"other-session", false},
@@ -107,7 +107,7 @@ func TestIsCrewSession(t *testing.T) {
 
 func TestOrphanSessionCheck_IsValidSession(t *testing.T) {
 	check := NewOrphanSessionCheck()
-	validRigs := []string{"gastown", "beads"}
+	validRigs := []string{"gongshow", "beads"}
 	mayorSession := "hq-mayor"
 	deaconSession := "hq-deacon"
 
@@ -120,9 +120,9 @@ func TestOrphanSessionCheck_IsValidSession(t *testing.T) {
 		{"hq-deacon", true},
 
 		// Valid rig sessions
-		{"gt-gastown-witness", true},
-		{"gt-gastown-refinery", true},
-		{"gt-gastown-polecat1", true},
+		{"gt-gongshow-witness", true},
+		{"gt-gongshow-refinery", true},
+		{"gt-gongshow-polecat1", true},
 		{"gt-beads-witness", true},
 		{"gt-beads-refinery", true},
 		{"gt-beads-crew-max", true},
@@ -150,7 +150,7 @@ func TestOrphanSessionCheck_IsValidSession(t *testing.T) {
 // false positives in production - sessions incorrectly detected as orphans.
 func TestOrphanSessionCheck_IsValidSession_EdgeCases(t *testing.T) {
 	check := NewOrphanSessionCheck()
-	validRigs := []string{"gastown", "niflheim", "grctool", "7thsense", "pulseflow"}
+	validRigs := []string{"gongshow", "niflheim", "grctool", "7thsense", "pulseflow"}
 	mayorSession := "hq-mayor"
 	deaconSession := "hq-deacon"
 
@@ -163,7 +163,7 @@ func TestOrphanSessionCheck_IsValidSession_EdgeCases(t *testing.T) {
 		// Crew sessions with various name formats
 		{
 			name:    "crew_simple_name",
-			session: "gt-gastown-crew-max",
+			session: "gt-gongshow-crew-max",
 			want:    true,
 			reason:  "simple crew name should be valid",
 		},
@@ -195,7 +195,7 @@ func TestOrphanSessionCheck_IsValidSession_EdgeCases(t *testing.T) {
 		// Polecat sessions (any name after rig should be accepted)
 		{
 			name:    "polecat_hash_style",
-			session: "gt-gastown-abc123def",
+			session: "gt-gongshow-abc123def",
 			want:    true,
 			reason:  "polecat with hash-style name should be valid",
 		},
@@ -261,16 +261,16 @@ func TestOrphanSessionCheck_GetValidRigs(t *testing.T) {
 		}
 	}
 
-	createRigDir("gastown", true, true)
+	createRigDir("gongshow", true, true)
 	createRigDir("niflheim", true, false)
 	createRigDir("grctool", false, true)
 	createRigDir("not-a-rig", false, false) // No crew or polecats
 
 	rigs := check.getValidRigs(townRoot)
 
-	// Should find gastown, niflheim, grctool but not "not-a-rig"
+	// Should find gongshow, niflheim, grctool but not "not-a-rig"
 	expected := map[string]bool{
-		"gastown":  true,
+		"gongshow":  true,
 		"niflheim": true,
 		"grctool":  true,
 	}
@@ -293,14 +293,14 @@ func TestOrphanSessionCheck_FixProtectsCrewSessions(t *testing.T) {
 
 	// Simulate cached orphan sessions including a crew session
 	check.orphanSessions = []string{
-		"gt-gastown-crew-max",      // Crew - should be protected
+		"gt-gongshow-crew-max",      // Crew - should be protected
 		"gt-unknown-witness",       // Not crew - would be killed
 		"gt-niflheim-crew-codex1",  // Crew - should be protected
 	}
 
 	// Verify isCrewSession correctly identifies crew sessions
 	for _, sess := range check.orphanSessions {
-		if sess == "gt-gastown-crew-max" || sess == "gt-niflheim-crew-codex1" {
+		if sess == "gt-gongshow-crew-max" || sess == "gt-niflheim-crew-codex1" {
 			if !isCrewSession(sess) {
 				t.Errorf("isCrewSession(%q) should return true for crew session", sess)
 			}
@@ -320,7 +320,7 @@ func TestIsCrewSession_ComprehensivePatterns(t *testing.T) {
 		reason  string
 	}{
 		// Valid crew patterns
-		{"gt-gastown-crew-joe", true, "standard crew session"},
+		{"gt-gongshow-crew-joe", true, "standard crew session"},
 		{"gt-beads-crew-max", true, "different rig crew session"},
 		{"gt-niflheim-crew-codex1", true, "crew with numbers in name"},
 		{"gt-grctool-crew-grc1", true, "crew with alphanumeric name"},
@@ -328,19 +328,19 @@ func TestIsCrewSession_ComprehensivePatterns(t *testing.T) {
 		{"gt-a-crew-b", true, "minimal valid crew session"},
 
 		// Invalid crew patterns
-		{"gt-gastown-witness", false, "witness is not crew"},
-		{"gt-gastown-refinery", false, "refinery is not crew"},
-		{"gt-gastown-polecat-abc", false, "polecat is not crew"},
+		{"gt-gongshow-witness", false, "witness is not crew"},
+		{"gt-gongshow-refinery", false, "refinery is not crew"},
+		{"gt-gongshow-polecat-abc", false, "polecat is not crew"},
 		{"hq-deacon", false, "deacon is not crew"},
 		{"hq-mayor", false, "mayor is not crew"},
-		{"gt-gastown-crew", false, "missing crew name"},
+		{"gt-gongshow-crew", false, "missing crew name"},
 		{"gt-crew-max", false, "missing rig name"},
-		{"crew-gastown-max", false, "wrong prefix"},
+		{"crew-gongshow-max", false, "wrong prefix"},
 		{"other-session", false, "not a gt session"},
 		{"", false, "empty string"},
 		{"gt", false, "just prefix"},
 		{"gt-", false, "prefix with dash"},
-		{"gt-gastown", false, "rig only"},
+		{"gt-gongshow", false, "rig only"},
 	}
 
 	for _, tt := range tests {
@@ -366,8 +366,8 @@ func TestOrphanSessionCheck_Run_Deterministic(t *testing.T) {
 	}
 
 	// Create rig directories to make them "valid"
-	if err := os.MkdirAll(filepath.Join(townRoot, "gastown", "polecats"), 0o755); err != nil {
-		t.Fatalf("create gastown rig: %v", err)
+	if err := os.MkdirAll(filepath.Join(townRoot, "gongshow", "polecats"), 0o755); err != nil {
+		t.Fatalf("create gongshow rig: %v", err)
 	}
 	if err := os.MkdirAll(filepath.Join(townRoot, "beads", "crew"), 0o755); err != nil {
 		t.Fatalf("create beads rig: %v", err)
@@ -375,8 +375,8 @@ func TestOrphanSessionCheck_Run_Deterministic(t *testing.T) {
 
 	lister := &mockSessionLister{
 		sessions: []string{
-			"gt-gastown-witness",      // valid: gastown rig exists
-			"gt-gastown-polecat1",     // valid: gastown rig exists
+			"gt-gongshow-witness",      // valid: gongshow rig exists
+			"gt-gongshow-polecat1",     // valid: gongshow rig exists
 			"gt-beads-refinery",       // valid: beads rig exists
 			"gt-unknown-witness",      // orphan: unknown rig doesn't exist
 			"gt-missing-crew-joe",     // orphan: missing rig doesn't exist

@@ -6,10 +6,10 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/checkpoint"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/checkpoint"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 var checkpointCmd = &cobra.Command{
@@ -89,7 +89,7 @@ func runCheckpointWrite(cmd *cobra.Command, args []string) error {
 	// Detect role context
 	townRoot, err := workspace.FindFromCwd()
 	if err != nil || townRoot == "" {
-		return fmt.Errorf("not in a Gas Town workspace")
+		return fmt.Errorf("not in a GongShow workspace")
 	}
 
 	roleInfo, err := GetRoleWithContext(cwd, townRoot)

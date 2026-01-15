@@ -12,9 +12,9 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/events"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/events"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 var (
@@ -43,7 +43,7 @@ a predecessor session with full context. You can ask questions directly:
 DISCOVERY:
   gt seance                     # List recent sessions from events
   gt seance --role crew         # Filter by role type
-  gt seance --rig gastown       # Filter by rig
+  gt seance --rig gongshow       # Filter by rig
   gt seance --recent 10         # Last N sessions
 
 THE SEANCE (talk to predecessor):
@@ -55,7 +55,7 @@ This loads the predecessor's full context without modifying their session.
 
 Sessions are discovered from:
   1. Events emitted by SessionStart hooks (~/gt/.events.jsonl)
-  2. The [GAS TOWN] beacon makes sessions searchable in /resume`,
+  2. The [GONGSHOW] beacon makes sessions searchable in /resume`,
 	RunE: runSeance,
 }
 
@@ -91,7 +91,7 @@ func runSeance(cmd *cobra.Command, args []string) error {
 func runSeanceList() error {
 	townRoot, err := workspace.FindFromCwd()
 	if err != nil || townRoot == "" {
-		return fmt.Errorf("not in a Gas Town workspace")
+		return fmt.Errorf("not in a GongShow workspace")
 	}
 
 	// Read session events from our event stream

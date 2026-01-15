@@ -86,10 +86,10 @@ func CrewRoleBeadIDTown() string {
 // Examples:
 //   - gt-mayor (town-level, no rig)
 //   - gt-deacon (town-level, no rig)
-//   - gt-gastown-witness (rig-level singleton)
-//   - gt-gastown-refinery (rig-level singleton)
-//   - gt-gastown-crew-max (rig-level named agent)
-//   - gt-gastown-polecat-Toast (rig-level named agent)
+//   - gt-gongshow-witness (rig-level singleton)
+//   - gt-gongshow-refinery (rig-level singleton)
+//   - gt-gongshow-crew-max (rig-level named agent)
+//   - gt-gongshow-polecat-Toast (rig-level named agent)
 
 // AgentBeadIDWithPrefix generates an agent bead ID using the specified prefix.
 // The prefix should NOT include the hyphen (e.g., "gt", "bd", not "gt-", "bd-").
@@ -110,7 +110,7 @@ func AgentBeadIDWithPrefix(prefix, rig, role, name string) string {
 }
 
 // AgentBeadID generates the canonical agent bead ID using "gt" prefix.
-// For non-gastown rigs, use AgentBeadIDWithPrefix with the rig's configured prefix.
+// For non-gongshow rigs, use AgentBeadIDWithPrefix with the rig's configured prefix.
 func AgentBeadID(rig, role, name string) string {
 	return AgentBeadIDWithPrefix("gt", rig, role, name)
 }
@@ -202,19 +202,19 @@ func ParseAgentBeadID(id string) (rig, role, name string, ok bool) {
 		// Town-level: gt-mayor, bd-deacon
 		return "", parts[0], "", true
 	case 2:
-		// Could be rig-level singleton (gt-gastown-witness) or
+		// Could be rig-level singleton (gt-gongshow-witness) or
 		// town-level named (gt-dog-alpha for dogs)
 		if parts[0] == "dog" {
 			// Dogs are town-level named agents: gt-dog-<name>
 			return "", "dog", parts[1], true
 		}
-		// Rig-level singleton: gt-gastown-witness
+		// Rig-level singleton: gt-gongshow-witness
 		return parts[0], parts[1], "", true
 	case 3:
-		// Rig-level named: gt-gastown-crew-max, bd-beads-polecat-pearl
+		// Rig-level named: gt-gongshow-crew-max, bd-beads-polecat-pearl
 		return parts[0], parts[1], parts[2], true
 	default:
-		// Handle names with hyphens: gt-gastown-polecat-my-agent-name
+		// Handle names with hyphens: gt-gongshow-polecat-my-agent-name
 		// or gt-dog-my-agent-name
 		if len(parts) >= 3 {
 			if parts[0] == "dog" {
@@ -228,7 +228,7 @@ func ParseAgentBeadID(id string) (rig, role, name string, ok bool) {
 }
 
 // IsAgentSessionBead returns true if the bead ID represents an agent session molecule.
-// Agent session beads follow patterns like gt-mayor, bd-beads-witness, gt-gastown-crew-joe.
+// Agent session beads follow patterns like gt-mayor, bd-beads-witness, gt-gongshow-crew-joe.
 // Supports any valid prefix (e.g., "gt-", "bd-"), not just "gt-".
 // These are used to track agent state and update frequently, which can create noise.
 func IsAgentSessionBead(beadID string) bool {

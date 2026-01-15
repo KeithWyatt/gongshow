@@ -9,8 +9,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/constants"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/constants"
 )
 
 // RigIsGitRepoCheck verifies the rig has a valid mayor/rig git clone.
@@ -86,7 +86,7 @@ func (c *RigIsGitRepoCheck) Run(ctx *CheckContext) *CheckResult {
 	}
 }
 
-// GitExcludeConfiguredCheck verifies .git/info/exclude has Gas Town directories.
+// GitExcludeConfiguredCheck verifies .git/info/exclude has GongShow directories.
 type GitExcludeConfiguredCheck struct {
 	FixableCheck
 	missingEntries []string
@@ -99,7 +99,7 @@ func NewGitExcludeConfiguredCheck() *GitExcludeConfiguredCheck {
 		FixableCheck: FixableCheck{
 			BaseCheck: BaseCheck{
 				CheckName:        "git-exclude-configured",
-				CheckDescription: "Check .git/info/exclude has Gas Town directories",
+				CheckDescription: "Check .git/info/exclude has GongShow directories",
 				CheckCategory:    CategoryRig,
 			},
 		},
@@ -190,7 +190,7 @@ func (c *GitExcludeConfiguredCheck) Run(ctx *CheckContext) *CheckResult {
 	return &CheckResult{
 		Name:    c.Name(),
 		Status:  StatusWarning,
-		Message: fmt.Sprintf("%d Gas Town directories not excluded", len(c.missingEntries)),
+		Message: fmt.Sprintf("%d GongShow directories not excluded", len(c.missingEntries)),
 		Details: []string{fmt.Sprintf("Missing: %s", strings.Join(c.missingEntries, ", "))},
 		FixHint: "Run 'gt doctor --fix' to add missing entries",
 	}
@@ -218,12 +218,12 @@ func (c *GitExcludeConfiguredCheck) Fix(ctx *CheckContext) error {
 	// Add a header comment if file is empty or new
 	info, _ := f.Stat()
 	if info.Size() == 0 {
-		if _, err := f.WriteString("# Gas Town directories\n"); err != nil {
+		if _, err := f.WriteString("# GongShow directories\n"); err != nil {
 			return err
 		}
 	} else {
 		// Add newline before new entries
-		if _, err := f.WriteString("\n# Gas Town directories\n"); err != nil {
+		if _, err := f.WriteString("\n# GongShow directories\n"); err != nil {
 			return err
 		}
 	}
@@ -1055,7 +1055,7 @@ func (c *BeadsRedirectCheck) Fix(ctx *CheckContext) error {
 			// Continue - minimal config created
 		} else {
 			_ = output // bd init succeeded
-			// Configure custom types for Gas Town (beads v0.46.0+)
+			// Configure custom types for GongShow (beads v0.46.0+)
 			configCmd := exec.Command("bd", "config", "set", "types.custom", constants.BeadsCustomTypes)
 			configCmd.Dir = rigPath
 			_, _ = configCmd.CombinedOutput() // Ignore errors - older beads don't need this
@@ -1102,7 +1102,7 @@ func hasBeadsData(beadsDir string) bool {
 
 // BareRepoRefspecCheck verifies that the shared bare repo has the correct refspec configured.
 // Without this, worktrees created from the bare repo cannot fetch and see origin/* refs.
-// See: https://github.com/anthropics/gastown/issues/286
+// See: https://github.com/anthropics/gongshow/issues/286
 type BareRepoRefspecCheck struct {
 	FixableCheck
 }

@@ -7,11 +7,11 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/claude"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/constants"
-	"github.com/steveyegge/gastown/internal/session"
-	"github.com/steveyegge/gastown/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/claude"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/constants"
+	"github.com/KeithWyatt/gongshow/internal/session"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
 )
 
 // Common errors
@@ -95,7 +95,7 @@ func (m *Manager) Start(agentOverride string) error {
 
 	// Create session in townRoot (not mayorDir) to match gt handoff behavior
 	// This ensures Mayor works from the town root where all tools work correctly
-	// See: https://github.com/anthropics/gastown/issues/280
+	// See: https://github.com/anthropics/gongshow/issues/280
 	if err := t.NewSessionWithCommand(sessionID, m.townRoot, startupCmd); err != nil {
 		return fmt.Errorf("creating tmux session: %w", err)
 	}

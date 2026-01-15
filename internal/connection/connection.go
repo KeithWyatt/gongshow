@@ -1,5 +1,5 @@
 // Package connection provides an abstraction for local and remote operations.
-// This allows Gas Town to manage rigs on remote machines via SSH using
+// This allows GongShow to manage rigs on remote machines via SSH using
 // the same interface as local operations.
 package connection
 

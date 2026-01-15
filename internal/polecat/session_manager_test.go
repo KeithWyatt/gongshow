@@ -6,33 +6,33 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/steveyegge/gastown/internal/rig"
-	"github.com/steveyegge/gastown/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/rig"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
 )
 
 func TestSessionName(t *testing.T) {
 	r := &rig.Rig{
-		Name:     "gastown",
+		Name:     "gongshow",
 		Polecats: []string{"Toast"},
 	}
 	m := NewSessionManager(tmux.NewTmux(), r)
 
 	name := m.SessionName("Toast")
-	if name != "gt-gastown-Toast" {
-		t.Errorf("sessionName = %q, want gt-gastown-Toast", name)
+	if name != "gt-gongshow-Toast" {
+		t.Errorf("sessionName = %q, want gt-gongshow-Toast", name)
 	}
 }
 
 func TestSessionManagerPolecatDir(t *testing.T) {
 	r := &rig.Rig{
-		Name:     "gastown",
-		Path:     "/home/user/ai/gastown",
+		Name:     "gongshow",
+		Path:     "/home/user/ai/gongshow",
 		Polecats: []string{"Toast"},
 	}
 	m := NewSessionManager(tmux.NewTmux(), r)
 
 	dir := m.polecatDir("Toast")
-	expected := "/home/user/ai/gastown/polecats/Toast"
+	expected := "/home/user/ai/gongshow/polecats/Toast"
 	if dir != expected {
 		t.Errorf("polecatDir = %q, want %q", dir, expected)
 	}
@@ -48,7 +48,7 @@ func TestHasPolecat(t *testing.T) {
 	}
 
 	r := &rig.Rig{
-		Name:     "gastown",
+		Name:     "gongshow",
 		Path:     root,
 		Polecats: []string{"Toast", "Cheedo"},
 	}
@@ -67,7 +67,7 @@ func TestHasPolecat(t *testing.T) {
 
 func TestStartPolecatNotFound(t *testing.T) {
 	r := &rig.Rig{
-		Name:     "gastown",
+		Name:     "gongshow",
 		Polecats: []string{"Toast"},
 	}
 	m := NewSessionManager(tmux.NewTmux(), r)
@@ -80,7 +80,7 @@ func TestStartPolecatNotFound(t *testing.T) {
 
 func TestIsRunningNoSession(t *testing.T) {
 	r := &rig.Rig{
-		Name:     "gastown",
+		Name:     "gongshow",
 		Polecats: []string{"Toast"},
 	}
 	m := NewSessionManager(tmux.NewTmux(), r)
@@ -158,9 +158,9 @@ func TestPolecatCommandFormat(t *testing.T) {
 	// The actual command is built in Start() but we test the format here
 	// to document and verify the expected behavior.
 
-	rigName := "gastown"
+	rigName := "gongshow"
 	polecatName := "Toast"
-	expectedBdActor := "gastown/polecats/Toast"
+	expectedBdActor := "gongshow/polecats/Toast"
 
 	// Build the expected command format (mirrors Start() logic)
 	expectedPrefix := "export GT_ROLE=polecat GT_RIG=" + rigName + " GT_POLECAT=" + polecatName + " BD_ACTOR=" + expectedBdActor + " GIT_AUTHOR_NAME=" + expectedBdActor

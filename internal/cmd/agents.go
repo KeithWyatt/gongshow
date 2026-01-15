@@ -10,14 +10,14 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/constants"
-	"github.com/steveyegge/gastown/internal/lock"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/tmux"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/constants"
+	"github.com/KeithWyatt/gongshow/internal/lock"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
-// AgentType represents the type of Gas Town agent.
+// AgentType represents the type of GongShow agent.
 type AgentType int
 
 const (
@@ -62,8 +62,8 @@ var agentsCmd = &cobra.Command{
 	Use:     "agents",
 	Aliases: []string{"ag"},
 	GroupID: GroupAgents,
-	Short:   "Switch between Gas Town agent sessions",
-	Long: `Display a popup menu of core Gas Town agent sessions.
+	Short:   "Switch between GongShow agent sessions",
+	Long: `Display a popup menu of core GongShow agent sessions.
 
 Shows Mayor, Deacon, Witnesses, Refineries, and Crew workers.
 Polecats are hidden (use 'gt polecat list' to see them).
@@ -189,7 +189,7 @@ func categorizeSession(name string) *AgentSession {
 	return session
 }
 
-// getAgentSessions returns all categorized Gas Town sessions.
+// getAgentSessions returns all categorized GongShow sessions.
 func getAgentSessions(includePolecats bool) ([]*AgentSession, error) {
 	t := tmux.NewTmux()
 	sessions, err := t.ListSessions()
@@ -301,7 +301,7 @@ func runAgents(cmd *cobra.Command, args []string) error {
 	// Build display-menu arguments
 	menuArgs := []string{
 		"display-menu",
-		"-T", "#[fg=cyan,bold]⚙️  Gas Town Agents",
+		"-T", "#[fg=cyan,bold]⚙️  GongShow Agents",
 		"-x", "C", // Center horizontally
 		"-y", "C", // Center vertically
 	}
@@ -407,7 +407,7 @@ type CollisionIssue struct {
 func runAgentsCheck(cmd *cobra.Command, args []string) error {
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	report, err := buildCollisionReport(townRoot)
@@ -448,7 +448,7 @@ func runAgentsCheck(cmd *cobra.Command, args []string) error {
 func runAgentsFix(cmd *cobra.Command, args []string) error {
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	// Clean stale locks

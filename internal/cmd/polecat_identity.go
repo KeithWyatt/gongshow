@@ -13,11 +13,11 @@ import (
 
 	"github.com/charmbracelet/lipgloss"
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/git"
-	"github.com/steveyegge/gastown/internal/polecat"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/git"
+	"github.com/KeithWyatt/gongshow/internal/polecat"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
 )
 
 // Polecat identity command flags
@@ -53,8 +53,8 @@ The identity bead tracks:
   - Cleanup status
 
 Example:
-  gt polecat identity add gastown Toast
-  gt polecat identity add gastown  # auto-generate name`,
+  gt polecat identity add gongshow Toast
+  gt polecat identity add gongshow  # auto-generate name`,
 	Args: cobra.RangeArgs(1, 2),
 	RunE: runPolecatIdentityAdd,
 }
@@ -71,8 +71,8 @@ Shows:
   - Whether worktree exists
 
 Example:
-  gt polecat identity list gastown
-  gt polecat identity list gastown --json`,
+  gt polecat identity list gongshow
+  gt polecat identity list gongshow --json`,
 	Args: cobra.ExactArgs(1),
 	RunE: runPolecatIdentityList,
 }
@@ -91,8 +91,8 @@ Displays:
   - Recent work list with relative timestamps
 
 Examples:
-  gt polecat identity show gastown Toast
-  gt polecat identity show gastown Toast --json`,
+  gt polecat identity show gongshow Toast
+  gt polecat identity show gongshow Toast --json`,
 	Args: cobra.ExactArgs(2),
 	RunE: runPolecatIdentityShow,
 }
@@ -113,7 +113,7 @@ Safety checks:
   - Polecat session must not be running
 
 Example:
-  gt polecat identity rename gastown Toast Imperator`,
+  gt polecat identity rename gongshow Toast Imperator`,
 	Args: cobra.ExactArgs(3),
 	RunE: runPolecatIdentityRename,
 }
@@ -131,8 +131,8 @@ Safety checks:
 Use --force to bypass safety checks.
 
 Example:
-  gt polecat identity remove gastown Toast
-  gt polecat identity remove gastown Toast --force`,
+  gt polecat identity remove gongshow Toast
+  gt polecat identity remove gongshow Toast --force`,
 	Args: cobra.ExactArgs(2),
 	RunE: runPolecatIdentityRemove,
 }

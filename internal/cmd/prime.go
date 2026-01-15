@@ -11,11 +11,11 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/lock"
-	"github.com/steveyegge/gastown/internal/state"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/lock"
+	"github.com/KeithWyatt/gongshow/internal/state"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 var primeHookMode bool
@@ -114,7 +114,7 @@ func runPrime(cmd *cobra.Command, args []string) error {
 		if !state.IsEnabled() {
 			return nil // Silent exit - not in workspace and not enabled
 		}
-		return fmt.Errorf("not in a Gas Town workspace")
+		return fmt.Errorf("not in a GongShow workspace")
 	}
 
 	// Handle hook mode: read session ID from stdin and persist it
@@ -442,7 +442,7 @@ func checkSlungWork(ctx RoleContext) bool {
 	fmt.Printf("%s\n\n", style.Bold.Render("## 🚨 AUTONOMOUS WORK MODE 🚨"))
 	fmt.Println("Work is on your hook. After announcing your role, begin IMMEDIATELY.")
 	fmt.Println()
-	fmt.Println("This is physics, not politeness. Gas Town is a steam engine - you are a piston.")
+	fmt.Println("This is physics, not politeness. GongShow is a steam engine - you are a piston.")
 	fmt.Println("Every moment you wait is a moment the engine stalls. Other agents may be")
 	fmt.Println("blocked waiting on YOUR output. The hook IS your assignment. RUN IT.")
 	fmt.Println()

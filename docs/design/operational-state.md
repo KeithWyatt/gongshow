@@ -1,10 +1,10 @@
-# Operational State in Gas Town
+# Operational State in GongShow
 
 > Managing runtime state through events and labels.
 
 ## Overview
 
-Gas Town tracks operational state changes as structured data. This document covers:
+GongShow tracks operational state changes as structured data. This document covers:
 - **Events**: State transitions as beads (immutable audit trail)
 - **Labels-as-state**: Fast queries via role bead labels (current state cache)
 

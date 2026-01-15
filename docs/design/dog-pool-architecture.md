@@ -84,7 +84,7 @@ const (
 
 type Warrant struct {
     ID        string    // Bead ID for the warrant
-    Target    string    // Session to interrogate (e.g., "gt-gastown-Toast")
+    Target    string    // Session to interrogate (e.g., "gt-gongshow-Toast")
     Reason    string    // Why warrant was issued
     Requester string    // Who filed the warrant
     FiledAt   time.Time
@@ -159,7 +159,7 @@ Each active dog writes state to `~/gt/deacon/dogs/active/<id>.json`:
   "id": "dog-1704567890123",
   "warrant": {
     "id": "gt-abc123",
-    "target": "gt-gastown-Toast",
+    "target": "gt-gongshow-Toast",
     "reason": "no_response_health_check",
     "requester": "deacon",
     "filed_at": "2026-01-07T20:15:00Z"
@@ -457,7 +457,7 @@ gt dog dances
 gt dog warrants
 # Output:
 # Pending Warrants: 2
-#   1. gt-abc: witness-gastown (stuck_no_progress)
+#   1. gt-abc: witness-gongshow (stuck_no_progress)
 #   2. gt-def: polecat-Copper (crash_loop)
 ```
 

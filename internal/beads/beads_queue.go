@@ -14,7 +14,7 @@ import (
 // These are stored as "key: value" lines in the description.
 type QueueFields struct {
 	Name            string // Queue name (human-readable identifier)
-	ClaimPattern    string // Pattern for who can claim from queue (e.g., "gastown/polecats/*")
+	ClaimPattern    string // Pattern for who can claim from queue (e.g., "gongshow/polecats/*")
 	Status          string // active, paused, closed
 	MaxConcurrency  int    // Maximum number of concurrent workers (0 = unlimited)
 	ProcessingOrder string // fifo, priority (default: fifo)
@@ -295,7 +295,7 @@ func (b *Beads) DeleteQueueBead(id string) error {
 // MatchClaimPattern checks if an identity matches a claim pattern.
 // Patterns support:
 //   - "*" matches anyone
-//   - "gastown/polecats/*" matches any polecat in gastown rig
+//   - "gongshow/polecats/*" matches any polecat in gongshow rig
 //   - "*/witness" matches any witness role across rigs
 //   - Exact match for specific identities
 func MatchClaimPattern(pattern, identity string) bool {
@@ -312,8 +312,8 @@ func MatchClaimPattern(pattern, identity string) bool {
 	// Wildcard pattern matching
 	if strings.Contains(pattern, "*") {
 		// Convert to simple glob matching
-		// "gastown/polecats/*" should match "gastown/polecats/capable"
-		// "*/witness" should match "gastown/witness"
+		// "gongshow/polecats/*" should match "gongshow/polecats/capable"
+		// "*/witness" should match "gongshow/witness"
 		parts := strings.Split(pattern, "*")
 		if len(parts) == 2 {
 			prefix := parts[0]

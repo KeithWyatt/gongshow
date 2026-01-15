@@ -9,9 +9,9 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/tmux"
-	"github.com/steveyegge/gastown/internal/tui/feed"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/tui/feed"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 	"golang.org/x/term"
 )
 
@@ -86,15 +86,15 @@ Examples:
   gt feed --plain               # Plain text output (bd activity)
   gt feed --window              # Open in dedicated tmux window
   gt feed --since 1h            # Events from last hour
-  gt feed --rig greenplace         # Use gastown rig's beads`,
+  gt feed --rig greenplace         # Use gongshow rig's beads`,
 	RunE: runFeed,
 }
 
 func runFeed(cmd *cobra.Command, args []string) error {
-	// Must be in a Gas Town workspace
+	// Must be in a GongShow workspace
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace (run from ~/gt or a rig directory)")
+		return fmt.Errorf("not in a GongShow workspace (run from ~/gt or a rig directory)")
 	}
 
 	// Determine working directory
@@ -197,10 +197,10 @@ func runFeedDirect(workDir string, bdArgs []string) error {
 
 // runFeedTUI runs the interactive TUI feed.
 func runFeedTUI(workDir string) error {
-	// Must be in a Gas Town workspace
+	// Must be in a GongShow workspace
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	var sources []feed.EventSource

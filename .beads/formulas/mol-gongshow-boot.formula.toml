@@ -1,5 +1,5 @@
 description = """
-Mayor bootstraps Gas Town via a verification-gated lifecycle molecule.
+Mayor bootstraps GongShow via a verification-gated lifecycle molecule.
 
 ## Purpose
 When Mayor executes \"boot up gas town\", this proto provides the workflow.
@@ -14,14 +14,14 @@ Each step has action + verification - steps stay open until outcome is confirmed
 
 ## Execution
 ```bash
-bd mol wisp mol-gastown-boot  # Create wisp
+bd mol wisp mol-gongshow-boot  # Create wisp
 ```"""
-formula = "mol-gastown-boot"
+formula = "mol-gongshow-boot"
 version = 1
 
 [[steps]]
 description = """
-Verify the Gas Town daemon is running.
+Verify the GongShow daemon is running.
 
 ## Action
 ```bash
@@ -74,19 +74,19 @@ type = "parallel"
 
 [[steps.children]]
 description = """
-Start the gastown rig Witness.
+Start the gongshow rig Witness.
 
 ## Action
 ```bash
-gt witness start gastown
+gt witness start gongshow
 ```
 
 ## Verify
-1. Session exists: `tmux has-session -t gastown-witness 2>/dev/null`
-2. Not stalled: `gt peek gastown/witness` does NOT show \"> Try\" prompt
+1. Session exists: `tmux has-session -t gongshow-witness 2>/dev/null`
+2. Not stalled: `gt peek gongshow/witness` does NOT show \"> Try\" prompt
 3. Heartbeat fresh: Last patrol cycle < 5 min ago"""
-id = "ensure-gastown-witness"
-title = "Ensure gastown witness"
+id = "ensure-gongshow-witness"
+title = "Ensure gongshow witness"
 
 [[steps.children]]
 description = """
@@ -116,19 +116,19 @@ type = "parallel"
 
 [[steps.children]]
 description = """
-Start the gastown rig Refinery.
+Start the gongshow rig Refinery.
 
 ## Action
 ```bash
-gt refinery start gastown
+gt refinery start gongshow
 ```
 
 ## Verify
-1. Session exists: `tmux has-session -t gastown-refinery 2>/dev/null`
-2. Not stalled: `gt peek gastown/refinery` does NOT show \"> Try\" prompt
+1. Session exists: `tmux has-session -t gongshow-refinery 2>/dev/null`
+2. Not stalled: `gt peek gongshow/refinery` does NOT show \"> Try\" prompt
 3. Queue processing: Refinery can receive merge requests"""
-id = "ensure-gastown-refinery"
-title = "Ensure gastown refinery"
+id = "ensure-gongshow-refinery"
+title = "Ensure gongshow refinery"
 
 [[steps.children]]
 description = """
@@ -148,7 +148,7 @@ title = "Ensure beads refinery"
 
 [[steps]]
 description = """
-Final verification that Gas Town is healthy.
+Final verification that GongShow is healthy.
 
 ## Action
 ```bash

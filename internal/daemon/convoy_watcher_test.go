@@ -22,7 +22,7 @@ func TestBdActivityEventParsing(t *testing.T) {
 		},
 		{
 			name:        "status change to in_progress",
-			line:        `{"timestamp":"2026-01-12T02:43:04.467992-08:00","type":"status","issue_id":"gt-uoc64","symbol":"→","message":"gt-uoc64 started","old_status":"open","new_status":"in_progress","actor":"gastown/crew/george"}`,
+			line:        `{"timestamp":"2026-01-12T02:43:04.467992-08:00","type":"status","issue_id":"gt-uoc64","symbol":"→","message":"gt-uoc64 started","old_status":"open","new_status":"in_progress","actor":"gongshow/crew/george"}`,
 			wantType:    "status",
 			wantIssueID: "gt-uoc64",
 			wantNew:     "in_progress",

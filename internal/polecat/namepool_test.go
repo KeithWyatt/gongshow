@@ -99,7 +99,7 @@ func TestNamePool_Overflow(t *testing.T) {
 	}
 	defer func() { _ = os.RemoveAll(tmpDir) }()
 
-	pool := NewNamePoolWithConfig(tmpDir, "gastown", "mad-max", nil, 5)
+	pool := NewNamePoolWithConfig(tmpDir, "gongshow", "mad-max", nil, 5)
 
 	// Exhaust the small pool
 	for i := 0; i < 5; i++ {
@@ -111,15 +111,15 @@ func TestNamePool_Overflow(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Allocate error: %v", err)
 	}
-	expected := "gastown-6"
+	expected := "gongshow-6"
 	if name != expected {
 		t.Errorf("expected overflow name %s, got %s", expected, name)
 	}
 
 	// Next overflow
 	name, _ = pool.Allocate()
-	if name != "gastown-7" {
-		t.Errorf("expected gastown-7, got %s", name)
+	if name != "gongshow-7" {
+		t.Errorf("expected gongshow-7, got %s", name)
 	}
 }
 
@@ -130,7 +130,7 @@ func TestNamePool_OverflowNotReusable(t *testing.T) {
 	}
 	defer func() { _ = os.RemoveAll(tmpDir) }()
 
-	pool := NewNamePoolWithConfig(tmpDir, "gastown", "mad-max", nil, 3)
+	pool := NewNamePoolWithConfig(tmpDir, "gongshow", "mad-max", nil, 3)
 
 	// Exhaust the pool
 	for i := 0; i < 3; i++ {
@@ -139,17 +139,17 @@ func TestNamePool_OverflowNotReusable(t *testing.T) {
 
 	// Get overflow name
 	overflow1, _ := pool.Allocate()
-	if overflow1 != "gastown-4" {
-		t.Fatalf("expected gastown-4, got %s", overflow1)
+	if overflow1 != "gongshow-4" {
+		t.Fatalf("expected gongshow-4, got %s", overflow1)
 	}
 
 	// Release it - should not be reused
 	pool.Release(overflow1)
 
-	// Next allocation should be gastown-5, not gastown-4
+	// Next allocation should be gongshow-5, not gongshow-4
 	name, _ := pool.Allocate()
-	if name != "gastown-5" {
-		t.Errorf("expected gastown-5 (overflow increments), got %s", name)
+	if name != "gongshow-5" {
+		t.Errorf("expected gongshow-5 (overflow increments), got %s", name)
 	}
 }
 
@@ -243,7 +243,7 @@ func TestNamePool_IsPoolName(t *testing.T) {
 		{"furiosa", true},
 		{"nux", true},
 		{"max", true},
-		{"gastown-51", false}, // overflow format
+		{"gongshow-51", false}, // overflow format
 		{"random-name", false},
 		{"polecat-01", false}, // old format
 	}

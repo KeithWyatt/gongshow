@@ -18,7 +18,7 @@ func TestRoutesCheck_MissingTownRoute(t *testing.T) {
 
 		// Create routes.jsonl with only a rig route (no hq- or hq-cv- routes)
 		routesPath := filepath.Join(beadsDir, "routes.jsonl")
-		routesContent := `{"prefix": "gt-", "path": "gastown/mayor/rig"}
+		routesContent := `{"prefix": "gt-", "path": "gongshow/mayor/rig"}
 `
 		if err := os.WriteFile(routesPath, []byte(routesContent), 0644); err != nil {
 			t.Fatal(err)

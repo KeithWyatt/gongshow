@@ -1,6 +1,6 @@
-# Release Process for Gas Town
+# Release Process for GongShow
 
-This document describes the release process for Gas Town, including GitHub releases and npm packages.
+This document describes the release process for GongShow, including GitHub releases and npm packages.
 
 ## Table of Contents
 
@@ -15,16 +15,16 @@ This document describes the release process for Gas Town, including GitHub relea
 
 ## Overview
 
-A Gas Town release involves multiple distribution channels:
+A GongShow release involves multiple distribution channels:
 
 1. **GitHub Release** - Binary downloads for all platforms
-2. **npm** - Node.js package for cross-platform installation (`@gastown/gt`)
+2. **npm** - Node.js package for cross-platform installation (`@gongshow/gt`)
 
 ## Prerequisites
 
 ### Required Tools
 
-- `git` with push access to steveyegge/gastown
+- `git` with push access to KeithWyatt/gongshow
 - `goreleaser` for building binaries
 - `npm` with authentication (for npm releases)
 - `gh` CLI (GitHub CLI, recommended)
@@ -32,13 +32,13 @@ A Gas Town release involves multiple distribution channels:
 ### Required Access
 
 - GitHub: Write access to repository and ability to create releases
-- npm: Publish access to `@gastown` organization
+- npm: Publish access to `@gongshow` organization
 
 ### Verify Setup
 
 ```bash
 # Check git
-git remote -v  # Should show steveyegge/gastown
+git remote -v  # Should show KeithWyatt/gongshow
 
 # Check goreleaser
 goreleaser --version
@@ -136,7 +136,7 @@ This will:
 
 ### Verify GitHub Release
 
-1. Visit https://github.com/steveyegge/gastown/releases
+1. Visit https://github.com/KeithWyatt/gongshow/releases
 2. Verify the new version is marked as "Latest"
 3. Check all platform binaries are present
 
@@ -154,12 +154,12 @@ npm test
 
 # Pack and test install
 npm pack
-npm install -g ./gastown-gt-0.2.0.tgz
+npm install -g ./gongshow-gt-0.2.0.tgz
 gt version  # Should show 0.2.0
 
 # Cleanup
-npm uninstall -g @gastown/gt
-rm gastown-gt-0.2.0.tgz
+npm uninstall -g @gongshow/gt
+rm gongshow-gt-0.2.0.tgz
 ```
 
 ### Publish to npm
@@ -173,7 +173,7 @@ npm publish --access public
 ### Verify npm Release
 
 ```bash
-npm install -g @gastown/gt
+npm install -g @gongshow/gt
 gt version  # Should show 0.2.0
 ```
 
@@ -185,15 +185,15 @@ After all channels are updated:
 
 ```bash
 # Download and test binary
-curl -LO https://github.com/steveyegge/gastown/releases/download/v0.2.0/gastown_0.2.0_darwin_arm64.tar.gz
-tar -xzf gastown_0.2.0_darwin_arm64.tar.gz
+curl -LO https://github.com/KeithWyatt/gongshow/releases/download/v0.2.0/gongshow_0.2.0_darwin_arm64.tar.gz
+tar -xzf gongshow_0.2.0_darwin_arm64.tar.gz
 ./gt version
 ```
 
 ### npm
 
 ```bash
-npm install -g @gastown/gt
+npm install -g @gongshow/gt
 gt version
 ```
 
@@ -226,7 +226,7 @@ git push origin main
 
 ## Version Numbering
 
-Gas Town follows [Semantic Versioning](https://semver.org/):
+GongShow follows [Semantic Versioning](https://semver.org/):
 
 - **MAJOR** (x.0.0): Breaking changes
 - **MINOR** (0.x.0): New features, backwards compatible
@@ -234,5 +234,5 @@ Gas Town follows [Semantic Versioning](https://semver.org/):
 
 ## Questions?
 
-- Open an issue: https://github.com/steveyegge/gastown/issues
-- Check existing releases: https://github.com/steveyegge/gastown/releases
+- Open an issue: https://github.com/KeithWyatt/gongshow/issues
+- Check existing releases: https://github.com/KeithWyatt/gongshow/releases

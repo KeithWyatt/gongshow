@@ -12,8 +12,8 @@ import (
 func TestParseRealFormulas(t *testing.T) {
 	// Find formula files - they're in various .beads/formulas directories
 	formulaDirs := []string{
-		"/Users/stevey/gt/gastown/polecats/slit/.beads/formulas",
-		"/Users/stevey/gt/gastown/mayor/rig/.beads/formulas",
+		"/Users/stevey/gt/gongshow/polecats/slit/.beads/formulas",
+		"/Users/stevey/gt/gongshow/mayor/rig/.beads/formulas",
 	}
 
 	var formulaFiles []string

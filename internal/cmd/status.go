@@ -12,16 +12,16 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/constants"
-	"github.com/steveyegge/gastown/internal/crew"
-	"github.com/steveyegge/gastown/internal/git"
-	"github.com/steveyegge/gastown/internal/mail"
-	"github.com/steveyegge/gastown/internal/rig"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/tmux"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/constants"
+	"github.com/KeithWyatt/gongshow/internal/crew"
+	"github.com/KeithWyatt/gongshow/internal/git"
+	"github.com/KeithWyatt/gongshow/internal/mail"
+	"github.com/KeithWyatt/gongshow/internal/rig"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 	"golang.org/x/term"
 )
 
@@ -36,7 +36,7 @@ var statusCmd = &cobra.Command{
 	Aliases: []string{"stat"},
 	GroupID: GroupDiag,
 	Short:   "Show overall town status",
-	Long: `Display the current status of the Gas Town workspace.
+	Long: `Display the current status of the GongShow workspace.
 
 Shows town name, registered rigs, active polecats, and witness status.
 
@@ -186,7 +186,7 @@ func runStatusOnce(_ *cobra.Command, _ []string) error {
 	// Find town root
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	// Check bd daemon health and attempt restart if needed
@@ -619,7 +619,7 @@ func renderAgentDetails(agent AgentRuntime, indent string, hooks []AgentHookInfo
 	// Build agent bead ID using canonical naming: prefix-rig-role-name
 	agentBeadID := "gt-" + agent.Name
 	if agent.Address != "" && agent.Address != agent.Name {
-		// Use address for full path agents like gastown/crew/joe → gt-gastown-crew-joe
+		// Use address for full path agents like gongshow/crew/joe → gt-gongshow-crew-joe
 		addr := strings.TrimSuffix(agent.Address, "/") // Remove trailing slash for global agents
 		parts := strings.Split(addr, "/")
 		if len(parts) == 1 {

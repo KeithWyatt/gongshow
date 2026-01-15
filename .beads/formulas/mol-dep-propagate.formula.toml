@@ -111,7 +111,7 @@ description = """
 Send notifications to Witnesses of affected rigs.
 
 **1. Group dependents by rig:**
-- gastown/witness: for gt-* issues
+- gongshow/witness: for gt-* issues
 - beads/witness: for bd-* issues
 - etc.
 

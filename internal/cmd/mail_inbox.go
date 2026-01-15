@@ -8,8 +8,8 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/mail"
-	"github.com/steveyegge/gastown/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/mail"
+	"github.com/KeithWyatt/gongshow/internal/style"
 )
 
 // getMailbox returns the mailbox for the given address.
@@ -17,7 +17,7 @@ func getMailbox(address string) (*mail.Mailbox, error) {
 	// All mail uses town beads (two-level architecture)
 	workDir, err := findMailWorkDir()
 	if err != nil {
-		return nil, fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return nil, fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	// Get mailbox

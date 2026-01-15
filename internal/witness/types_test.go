@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/agent"
+	"github.com/KeithWyatt/gongshow/internal/agent"
 )
 
 func TestStateTypeAlias(t *testing.T) {
@@ -56,7 +56,7 @@ func TestWitness_ZeroValues(t *testing.T) {
 func TestWitness_JSONMarshaling(t *testing.T) {
 	now := time.Now().Round(time.Second)
 	w := Witness{
-		RigName:    "gastown",
+		RigName:    "gongshow",
 		State:      StateRunning,
 		PID:        12345,
 		StartedAt:  &now,
@@ -177,7 +177,7 @@ func TestWitnessConfig_OmitEmpty(t *testing.T) {
 
 func TestWitness_OmitEmpty(t *testing.T) {
 	w := Witness{
-		RigName: "gastown",
+		RigName: "gongshow",
 		State:   StateRunning,
 		// PID, StartedAt, MonitoredPolecats, SpawnedIssues left empty/nil
 	}
@@ -209,7 +209,7 @@ func TestWitness_OmitEmpty(t *testing.T) {
 
 func TestWitness_WithMonitoredPolecats(t *testing.T) {
 	w := Witness{
-		RigName:    "gastown",
+		RigName:    "gongshow",
 		State:      StateRunning,
 		MonitoredPolecats: []string{"keeper", "valkyrie", "nux"},
 	}

@@ -8,16 +8,16 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/version"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/version"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 var rootCmd = &cobra.Command{
 	Use:     "gt",
-	Short:   "Gas Town - Multi-agent workspace manager",
+	Short:   "GongShow - Multi-agent workspace manager",
 	Version: Version,
-	Long: `Gas Town (gt) manages multi-agent workspaces called rigs.
+	Long: `GongShow (gt) manages multi-agent workspaces called rigs.
 
 It coordinates agent spawning, work distribution, and communication
 across distributed teams of AI agents working on shared codebases.`,

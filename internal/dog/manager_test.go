@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/config"
 )
 
 // TestDogStateJSON verifies DogState JSON serialization.
@@ -18,7 +18,7 @@ func TestDogStateJSON(t *testing.T) {
 		LastActive: now,
 		Work:       "",
 		Worktrees: map[string]string{
-			"gastown": "/path/to/gastown",
+			"gongshow": "/path/to/gongshow",
 			"beads":   "/path/to/beads",
 		},
 		CreatedAt: now,
@@ -52,8 +52,8 @@ func TestManagerCreation(t *testing.T) {
 	rigsConfig := &config.RigsConfig{
 		Version: 1,
 		Rigs: map[string]config.RigEntry{
-			"gastown": {
-				GitURL: "git@github.com:test/gastown.git",
+			"gongshow": {
+				GitURL: "git@github.com:test/gongshow.git",
 			},
 			"beads": {
 				GitURL: "git@github.com:test/beads.git",

@@ -8,9 +8,9 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/townlog"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/townlog"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 // Log command flags
@@ -31,7 +31,7 @@ var logCmd = &cobra.Command{
 	Use:     "log",
 	GroupID: GroupDiag,
 	Short:   "View town activity log",
-	Long: `View the centralized log of Gas Town agent lifecycle events.
+	Long: `View the centralized log of GongShow agent lifecycle events.
 
 Events logged include:
   spawn   - new agent created
@@ -46,7 +46,7 @@ Examples:
   gt log                     # Show last 20 events
   gt log -n 50               # Show last 50 events
   gt log --type spawn        # Show only spawn events
-  gt log --agent greenplace/    # Show events for gastown rig
+  gt log --agent greenplace/    # Show events for gongshow rig
   gt log --since 1h          # Show events from last hour
   gt log -f                  # Follow log (like tail -f)`,
 	RunE: runLog,
@@ -72,7 +72,7 @@ Examples:
 func init() {
 	logCmd.Flags().IntVarP(&logTail, "tail", "n", 20, "Number of events to show")
 	logCmd.Flags().StringVarP(&logType, "type", "t", "", "Filter by event type (spawn,wake,nudge,handoff,done,crash,kill)")
-	logCmd.Flags().StringVarP(&logAgent, "agent", "a", "", "Filter by agent prefix (e.g., gastown/, greenplace/crew/max)")
+	logCmd.Flags().StringVarP(&logAgent, "agent", "a", "", "Filter by agent prefix (e.g., gongshow/, greenplace/crew/max)")
 	logCmd.Flags().StringVar(&logSince, "since", "", "Show events since duration (e.g., 1h, 30m, 24h)")
 	logCmd.Flags().BoolVarP(&logFollow, "follow", "f", false, "Follow log output (like tail -f)")
 
@@ -89,7 +89,7 @@ func init() {
 func runLog(cmd *cobra.Command, args []string) error {
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	logPath := fmt.Sprintf("%s/logs/town.log", townRoot)

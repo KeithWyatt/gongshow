@@ -10,12 +10,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/constants"
-	"github.com/steveyegge/gastown/internal/rig"
-	"github.com/steveyegge/gastown/internal/runtime"
-	"github.com/steveyegge/gastown/internal/session"
-	"github.com/steveyegge/gastown/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/constants"
+	"github.com/KeithWyatt/gongshow/internal/rig"
+	"github.com/KeithWyatt/gongshow/internal/runtime"
+	"github.com/KeithWyatt/gongshow/internal/session"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
 )
 
 // debugSession logs non-fatal errors during session startup when GT_DEBUG_SESSION=1.
@@ -181,7 +181,7 @@ func (m *SessionManager) Start(polecat string, opts SessionStartOptions) error {
 	}
 
 	// Create session with command directly to avoid send-keys race condition.
-	// See: https://github.com/anthropics/gastown/issues/280
+	// See: https://github.com/anthropics/gongshow/issues/280
 	if err := m.tmux.NewSessionWithCommand(sessionID, workDir, command); err != nil {
 		return fmt.Errorf("creating session: %w", err)
 	}

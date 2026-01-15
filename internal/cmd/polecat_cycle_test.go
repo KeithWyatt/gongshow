@@ -78,7 +78,7 @@ func TestParsePolecatSessionName(t *testing.T) {
 		},
 		{
 			name:        "no gt prefix",
-			sessionName: "gastown-Toast",
+			sessionName: "gongshow-Toast",
 			wantRig:     "",
 			wantPolecat: "",
 			wantOk:      false,

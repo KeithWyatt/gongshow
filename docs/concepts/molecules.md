@@ -1,6 +1,6 @@
 # Molecules
 
-Molecules are workflow templates that coordinate multi-step work in Gas Town.
+Molecules are workflow templates that coordinate multi-step work in GongShow.
 
 ## Molecule Lifecycle
 

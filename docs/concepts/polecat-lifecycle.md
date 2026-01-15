@@ -89,7 +89,7 @@ All three sessions are the **same polecat**. The sandbox and slot persist throug
 The sandbox is the **git worktree**—the polecat's working directory:
 
 ```
-~/gt/gastown/polecats/Toast/
+~/gt/gongshow/polecats/Toast/
 ```
 
 This worktree:
@@ -111,8 +111,8 @@ The slot is the **name allocation** from the polecat pool:
 
 The slot:
 - Determines the sandbox path (`polecats/Toast/`)
-- Maps to a tmux session (`gt-gastown-Toast`)
-- Appears in attribution (`gastown/polecats/Toast`)
+- Maps to a tmux session (`gt-gongshow-Toast`)
+- Appears in attribution (`gongshow/polecats/Toast`)
 - Is released only on nuke
 
 ## Correct Lifecycle
@@ -234,7 +234,7 @@ working but stopped unexpectedly.
 ```bash
 # From Witness:
 gt polecat nuke Toast        # Clean up the stalled polecat
-gt sling gt-abc gastown      # Respawn with fresh polecat
+gt sling gt-abc gongshow      # Respawn with fresh polecat
 ```
 
 ### Confusing Session with Sandbox

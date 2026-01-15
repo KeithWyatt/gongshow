@@ -17,15 +17,15 @@ func TestAddressToIdentity(t *testing.T) {
 		{"deacon/", "deacon/"},
 
 		// Rig-level agents: crew/ and polecats/ normalized to canonical form
-		{"gastown/polecats/Toast", "gastown/Toast"},
-		{"gastown/crew/max", "gastown/max"},
-		{"gastown/Toast", "gastown/Toast"},         // Already canonical
-		{"gastown/max", "gastown/max"},             // Already canonical
-		{"gastown/refinery", "gastown/refinery"},
-		{"gastown/witness", "gastown/witness"},
+		{"gongshow/polecats/Toast", "gongshow/Toast"},
+		{"gongshow/crew/max", "gongshow/max"},
+		{"gongshow/Toast", "gongshow/Toast"},         // Already canonical
+		{"gongshow/max", "gongshow/max"},             // Already canonical
+		{"gongshow/refinery", "gongshow/refinery"},
+		{"gongshow/witness", "gongshow/witness"},
 
 		// Rig broadcast (trailing slash removed)
-		{"gastown/", "gastown"},
+		{"gongshow/", "gongshow"},
 	}
 
 	for _, tt := range tests {
@@ -50,14 +50,14 @@ func TestIdentityToAddress(t *testing.T) {
 		{"deacon/", "deacon/"},
 
 		// Rig-level agents: crew/ and polecats/ normalized
-		{"gastown/polecats/Toast", "gastown/Toast"},
-		{"gastown/crew/max", "gastown/max"},
-		{"gastown/Toast", "gastown/Toast"},  // Already canonical
-		{"gastown/refinery", "gastown/refinery"},
-		{"gastown/witness", "gastown/witness"},
+		{"gongshow/polecats/Toast", "gongshow/Toast"},
+		{"gongshow/crew/max", "gongshow/max"},
+		{"gongshow/Toast", "gongshow/Toast"},  // Already canonical
+		{"gongshow/refinery", "gongshow/refinery"},
+		{"gongshow/witness", "gongshow/witness"},
 
 		// Rig name only (no transformation)
-		{"gastown", "gastown"},
+		{"gongshow", "gongshow"},
 	}
 
 	for _, tt := range tests {
@@ -162,13 +162,13 @@ func TestParseMessageType(t *testing.T) {
 }
 
 func TestNewMessage(t *testing.T) {
-	msg := NewMessage("mayor/", "gastown/Toast", "Test Subject", "Test Body")
+	msg := NewMessage("mayor/", "gongshow/Toast", "Test Subject", "Test Body")
 
 	if msg.From != "mayor/" {
 		t.Errorf("From = %q, want 'mayor/'", msg.From)
 	}
-	if msg.To != "gastown/Toast" {
-		t.Errorf("To = %q, want 'gastown/Toast'", msg.To)
+	if msg.To != "gongshow/Toast" {
+		t.Errorf("To = %q, want 'gongshow/Toast'", msg.To)
 	}
 	if msg.Subject != "Test Subject" {
 		t.Errorf("Subject = %q, want 'Test Subject'", msg.Subject)
@@ -197,12 +197,12 @@ func TestNewReplyMessage(t *testing.T) {
 	original := &Message{
 		ID:       "orig-001",
 		ThreadID: "thread-001",
-		From:     "gastown/Toast",
+		From:     "gongshow/Toast",
 		To:       "mayor/",
 		Subject:  "Original Subject",
 	}
 
-	reply := NewReplyMessage("mayor/", "gastown/Toast", "Re: Original Subject", "Reply body", original)
+	reply := NewReplyMessage("mayor/", "gongshow/Toast", "Re: Original Subject", "Reply body", original)
 
 	if reply.ThreadID != "thread-001" {
 		t.Errorf("ThreadID = %q, want 'thread-001'", reply.ThreadID)
@@ -213,8 +213,8 @@ func TestNewReplyMessage(t *testing.T) {
 	if reply.From != "mayor/" {
 		t.Errorf("From = %q, want 'mayor/'", reply.From)
 	}
-	if reply.To != "gastown/Toast" {
-		t.Errorf("To = %q, want 'gastown/Toast'", reply.To)
+	if reply.To != "gongshow/Toast" {
+		t.Errorf("To = %q, want 'gongshow/Toast'", reply.To)
 	}
 	if reply.Subject != "Re: Original Subject" {
 		t.Errorf("Subject = %q, want 'Re: Original Subject'", reply.Subject)
@@ -228,7 +228,7 @@ func TestBeadsMessageToMessage(t *testing.T) {
 		Title:       "Test Subject",
 		Description: "Test Body",
 		Status:      "open",
-		Assignee:    "gastown/Toast",
+		Assignee:    "gongshow/Toast",
 		Labels:      []string{"from:mayor/", "thread:t-001"},
 		CreatedAt:   now,
 		Priority:    1,
@@ -251,8 +251,8 @@ func TestBeadsMessageToMessage(t *testing.T) {
 	if msg.ThreadID != "t-001" {
 		t.Errorf("ThreadID = %q, want 't-001'", msg.ThreadID)
 	}
-	if msg.To != "gastown/Toast" {
-		t.Errorf("To = %q, want 'gastown/Toast'", msg.To)
+	if msg.To != "gongshow/Toast" {
+		t.Errorf("To = %q, want 'gongshow/Toast'", msg.To)
 	}
 	if msg.Priority != PriorityHigh {
 		t.Errorf("Priority = %q, want PriorityHigh", msg.Priority)
@@ -265,7 +265,7 @@ func TestBeadsMessageToMessageWithReplyTo(t *testing.T) {
 		Title:       "Reply Subject",
 		Description: "Reply Body",
 		Status:      "open",
-		Assignee:    "gastown/Toast",
+		Assignee:    "gongshow/Toast",
 		Labels:      []string{"from:mayor/", "thread:t-002", "reply-to:orig-001", "msg-type:reply"},
 		CreatedAt:   time.Now(),
 		Priority:    2,
@@ -335,7 +335,7 @@ func TestBeadsMessageToMessageEmptyLabels(t *testing.T) {
 		ID:          "hq-empty",
 		Title:       "Empty Labels",
 		Description: "Test with empty labels",
-		Assignee:    "gastown/Toast",
+		Assignee:    "gongshow/Toast",
 		Labels:      []string{}, // No labels
 		Priority:    2,
 	}
@@ -397,7 +397,7 @@ func TestNewChannelMessage(t *testing.T) {
 }
 
 func TestMessageIsQueueMessage(t *testing.T) {
-	directMsg := NewMessage("mayor/", "gastown/Toast", "Test", "Body")
+	directMsg := NewMessage("mayor/", "gongshow/Toast", "Test", "Body")
 	queueMsg := NewQueueMessage("mayor/", "work-requests", "Task", "Body")
 	channelMsg := NewChannelMessage("deacon/", "alerts", "Alert", "Body")
 
@@ -413,7 +413,7 @@ func TestMessageIsQueueMessage(t *testing.T) {
 }
 
 func TestMessageIsChannelMessage(t *testing.T) {
-	directMsg := NewMessage("mayor/", "gastown/Toast", "Test", "Body")
+	directMsg := NewMessage("mayor/", "gongshow/Toast", "Test", "Body")
 	queueMsg := NewQueueMessage("mayor/", "work-requests", "Task", "Body")
 	channelMsg := NewChannelMessage("deacon/", "alerts", "Alert", "Body")
 
@@ -429,7 +429,7 @@ func TestMessageIsChannelMessage(t *testing.T) {
 }
 
 func TestMessageIsDirectMessage(t *testing.T) {
-	directMsg := NewMessage("mayor/", "gastown/Toast", "Test", "Body")
+	directMsg := NewMessage("mayor/", "gongshow/Toast", "Test", "Body")
 	queueMsg := NewQueueMessage("mayor/", "work-requests", "Task", "Body")
 	channelMsg := NewChannelMessage("deacon/", "alerts", "Alert", "Body")
 
@@ -453,7 +453,7 @@ func TestMessageValidate(t *testing.T) {
 	}{
 		{
 			name:    "valid direct message",
-			msg:     NewMessage("mayor/", "gastown/Toast", "Test", "Body"),
+			msg:     NewMessage("mayor/", "gongshow/Toast", "Test", "Body"),
 			wantErr: false,
 		},
 		{
@@ -481,7 +481,7 @@ func TestMessageValidate(t *testing.T) {
 			msg: &Message{
 				ID:      "msg-001",
 				From:    "mayor/",
-				To:      "gastown/Toast",
+				To:      "gongshow/Toast",
 				Queue:   "work-requests",
 				Subject: "Test",
 			},
@@ -493,7 +493,7 @@ func TestMessageValidate(t *testing.T) {
 			msg: &Message{
 				ID:      "msg-001",
 				From:    "mayor/",
-				To:      "gastown/Toast",
+				To:      "gongshow/Toast",
 				Channel: "alerts",
 				Subject: "Test",
 			},
@@ -517,9 +517,9 @@ func TestMessageValidate(t *testing.T) {
 			msg: &Message{
 				ID:        "msg-001",
 				From:      "mayor/",
-				To:        "gastown/Toast",
+				To:        "gongshow/Toast",
 				Subject:   "Test",
-				ClaimedBy: "gastown/nux",
+				ClaimedBy: "gongshow/nux",
 			},
 			wantErr: true,
 			errMsg:  "claimed_by is only valid for queue messages",
@@ -531,7 +531,7 @@ func TestMessageValidate(t *testing.T) {
 				From:      "mayor/",
 				Queue:     "work-requests",
 				Subject:   "Test",
-				ClaimedBy: "gastown/nux",
+				ClaimedBy: "gongshow/nux",
 			},
 			wantErr: false,
 		},
@@ -581,7 +581,7 @@ func TestBeadsMessageParseQueueChannelLabels(t *testing.T) {
 		Labels: []string{
 			"from:mayor/",
 			"queue:work-requests",
-			"claimed-by:gastown/nux",
+			"claimed-by:gongshow/nux",
 			"claimed-at:" + claimedAtStr,
 		},
 		Priority: 2,
@@ -592,8 +592,8 @@ func TestBeadsMessageParseQueueChannelLabels(t *testing.T) {
 	if msg.Queue != "work-requests" {
 		t.Errorf("Queue = %q, want 'work-requests'", msg.Queue)
 	}
-	if msg.ClaimedBy != "gastown/nux" {
-		t.Errorf("ClaimedBy = %q, want 'gastown/nux'", msg.ClaimedBy)
+	if msg.ClaimedBy != "gongshow/nux" {
+		t.Errorf("ClaimedBy = %q, want 'gongshow/nux'", msg.ClaimedBy)
 	}
 	if msg.ClaimedAt == nil {
 		t.Error("ClaimedAt should not be nil")
@@ -629,7 +629,7 @@ func TestBeadsMessageIsQueueMessage(t *testing.T) {
 	}
 	directMsg := BeadsMessage{
 		ID:       "hq-direct",
-		Assignee: "gastown/Toast",
+		Assignee: "gongshow/Toast",
 	}
 	channelMsg := BeadsMessage{
 		ID:     "hq-channel",
@@ -654,7 +654,7 @@ func TestBeadsMessageIsChannelMessage(t *testing.T) {
 	}
 	directMsg := BeadsMessage{
 		ID:       "hq-direct",
-		Assignee: "gastown/Toast",
+		Assignee: "gongshow/Toast",
 	}
 	channelMsg := BeadsMessage{
 		ID:     "hq-channel",
@@ -679,7 +679,7 @@ func TestBeadsMessageIsDirectMessage(t *testing.T) {
 	}
 	directMsg := BeadsMessage{
 		ID:       "hq-direct",
-		Assignee: "gastown/Toast",
+		Assignee: "gongshow/Toast",
 	}
 	channelMsg := BeadsMessage{
 		ID:     "hq-channel",
@@ -704,7 +704,7 @@ func TestMessageIsClaimed(t *testing.T) {
 	}
 
 	claimed := NewQueueMessage("mayor/", "work-requests", "Task", "Body")
-	claimed.ClaimedBy = "gastown/nux"
+	claimed.ClaimedBy = "gongshow/nux"
 	now := time.Now()
 	claimed.ClaimedAt = &now
 

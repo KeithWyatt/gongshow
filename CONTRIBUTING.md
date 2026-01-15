@@ -1,6 +1,6 @@
-# Contributing to Gas Town
+# Contributing to GongShow
 
-Thanks for your interest in contributing! Gas Town is experimental software, and we welcome contributions that help explore these ideas.
+Thanks for your interest in contributing! GongShow is experimental software, and we welcome contributions that help explore these ideas.
 
 ## Getting Started
 

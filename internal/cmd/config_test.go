@@ -8,10 +8,10 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/config"
 )
 
-// setupTestTown creates a minimal Gas Town workspace for testing.
+// setupTestTown creates a minimal GongShow workspace for testing.
 func setupTestTownForConfig(t *testing.T) string {
 	t.Helper()
 

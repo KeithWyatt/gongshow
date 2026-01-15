@@ -7,10 +7,10 @@ import (
 	"os/exec"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/tmux"
-	"github.com/steveyegge/gastown/internal/witness"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/witness"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 // Witness command flags
@@ -292,7 +292,7 @@ func runWitnessAttach(cmd *cobra.Command, args []string) error {
 	if rigName == "" {
 		townRoot, err := workspace.FindFromCwdOrError()
 		if err != nil {
-			return fmt.Errorf("not in a Gas Town workspace: %w", err)
+			return fmt.Errorf("not in a GongShow workspace: %w", err)
 		}
 		rigName, err = inferRigFromCwd(townRoot)
 		if err != nil {

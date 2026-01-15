@@ -14,9 +14,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/events"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/wisp"
+	"github.com/KeithWyatt/gongshow/internal/events"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/wisp"
 )
 
 // SeanceConfig holds auto-seance configuration values.
@@ -339,7 +339,7 @@ func isEventForRig(event seanceEvent, rigName string) bool {
 	// Check payload for cwd that contains rig path
 	if cwd, ok := event.Payload["cwd"].(string); ok {
 		// Look for /rigname/ pattern to avoid false matches
-		// e.g., /home/user/gt/gastown/crew/joe should match "gastown"
+		// e.g., /home/user/gt/gongshow/crew/joe should match "gongshow"
 		cwdLower := strings.ToLower(cwd)
 		if strings.Contains(cwdLower, "/"+rigLower+"/") {
 			return true

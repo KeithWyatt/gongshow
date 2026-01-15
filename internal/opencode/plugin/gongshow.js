@@ -1,4 +1,4 @@
-// Gas Town OpenCode plugin: hooks SessionStart/Compaction via events.
+// GongShow OpenCode plugin: hooks SessionStart/Compaction via events.
 export const GasTown = async ({ $, directory }) => {
   const role = (process.env.GT_ROLE || "").toLowerCase();
   const autonomousRoles = new Set(["polecat", "witness", "refinery", "deacon"]);
@@ -8,7 +8,7 @@ export const GasTown = async ({ $, directory }) => {
     try {
       await $`/bin/sh -lc ${cmd}`.cwd(directory);
     } catch (err) {
-      console.error(`[gastown] ${cmd} failed`, err?.message || err);
+      console.error(`[gongshow] ${cmd} failed`, err?.message || err);
     }
   };
 

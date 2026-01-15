@@ -12,10 +12,10 @@ func TestAddressToAgentBeadID(t *testing.T) {
 		// Mayor and deacon use hq- prefix (town-level)
 		{"mayor", "hq-mayor"},
 		{"deacon", "hq-deacon"},
-		{"gastown/witness", "gt-gastown-witness"},
-		{"gastown/refinery", "gt-gastown-refinery"},
-		{"gastown/alpha", "gt-gastown-polecat-alpha"},
-		{"gastown/crew/max", "gt-gastown-crew-max"},
+		{"gongshow/witness", "gt-gongshow-witness"},
+		{"gongshow/refinery", "gt-gongshow-refinery"},
+		{"gongshow/alpha", "gt-gongshow-polecat-alpha"},
+		{"gongshow/crew/max", "gt-gongshow-crew-max"},
 		{"beads/witness", "gt-beads-witness"},
 		{"beads/beta", "gt-beads-polecat-beta"},
 		// Invalid addresses should return empty string

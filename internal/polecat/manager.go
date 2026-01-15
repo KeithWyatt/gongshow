@@ -12,12 +12,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/git"
-	"github.com/steveyegge/gastown/internal/rig"
-	"github.com/steveyegge/gastown/internal/tmux"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/git"
+	"github.com/KeithWyatt/gongshow/internal/rig"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 // Common errors
@@ -89,13 +89,13 @@ func NewManager(r *rig.Rig, g *git.Git, t *tmux.Tmux) *Manager {
 }
 
 // assigneeID returns the beads assignee identifier for a polecat.
-// Format: "rig/polecatName" (e.g., "gastown/Toast")
+// Format: "rig/polecatName" (e.g., "gongshow/Toast")
 func (m *Manager) assigneeID(name string) string {
 	return fmt.Sprintf("%s/%s", m.rig.Name, name)
 }
 
 // agentBeadID returns the agent bead ID for a polecat.
-// Format: "<prefix>-<rig>-polecat-<name>" (e.g., "gt-gastown-polecat-Toast", "bd-beads-polecat-obsidian")
+// Format: "<prefix>-<rig>-polecat-<name>" (e.g., "gt-gongshow-polecat-Toast", "bd-beads-polecat-obsidian")
 // The prefix is looked up from routes.jsonl to support rigs with custom prefixes.
 func (m *Manager) agentBeadID(name string) string {
 	// Find town root to lookup prefix from routes.jsonl
@@ -298,9 +298,9 @@ func (m *Manager) AddWithOptions(name string, opts AddOptions) (*Polecat, error)
 	}
 
 	// NOTE: We intentionally do NOT write to CLAUDE.md here.
-	// Gas Town context is injected ephemerally via SessionStart hook (gt prime).
+	// GongShow context is injected ephemerally via SessionStart hook (gt prime).
 	// Writing to CLAUDE.md would overwrite project instructions and could leak
-	// Gas Town internals into the project repo if merged.
+	// GongShow internals into the project repo if merged.
 
 	// Set up shared beads: polecat uses rig's .beads via redirect file.
 	// This eliminates git sync overhead - all polecats share one database.
@@ -310,9 +310,9 @@ func (m *Manager) AddWithOptions(name string, opts AddOptions) (*Polecat, error)
 		fmt.Printf("Warning: could not set up shared beads: %v\n", err)
 	}
 
-	// Provision PRIME.md with Gas Town context for this worker.
+	// Provision PRIME.md with GongShow context for this worker.
 	// This is the fallback if SessionStart hook fails - ensures polecats
-	// always have GUPP and essential Gas Town context.
+	// always have GUPP and essential GongShow context.
 	if err := beads.ProvisionPrimeMDForWorktree(clonePath); err != nil {
 		// Non-fatal - polecat can still work via hook, warn but don't fail
 		fmt.Printf("Warning: could not provision PRIME.md: %v\n", err)
@@ -593,7 +593,7 @@ func (m *Manager) RepairWorktreeWithOptions(name string, force bool, opts AddOpt
 	}
 
 	// NOTE: We intentionally do NOT write to CLAUDE.md here.
-	// Gas Town context is injected ephemerally via SessionStart hook (gt prime).
+	// GongShow context is injected ephemerally via SessionStart hook (gt prime).
 
 	// Set up shared beads
 	if err := m.setupSharedBeads(newClonePath); err != nil {

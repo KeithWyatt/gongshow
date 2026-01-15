@@ -1,10 +1,10 @@
-# Gas Town Architecture
+# GongShow Architecture
 
-Technical architecture for Gas Town multi-agent workspace management.
+Technical architecture for GongShow multi-agent workspace management.
 
 ## Two-Level Beads Architecture
 
-Gas Town uses a two-level beads architecture to separate organizational coordination
+GongShow uses a two-level beads architecture to separate organizational coordination
 from project implementation work.
 
 | Level | Location | Prefix | Purpose |
@@ -111,7 +111,7 @@ The `routes.jsonl` file maps issue ID prefixes to rig locations (relative to tow
 
 ```jsonl
 {"prefix":"hq-","path":"."}
-{"prefix":"gt-","path":"gastown/mayor/rig"}
+{"prefix":"gt-","path":"gongshow/mayor/rig"}
 {"prefix":"bd-","path":"beads/mayor/rig"}
 ```
 
@@ -120,7 +120,7 @@ This enables transparent cross-rig beads operations:
 
 ```bash
 bd show hq-mayor    # Routes to town beads (~/.gt/.beads)
-bd show gt-xyz      # Routes to gastown/mayor/rig/.beads
+bd show gt-xyz      # Routes to gongshow/mayor/rig/.beads
 ```
 
 ## See Also

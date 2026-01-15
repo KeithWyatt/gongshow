@@ -7,11 +7,11 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/claude"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/constants"
-	"github.com/steveyegge/gastown/internal/session"
-	"github.com/steveyegge/gastown/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/claude"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/constants"
+	"github.com/KeithWyatt/gongshow/internal/session"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
 )
 
 // Common errors
@@ -87,7 +87,7 @@ func (m *Manager) Start(agentOverride string) error {
 	}
 
 	// Create session with command directly to avoid send-keys race condition.
-	// See: https://github.com/anthropics/gastown/issues/280
+	// See: https://github.com/anthropics/gongshow/issues/280
 	if err := t.NewSessionWithCommand(sessionID, deaconDir, startupCmd); err != nil {
 		return fmt.Errorf("creating tmux session: %w", err)
 	}
@@ -123,7 +123,7 @@ func (m *Manager) Start(agentOverride string) error {
 		Topic:     "patrol",
 	}) // Non-fatal
 
-	// GUPP: Gas Town Universal Propulsion Principle
+	// GUPP: GongShow Universal Propulsion Principle
 	// Send the propulsion nudge to trigger autonomous patrol execution.
 	// Wait for beacon to be fully processed (needs to be separate prompt)
 	time.Sleep(2 * time.Second)

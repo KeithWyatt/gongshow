@@ -1,6 +1,6 @@
-# Installing Gas Town
+# Installing GongShow
 
-Complete setup guide for Gas Town multi-agent orchestrator.
+Complete setup guide for GongShow multi-agent orchestrator.
 
 ## Prerequisites
 
@@ -72,13 +72,13 @@ git --version     # Should show 2.20 or higher
 tmux -V           # (Optional) Should show 3.0 or higher
 ```
 
-## Installing Gas Town
+## Installing GongShow
 
 ### Step 1: Install the Binaries
 
 ```bash
-# Install Gas Town CLI
-go install github.com/steveyegge/gastown/cmd/gt@latest
+# Install GongShow CLI
+go install github.com/KeithWyatt/gongshow/cmd/gt@latest
 
 # Install Beads (issue tracker)
 go install github.com/steveyegge/beads/cmd/bd@latest
@@ -98,7 +98,7 @@ export PATH="$PATH:$HOME/go/bin"
 ### Step 2: Create Your Workspace
 
 ```bash
-# Create a Gas Town workspace (HQ)
+# Create a GongShow workspace (HQ)
 gt install ~/gt
 
 # This creates:
@@ -134,7 +134,7 @@ gt status              # Show workspace status
 
 ### Step 5: Configure Agents (Optional)
 
-Gas Town supports built-in runtimes (`claude`, `gemini`, `codex`) plus custom agent aliases.
+GongShow supports built-in runtimes (`claude`, `gemini`, `codex`) plus custom agent aliases.
 
 ```bash
 # List available agents
@@ -157,11 +157,11 @@ gt sling issue-123 myproject --agent claude-haiku
 
 ## Minimal Mode vs Full Stack Mode
 
-Gas Town supports two operational modes:
+GongShow supports two operational modes:
 
 ### Minimal Mode (No Daemon)
 
-Run individual runtime instances manually. Gas Town only tracks state.
+Run individual runtime instances manually. GongShow only tracks state.
 
 ```bash
 # Create and assign work
@@ -204,7 +204,7 @@ gt witness attach myproject
 
 ### Choosing Roles
 
-Gas Town is modular. Enable only what you need:
+GongShow is modular. Enable only what you need:
 
 | Configuration | Roles | Use Case |
 |--------------|-------|----------|
@@ -280,10 +280,10 @@ bd doctor                  # Run beads health check
 
 ## Updating
 
-To update Gas Town and Beads:
+To update GongShow and Beads:
 
 ```bash
-go install github.com/steveyegge/gastown/cmd/gt@latest
+go install github.com/KeithWyatt/gongshow/cmd/gt@latest
 go install github.com/steveyegge/beads/cmd/bd@latest
 gt doctor --fix            # Fix any post-update issues
 ```

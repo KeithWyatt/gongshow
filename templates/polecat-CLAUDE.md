@@ -179,7 +179,7 @@ you (you don't exist anymore).
 
 ### No PRs in Maintainer Repos
 
-If the remote origin is `steveyegge/beads` or `steveyegge/gastown`:
+If the remote origin is `steveyegge/beads` or `KeithWyatt/gongshow`:
 - **NEVER create GitHub PRs** - you have direct push access
 - Polecats: use `gt done` → Refinery merges to main
 - Crew workers: push directly to main

@@ -1,4 +1,4 @@
-// Package deps manages external dependencies for Gas Town.
+// Package deps manages external dependencies for GongShow.
 package deps
 
 import (
@@ -9,8 +9,8 @@ import (
 	"strings"
 )
 
-// MinBeadsVersion is the minimum compatible beads version for this Gas Town release.
-// Update this when Gas Town requires new beads features.
+// MinBeadsVersion is the minimum compatible beads version for this GongShow release.
+// Update this when GongShow requires new beads features.
 const MinBeadsVersion = "0.43.0"
 
 // BeadsInstallPath is the go install path for beads.

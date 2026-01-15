@@ -10,18 +10,18 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/constants"
-	"github.com/steveyegge/gastown/internal/claude"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/deps"
-	"github.com/steveyegge/gastown/internal/formula"
-	"github.com/steveyegge/gastown/internal/shell"
-	"github.com/steveyegge/gastown/internal/state"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/templates"
-	"github.com/steveyegge/gastown/internal/workspace"
-	"github.com/steveyegge/gastown/internal/wrappers"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/constants"
+	"github.com/KeithWyatt/gongshow/internal/claude"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/deps"
+	"github.com/KeithWyatt/gongshow/internal/formula"
+	"github.com/KeithWyatt/gongshow/internal/shell"
+	"github.com/KeithWyatt/gongshow/internal/state"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/templates"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/wrappers"
 )
 
 var (
@@ -40,10 +40,10 @@ var (
 var installCmd = &cobra.Command{
 	Use:     "install [path]",
 	GroupID: GroupWorkspace,
-	Short:   "Create a new Gas Town HQ (workspace)",
-	Long: `Create a new Gas Town HQ at the specified path.
+	Short:   "Create a new GongShow HQ (workspace)",
+	Long: `Create a new GongShow HQ at the specified path.
 
-The HQ (headquarters) is the top-level directory where Gas Town is installed -
+The HQ (headquarters) is the top-level directory where GongShow is installed -
 the root of your workspace where all rigs and agents live. It contains:
   - CLAUDE.md            Mayor role context (Mayor runs from HQ root)
   - mayor/               Mayor config, state, and rig registry
@@ -117,7 +117,7 @@ func runInstall(cmd *cobra.Command, args []string) error {
 			fmt.Printf("✓ Installed gt-codex and gt-opencode to %s\n", wrappers.BinDir())
 			return nil
 		}
-		return fmt.Errorf("directory is already a Gas Town HQ (use --force to reinitialize)")
+		return fmt.Errorf("directory is already a GongShow HQ (use --force to reinitialize)")
 	}
 
 	// Check if inside an existing workspace
@@ -132,7 +132,7 @@ func runInstall(cmd *cobra.Command, args []string) error {
 		}
 	}
 
-	fmt.Printf("%s Creating Gas Town HQ at %s\n\n",
+	fmt.Printf("%s Creating GongShow HQ at %s\n\n",
 		style.Bold.Render("🏭"), style.Dim.Render(absPath))
 
 	// Create directory structure
@@ -292,9 +292,9 @@ func runInstall(cmd *cobra.Command, args []string) error {
 			fmt.Printf("   ✓ Installed shell integration (%s)\n", shell.RCFilePath(shell.DetectShell()))
 		}
 		if err := state.Enable(Version); err != nil {
-			fmt.Printf("   %s Could not enable Gas Town: %v\n", style.Dim.Render("⚠"), err)
+			fmt.Printf("   %s Could not enable GongShow: %v\n", style.Dim.Render("⚠"), err)
 		} else {
-			fmt.Printf("   ✓ Enabled Gas Town globally\n")
+			fmt.Printf("   ✓ Enabled GongShow globally\n")
 		}
 	}
 
@@ -369,7 +369,7 @@ func initTownBeads(townPath string) error {
 		}
 	}
 
-	// Configure custom types for Gas Town (agent, role, rig, convoy, slot).
+	// Configure custom types for GongShow (agent, role, rig, convoy, slot).
 	// These were extracted from beads core in v0.46.0 and now require explicit config.
 	configCmd := exec.Command("bd", "config", "set", "types.custom", constants.BeadsCustomTypes)
 	configCmd.Dir = townPath
@@ -426,9 +426,9 @@ func ensureRepoFingerprint(beadsPath string) error {
 	return nil
 }
 
-// ensureCustomTypes registers Gas Town custom issue types with beads.
+// ensureCustomTypes registers GongShow custom issue types with beads.
 // Beads core only supports built-in types (bug, feature, task, etc.).
-// Gas Town needs custom types: agent, role, rig, convoy, slot.
+// GongShow needs custom types: agent, role, rig, convoy, slot.
 // This is idempotent - safe to call multiple times.
 func ensureCustomTypes(beadsPath string) error {
 	cmd := exec.Command("bd", "config", "set", "types.custom", constants.BeadsCustomTypes)
@@ -461,7 +461,7 @@ func ensureCustomTypes(beadsPath string) error {
 func initTownAgentBeads(townPath string) error {
 	bd := beads.New(townPath)
 
-	// bd init doesn't enable "custom" issue types by default, but Gas Town uses
+	// bd init doesn't enable "custom" issue types by default, but GongShow uses
 	// agent/role beads during install and runtime. Ensure these types are enabled
 	// before attempting to create any town-level system beads.
 	if err := ensureBeadsCustomTypes(townPath, []string{"agent", "role", "rig", "convoy", "slot"}); err != nil {

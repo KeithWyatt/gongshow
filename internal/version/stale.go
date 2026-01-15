@@ -107,11 +107,11 @@ func CheckStaleBinary(repoDir string) *StaleBinaryInfo {
 }
 
 // GetRepoRoot returns the git repository root for the gt source code.
-// It looks for the gastown repo by checking known paths.
+// It looks for the gongshow repo by checking known paths.
 func GetRepoRoot() (string, error) {
 	// First, check if GT_ROOT environment variable is set
 	if gtRoot := os.Getenv("GT_ROOT"); gtRoot != "" {
-		if isGitRepo(gtRoot) && hasGastownMarker(gtRoot) {
+		if isGitRepo(gtRoot) && hasGongshowMarker(gtRoot) {
 			return gtRoot, nil
 		}
 	}
@@ -120,23 +120,23 @@ func GetRepoRoot() (string, error) {
 	home := os.Getenv("HOME")
 	if home != "" {
 		candidates := []string{
-			home + "/gt/gastown",
-			home + "/gastown",
-			home + "/src/gastown",
-			home + "/dev/gastown",
+			home + "/gt/gongshow",
+			home + "/gongshow",
+			home + "/src/gongshow",
+			home + "/dev/gongshow",
 		}
 		for _, candidate := range candidates {
-			if isGitRepo(candidate) && hasGastownMarker(candidate) {
+			if isGitRepo(candidate) && hasGongshowMarker(candidate) {
 				return candidate, nil
 			}
 		}
 	}
 
-	// Check if current directory is in a gastown repo
+	// Check if current directory is in a gongshow repo
 	cmd := exec.Command("git", "rev-parse", "--show-toplevel")
 	if output, err := cmd.Output(); err == nil {
 		root := strings.TrimSpace(string(output))
-		if hasGastownMarker(root) {
+		if hasGongshowMarker(root) {
 			return root, nil
 		}
 	}
@@ -151,9 +151,9 @@ func isGitRepo(dir string) bool {
 	return cmd.Run() == nil
 }
 
-// hasGastownMarker checks if a directory looks like the gastown repo.
-func hasGastownMarker(dir string) bool {
-	// Check for cmd/gt directory which is unique to gastown
+// hasGongshowMarker checks if a directory looks like the gongshow repo.
+func hasGongshowMarker(dir string) bool {
+	// Check for cmd/gt directory which is unique to gongshow
 	cmd := exec.Command("test", "-d", dir+"/cmd/gt")
 	return cmd.Run() == nil
 }

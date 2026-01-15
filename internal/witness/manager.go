@@ -8,15 +8,15 @@ import (
 	"strings"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/agent"
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/claude"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/constants"
-	"github.com/steveyegge/gastown/internal/rig"
-	"github.com/steveyegge/gastown/internal/session"
-	"github.com/steveyegge/gastown/internal/tmux"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/agent"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/claude"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/constants"
+	"github.com/KeithWyatt/gongshow/internal/rig"
+	"github.com/KeithWyatt/gongshow/internal/session"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 // Common errors
@@ -170,7 +170,7 @@ func (m *Manager) Start(foreground bool, agentOverride string, envOverrides []st
 	}
 
 	// Create session with command directly to avoid send-keys race condition.
-	// See: https://github.com/anthropics/gastown/issues/280
+	// See: https://github.com/anthropics/gongshow/issues/280
 	if err := t.NewSessionWithCommand(sessionID, witnessDir, command); err != nil {
 		return fmt.Errorf("creating tmux session: %w", err)
 	}
@@ -196,7 +196,7 @@ func (m *Manager) Start(foreground bool, agentOverride string, envOverrides []st
 		}
 	}
 
-	// Apply Gas Town theming (non-fatal: theming failure doesn't affect operation)
+	// Apply GongShow theming (non-fatal: theming failure doesn't affect operation)
 	theme := tmux.AssignTheme(m.rig.Name)
 	_ = t.ConfigureGasTownSession(sessionID, theme, m.rig.Name, "witness", "witness")
 
@@ -229,7 +229,7 @@ func (m *Manager) Start(foreground bool, agentOverride string, envOverrides []st
 		Topic:     "patrol",
 	}) // Non-fatal
 
-	// GUPP: Gas Town Universal Propulsion Principle
+	// GUPP: GongShow Universal Propulsion Principle
 	// Send the propulsion nudge to trigger autonomous patrol execution.
 	// Wait for beacon to be fully processed (needs to be separate prompt)
 	time.Sleep(2 * time.Second)

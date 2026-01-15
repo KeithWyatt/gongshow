@@ -12,10 +12,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
-// Event represents an activity event in Gas Town.
+// Event represents an activity event in GongShow.
 type Event struct {
 	Timestamp  string                 `json:"ts"`
 	Source     string                 `json:"source"`
@@ -106,7 +106,7 @@ func write(event Event) error {
 	// Find town root
 	townRoot, err := workspace.FindFromCwd()
 	if err != nil || townRoot == "" {
-		// Silently ignore - we're not in a Gas Town workspace
+		// Silently ignore - we're not in a GongShow workspace
 		return nil
 	}
 
@@ -282,7 +282,7 @@ func HaltPayload(services []string) map[string]interface{} {
 
 // SessionDeathPayload creates a payload for session death events.
 // session: tmux session name that died
-// agent: Gas Town agent identity (e.g., "gastown/polecats/Toast")
+// agent: GongShow agent identity (e.g., "gongshow/polecats/Toast")
 // reason: why the session was killed (e.g., "zombie cleanup", "user request", "doctor fix")
 // caller: what initiated the kill (e.g., "daemon", "doctor", "gt down")
 func SessionDeathPayload(session, agent, reason, caller string) map[string]interface{} {
@@ -313,7 +313,7 @@ func MassDeathPayload(count int, window string, sessions []string, possibleCause
 
 // SessionPayload creates a payload for session start/end events.
 // sessionID: Claude Code session UUID
-// role: Gas Town role (e.g., "gastown/crew/joe", "deacon")
+// role: GongShow role (e.g., "gongshow/crew/joe", "deacon")
 // topic: What the session is working on
 // cwd: Working directory
 func SessionPayload(sessionID, role, topic, cwd string) map[string]interface{} {

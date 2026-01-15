@@ -4,12 +4,12 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/mayor"
-	"github.com/steveyegge/gastown/internal/session"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/tmux"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/mayor"
+	"github.com/KeithWyatt/gongshow/internal/session"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 var mayorCmd = &cobra.Command{
@@ -20,7 +20,7 @@ var mayorCmd = &cobra.Command{
 	RunE:    requireSubcommand,
 	Long: `Manage the Mayor tmux session.
 
-The Mayor is the global coordinator for Gas Town, running as a persistent
+The Mayor is the global coordinator for GongShow, running as a persistent
 tmux session. Use the subcommands to start, stop, attach, and check status.`,
 }
 
@@ -90,7 +90,7 @@ func init() {
 func getMayorManager() (*mayor.Manager, error) {
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return nil, fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return nil, fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 	return mayor.NewManager(townRoot), nil
 }

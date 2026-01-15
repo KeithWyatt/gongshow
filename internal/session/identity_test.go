@@ -28,9 +28,9 @@ func TestParseSessionName(t *testing.T) {
 		// Witness (simple rig)
 		{
 			name:     "witness simple rig",
-			session:  "gt-gastown-witness",
+			session:  "gt-gongshow-witness",
 			wantRole: RoleWitness,
-			wantRig:  "gastown",
+			wantRig:  "gongshow",
 		},
 		{
 			name:     "witness hyphenated rig",
@@ -42,9 +42,9 @@ func TestParseSessionName(t *testing.T) {
 		// Refinery (simple rig)
 		{
 			name:     "refinery simple rig",
-			session:  "gt-gastown-refinery",
+			session:  "gt-gongshow-refinery",
 			wantRole: RoleRefinery,
-			wantRig:  "gastown",
+			wantRig:  "gongshow",
 		},
 		{
 			name:     "refinery hyphenated rig",
@@ -56,9 +56,9 @@ func TestParseSessionName(t *testing.T) {
 		// Crew (with marker)
 		{
 			name:     "crew simple",
-			session:  "gt-gastown-crew-max",
+			session:  "gt-gongshow-crew-max",
 			wantRole: RoleCrew,
-			wantRig:  "gastown",
+			wantRig:  "gongshow",
 			wantName: "max",
 		},
 		{
@@ -70,18 +70,18 @@ func TestParseSessionName(t *testing.T) {
 		},
 		{
 			name:     "crew hyphenated name",
-			session:  "gt-gastown-crew-my-worker",
+			session:  "gt-gongshow-crew-my-worker",
 			wantRole: RoleCrew,
-			wantRig:  "gastown",
+			wantRig:  "gongshow",
 			wantName: "my-worker",
 		},
 
 		// Polecat (fallback)
 		{
 			name:     "polecat simple",
-			session:  "gt-gastown-morsov",
+			session:  "gt-gongshow-morsov",
 			wantRole: RolePolecat,
-			wantRig:  "gastown",
+			wantRig:  "gongshow",
 			wantName: "morsov",
 		},
 		{
@@ -95,7 +95,7 @@ func TestParseSessionName(t *testing.T) {
 		// Error cases
 		{
 			name:    "missing prefix",
-			session: "gastown-witness",
+			session: "gongshow-witness",
 			wantErr: true,
 		},
 		{
@@ -151,8 +151,8 @@ func TestAgentIdentity_SessionName(t *testing.T) {
 		},
 		{
 			name:     "witness",
-			identity: AgentIdentity{Role: RoleWitness, Rig: "gastown"},
-			want:     "gt-gastown-witness",
+			identity: AgentIdentity{Role: RoleWitness, Rig: "gongshow"},
+			want:     "gt-gongshow-witness",
 		},
 		{
 			name:     "refinery",
@@ -161,13 +161,13 @@ func TestAgentIdentity_SessionName(t *testing.T) {
 		},
 		{
 			name:     "crew",
-			identity: AgentIdentity{Role: RoleCrew, Rig: "gastown", Name: "max"},
-			want:     "gt-gastown-crew-max",
+			identity: AgentIdentity{Role: RoleCrew, Rig: "gongshow", Name: "max"},
+			want:     "gt-gongshow-crew-max",
 		},
 		{
 			name:     "polecat",
-			identity: AgentIdentity{Role: RolePolecat, Rig: "gastown", Name: "morsov"},
-			want:     "gt-gastown-morsov",
+			identity: AgentIdentity{Role: RolePolecat, Rig: "gongshow", Name: "morsov"},
+			want:     "gt-gongshow-morsov",
 		},
 	}
 
@@ -198,8 +198,8 @@ func TestAgentIdentity_Address(t *testing.T) {
 		},
 		{
 			name:     "witness",
-			identity: AgentIdentity{Role: RoleWitness, Rig: "gastown"},
-			want:     "gastown/witness",
+			identity: AgentIdentity{Role: RoleWitness, Rig: "gongshow"},
+			want:     "gongshow/witness",
 		},
 		{
 			name:     "refinery",
@@ -208,13 +208,13 @@ func TestAgentIdentity_Address(t *testing.T) {
 		},
 		{
 			name:     "crew",
-			identity: AgentIdentity{Role: RoleCrew, Rig: "gastown", Name: "max"},
-			want:     "gastown/crew/max",
+			identity: AgentIdentity{Role: RoleCrew, Rig: "gongshow", Name: "max"},
+			want:     "gongshow/crew/max",
 		},
 		{
 			name:     "polecat",
-			identity: AgentIdentity{Role: RolePolecat, Rig: "gastown", Name: "Toast"},
-			want:     "gastown/polecats/Toast",
+			identity: AgentIdentity{Role: RolePolecat, Rig: "gongshow", Name: "Toast"},
+			want:     "gongshow/polecats/Toast",
 		},
 	}
 
@@ -232,10 +232,10 @@ func TestParseSessionName_RoundTrip(t *testing.T) {
 	sessions := []string{
 		"hq-mayor",
 		"hq-deacon",
-		"gt-gastown-witness",
+		"gt-gongshow-witness",
 		"gt-foo-bar-refinery",
-		"gt-gastown-crew-max",
-		"gt-gastown-morsov",
+		"gt-gongshow-crew-max",
+		"gt-gongshow-morsov",
 	}
 
 	for _, sess := range sessions {

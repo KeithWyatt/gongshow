@@ -93,7 +93,7 @@ func TestParsePolecatDone_InvalidSubject(t *testing.T) {
 
 func TestParseHelp(t *testing.T) {
 	subject := "HELP: Tests failing on CI"
-	body := `Agent: gastown/polecats/nux
+	body := `Agent: gongshow/polecats/nux
 Issue: gt-abc123
 Problem: Unit tests timeout after 30 seconds
 Tried: Increased timeout, checked for deadlocks`
@@ -106,8 +106,8 @@ Tried: Increased timeout, checked for deadlocks`
 	if payload.Topic != "Tests failing on CI" {
 		t.Errorf("Topic = %q, want %q", payload.Topic, "Tests failing on CI")
 	}
-	if payload.Agent != "gastown/polecats/nux" {
-		t.Errorf("Agent = %q, want %q", payload.Agent, "gastown/polecats/nux")
+	if payload.Agent != "gongshow/polecats/nux" {
+		t.Errorf("Agent = %q, want %q", payload.Agent, "gongshow/polecats/nux")
 	}
 	if payload.IssueID != "gt-abc123" {
 		t.Errorf("IssueID = %q, want %q", payload.IssueID, "gt-abc123")

@@ -8,13 +8,13 @@ import (
 	"strings"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/git"
-	"github.com/steveyegge/gastown/internal/mail"
-	"github.com/steveyegge/gastown/internal/rig"
-	"github.com/steveyegge/gastown/internal/tmux"
-	"github.com/steveyegge/gastown/internal/util"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/git"
+	"github.com/KeithWyatt/gongshow/internal/mail"
+	"github.com/KeithWyatt/gongshow/internal/rig"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/util"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 // HandlerResult tracks the result of handling a protocol message.
@@ -743,7 +743,7 @@ func AutoNukeIfClean(workDir, rigName, polecatName string) *NukePolecatResult {
 // This prevents nuking a polecat whose work wasn't actually merged.
 //
 // In multi-remote setups, the code may live on a remote other than "origin"
-// (e.g., "gastown" for gastown.git). This function checks ALL remotes to find
+// (e.g., "gongshow" for gongshow.git). This function checks ALL remotes to find
 // the one containing the default branch with the merged commit.
 //
 // Returns:

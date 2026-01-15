@@ -20,9 +20,9 @@ func TestNewMailbox(t *testing.T) {
 }
 
 func TestNewMailboxBeads(t *testing.T) {
-	m := NewMailboxBeads("gastown/Toast", "/work/dir")
-	if m.identity != "gastown/Toast" {
-		t.Errorf("identity = %q, want %q", m.identity, "gastown/Toast")
+	m := NewMailboxBeads("gongshow/Toast", "/work/dir")
+	if m.identity != "gongshow/Toast" {
+		t.Errorf("identity = %q, want %q", m.identity, "gongshow/Toast")
 	}
 	if m.legacy {
 		t.Error("NewMailboxBeads should not create legacy mailbox")
@@ -36,7 +36,7 @@ func TestMailboxLegacyAppend(t *testing.T) {
 	msg := &Message{
 		ID:        "msg-001",
 		From:      "mayor/",
-		To:        "gastown/Toast",
+		To:        "gongshow/Toast",
 		Subject:   "Test message",
 		Body:      "Hello world",
 		Timestamp: time.Now(),
@@ -318,7 +318,7 @@ func TestMailboxLegacyEmptyInbox(t *testing.T) {
 }
 
 func TestMailboxBeadsAppendError(t *testing.T) {
-	m := NewMailboxBeads("gastown/Toast", "/work/dir")
+	m := NewMailboxBeads("gongshow/Toast", "/work/dir")
 
 	err := m.Append(&Message{})
 	if err == nil {
@@ -337,9 +337,9 @@ func TestMailboxIdentityAndPath(t *testing.T) {
 	}
 
 	// Beads mailbox
-	beads := NewMailboxBeads("gastown/Toast", "/work/dir")
-	if beads.Identity() != "gastown/Toast" {
-		t.Errorf("Beads mailbox identity = %q, want gastown/Toast", beads.Identity())
+	beads := NewMailboxBeads("gongshow/Toast", "/work/dir")
+	if beads.Identity() != "gongshow/Toast" {
+		t.Errorf("Beads mailbox identity = %q, want gongshow/Toast", beads.Identity())
 	}
 	if beads.Path() != "" {
 		t.Errorf("Beads mailbox path = %q, want empty", beads.Path())
@@ -375,9 +375,9 @@ func TestMailboxPersistence(t *testing.T) {
 }
 
 func TestNewMailboxWithBeadsDir(t *testing.T) {
-	m := NewMailboxWithBeadsDir("gastown/Toast", "/work/dir", "/custom/.beads")
-	if m.identity != "gastown/Toast" {
-		t.Errorf("identity = %q, want 'gastown/Toast'", m.identity)
+	m := NewMailboxWithBeadsDir("gongshow/Toast", "/work/dir", "/custom/.beads")
+	if m.identity != "gongshow/Toast" {
+		t.Errorf("identity = %q, want 'gongshow/Toast'", m.identity)
 	}
 	if m.beadsDir != "/custom/.beads" {
 		t.Errorf("beadsDir = %q, want '/custom/.beads'", m.beadsDir)

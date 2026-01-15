@@ -11,15 +11,15 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/git"
-	"github.com/steveyegge/gastown/internal/polecat"
-	"github.com/steveyegge/gastown/internal/rig"
-	"github.com/steveyegge/gastown/internal/runtime"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/swarm"
-	"github.com/steveyegge/gastown/internal/tmux"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/git"
+	"github.com/KeithWyatt/gongshow/internal/polecat"
+	"github.com/KeithWyatt/gongshow/internal/rig"
+	"github.com/KeithWyatt/gongshow/internal/runtime"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/swarm"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 // Swarm command flags
@@ -181,7 +181,7 @@ func init() {
 func getSwarmRig(rigName string) (*rig.Rig, string, error) {
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return nil, "", fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return nil, "", fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	rigsConfigPath := filepath.Join(townRoot, "mayor", "rigs.json")
@@ -204,7 +204,7 @@ func getSwarmRig(rigName string) (*rig.Rig, string, error) {
 func getAllRigs() ([]*rig.Rig, string, error) {
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return nil, "", fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return nil, "", fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	rigsConfigPath := filepath.Join(townRoot, "mayor", "rigs.json")

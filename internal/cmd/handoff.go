@@ -8,13 +8,13 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/constants"
-	"github.com/steveyegge/gastown/internal/events"
-	"github.com/steveyegge/gastown/internal/session"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/tmux"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/constants"
+	"github.com/KeithWyatt/gongshow/internal/events"
+	"github.com/KeithWyatt/gongshow/internal/session"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 var handoffCmd = &cobra.Command{
@@ -268,7 +268,7 @@ func resolveRoleToSession(role string) (string, error) {
 		return fmt.Sprintf("gt-%s-refinery", rig), nil
 
 	default:
-		// Assume it's a direct session name (e.g., gt-gastown-crew-max)
+		// Assume it's a direct session name (e.g., gt-gongshow-crew-max)
 		return role, nil
 	}
 }
@@ -318,7 +318,7 @@ func resolvePathToSession(path string) (string, error) {
 		default:
 			// Not a known role - check if it's a crew member before assuming polecat.
 			// Crew members exist at <townRoot>/<rig>/crew/<name>.
-			// This fixes: gt sling gt-375 gastown/max failing because max is crew, not polecat.
+			// This fixes: gt sling gt-375 gongshow/max failing because max is crew, not polecat.
 			townRoot := detectTownRootFromCwd()
 			if townRoot != "" {
 				crewPath := filepath.Join(townRoot, rig, "crew", second)
@@ -326,7 +326,7 @@ func resolvePathToSession(path string) (string, error) {
 					return fmt.Sprintf("gt-%s-crew-%s", rig, second), nil
 				}
 			}
-			// Not a crew member - treat as polecat name (e.g., gastown/nux)
+			// Not a crew member - treat as polecat name (e.g., gongshow/nux)
 			return fmt.Sprintf("gt-%s-%s", rig, secondLower), nil
 		}
 	}
@@ -352,7 +352,7 @@ func buildRestartCommand(sessionName string) (string, error) {
 	// Detect town root from current directory
 	townRoot := detectTownRootFromCwd()
 	if townRoot == "" {
-		return "", fmt.Errorf("cannot detect town root - run from within a Gas Town workspace")
+		return "", fmt.Errorf("cannot detect town root - run from within a GongShow workspace")
 	}
 
 	// Determine the working directory for this session type

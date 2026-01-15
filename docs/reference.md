@@ -1,6 +1,6 @@
-# Gas Town Reference
+# GongShow Reference
 
-Technical reference for Gas Town internals. Read the README first.
+Technical reference for GongShow internals. Read the README first.
 
 ## Directory Structure
 
@@ -42,7 +42,7 @@ Technical reference for Gas Town internals. Read the README first.
 
 ## Beads Routing
 
-Gas Town routes beads commands based on issue ID prefix. You don't need to think
+GongShow routes beads commands based on issue ID prefix. You don't need to think
 about which database to use - just use the issue ID.
 
 ```bash
@@ -206,7 +206,7 @@ gt mol step done <step>      # Complete a molecule step
 
 ## Environment Variables
 
-Gas Town sets environment variables for each agent session via `config.AgentEnv()`.
+GongShow sets environment variables for each agent session via `config.AgentEnv()`.
 These are set in tmux session environment when agents are spawned.
 
 ### Core Variables (All Agents)
@@ -215,9 +215,9 @@ These are set in tmux session environment when agents are spawned.
 |----------|---------|---------|
 | `GT_ROLE` | Agent role type | `mayor`, `witness`, `polecat`, `crew` |
 | `GT_ROOT` | Town root directory | `/home/user/gt` |
-| `BD_ACTOR` | Agent identity for attribution | `gastown/polecats/toast` |
-| `GIT_AUTHOR_NAME` | Commit attribution (same as BD_ACTOR) | `gastown/polecats/toast` |
-| `BEADS_DIR` | Beads database location | `/home/user/gt/gastown/.beads` |
+| `BD_ACTOR` | Agent identity for attribution | `gongshow/polecats/toast` |
+| `GIT_AUTHOR_NAME` | Commit attribution (same as BD_ACTOR) | `gongshow/polecats/toast` |
+| `BEADS_DIR` | Beads database location | `/home/user/gt/gongshow/.beads` |
 
 ### Rig-Level Variables
 
@@ -321,7 +321,7 @@ Additionally, each rig has `<rig>/mayor/rig/CLAUDE.md` for the per-rig mayor clo
 
 **Why ephemeral injection?** Writing CLAUDE.md into git clones would:
 1. Pollute source repos when agents commit/push
-2. Leak Gas Town internals into project history
+2. Leak GongShow internals into project history
 3. Conflict with project-specific CLAUDE.md files
 
 The `gt prime` command runs at SessionStart hook and injects context without
@@ -330,7 +330,7 @@ persisting it to disk.
 ### Sparse Checkout (Source Repo Isolation)
 
 When agents work on source repositories that have their own Claude Code configuration,
-Gas Town uses git sparse checkout to exclude all context files:
+GongShow uses git sparse checkout to exclude all context files:
 
 ```bash
 # Automatically configured for worktrees - excludes:
@@ -341,7 +341,7 @@ Gas Town uses git sparse checkout to exclude all context files:
 git sparse-checkout set --no-cone '/*' '!/.claude/' '!/CLAUDE.md' '!/CLAUDE.local.md' '!/.mcp.json'
 ```
 
-This ensures agents use Gas Town's context, not the source repo's instructions.
+This ensures agents use GongShow's context, not the source repo's instructions.
 
 **Doctor check**: `gt doctor` verifies sparse checkout is configured correctly.
 Run `gt doctor --fix` to update legacy configurations missing the newer patterns.
@@ -354,12 +354,12 @@ Claude Code's settings search order (first match wins):
 2. `.claude/settings.json` in parent directories (traversing up)
 3. `~/.claude/settings.json` (user global settings)
 
-Gas Town places settings at each agent's working directory root, so agents
+GongShow places settings at each agent's working directory root, so agents
 find their role-specific settings before reaching any parent or global config.
 
 ### Settings Templates
 
-Gas Town uses two settings templates based on role type:
+GongShow uses two settings templates based on role type:
 
 | Type | Roles | Key Difference |
 |------|-------|----------------|
@@ -529,10 +529,10 @@ gt seance --talk <id> -p "Where is X?"  # One-shot question
 in Claude's `/resume` picker:
 
 ```
-[GAS TOWN] recipient <- sender • timestamp • topic[:mol-id]
+[GONGSHOW] recipient <- sender • timestamp • topic[:mol-id]
 ```
 
-Example: `[GAS TOWN] gastown/crew/gus <- human • 2025-12-30T15:42 • restart`
+Example: `[GONGSHOW] gongshow/crew/gus <- human • 2025-12-30T15:42 • restart`
 
 **IMPORTANT**: Always use `gt nudge` to send messages to Claude sessions.
 Never use raw `tmux send-keys` - it doesn't handle Claude's input correctly.

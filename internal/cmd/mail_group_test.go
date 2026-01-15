@@ -38,21 +38,21 @@ func TestIsValidMemberPattern(t *testing.T) {
 		want    bool
 	}{
 		// Direct addresses
-		{"gastown/crew/max", true},
+		{"gongshow/crew/max", true},
 		{"mayor/", true},
 		{"deacon/", true},
-		{"gastown/witness", true},
+		{"gongshow/witness", true},
 
 		// Wildcard patterns
 		{"*/witness", true},
-		{"gastown/*", true},
-		{"gastown/crew/*", true},
+		{"gongshow/*", true},
+		{"gongshow/crew/*", true},
 
 		// Special patterns
 		{"@town", true},
 		{"@crew", true},
 		{"@witnesses", true},
-		{"@rig/gastown", true},
+		{"@rig/gongshow", true},
 
 		// Group names
 		{"ops-team", true},

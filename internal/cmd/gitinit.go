@@ -8,8 +8,8 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 var (
@@ -20,11 +20,11 @@ var (
 var gitInitCmd = &cobra.Command{
 	Use:     "git-init",
 	GroupID: GroupWorkspace,
-	Short:   "Initialize git repository for a Gas Town HQ",
-	Long: `Initialize or configure git for an existing Gas Town HQ.
+	Short:   "Initialize git repository for a GongShow HQ",
+	Long: `Initialize or configure git for an existing GongShow HQ.
 
 This command:
-  1. Creates a comprehensive .gitignore for Gas Town
+  1. Creates a comprehensive .gitignore for GongShow
   2. Initializes a git repository if not already present
   3. Optionally creates a GitHub repository (private by default)
 
@@ -51,8 +51,8 @@ func init() {
 	rootCmd.AddCommand(gitInitCmd)
 }
 
-// HQGitignore is the standard .gitignore for Gas Town HQs
-const HQGitignore = `# Gas Town HQ .gitignore
+// HQGitignore is the standard .gitignore for GongShow HQs
+const HQGitignore = `# GongShow HQ .gitignore
 # Track: Role context, handoff docs, beads config/data, rig configs
 # Ignore: Git worktrees (polecats) and clones (mayor/refinery rigs), runtime state
 
@@ -88,7 +88,7 @@ const HQGitignore = `# Gas Town HQ .gitignore
 # Rig .beads symlinks (point to ignored mayor/rig/.beads, recreated on setup)
 # =============================================================================
 # Add rig-specific symlinks here, e.g.:
-# gastown/.beads
+# gongshow/.beads
 
 # =============================================================================
 # OS and editor files
@@ -116,7 +116,7 @@ func runGitInit(cmd *cobra.Command, args []string) error {
 
 	hqRoot, err := workspace.Find(cwd)
 	if err != nil || hqRoot == "" {
-		return fmt.Errorf("not inside a Gas Town HQ (run 'gt install' first)")
+		return fmt.Errorf("not inside a GongShow HQ (run 'gt install' first)")
 	}
 
 	fmt.Printf("%s Initializing git for HQ at %s\n\n",
@@ -152,7 +152,7 @@ func runGitInit(cmd *cobra.Command, args []string) error {
 		fmt.Println()
 		fmt.Println("Next steps:")
 		fmt.Printf("  1. Create initial commit: %s\n",
-			style.Dim.Render("git add . && git commit -m 'Initial Gas Town HQ'"))
+			style.Dim.Render("git add . && git commit -m 'Initial GongShow HQ'"))
 		fmt.Printf("  2. Create remote repo: %s\n",
 			style.Dim.Render("gt git-init --github=user/repo"))
 	}
@@ -169,9 +169,9 @@ func createGitignore(path string) error {
 			return fmt.Errorf("reading existing .gitignore: %w", err)
 		}
 
-		// Check if it already has Gas Town section
-		if strings.Contains(string(content), "Gas Town HQ") {
-			fmt.Printf("   ✓ .gitignore already configured for Gas Town\n")
+		// Check if it already has GongShow section
+		if strings.Contains(string(content), "GongShow HQ") {
+			fmt.Printf("   ✓ .gitignore already configured for GongShow\n")
 			return nil
 		}
 
@@ -180,7 +180,7 @@ func createGitignore(path string) error {
 		if err := os.WriteFile(path, []byte(combined), 0644); err != nil {
 			return fmt.Errorf("updating .gitignore: %w", err)
 		}
-		fmt.Printf("   ✓ Updated .gitignore with Gas Town patterns\n")
+		fmt.Printf("   ✓ Updated .gitignore with GongShow patterns\n")
 		return nil
 	}
 
@@ -285,7 +285,7 @@ func InitGitForHarness(hqRoot string, github string, private bool) error {
 // PreCheckoutHookScript is the git pre-checkout hook that prevents accidental
 // branch switches in the town root. The town root should always stay on main.
 const PreCheckoutHookScript = `#!/bin/bash
-# Gas Town pre-checkout hook
+# GongShow pre-checkout hook
 # Prevents accidental branch switches in the town root (HQ).
 # The town root must stay on main to avoid breaking gt commands.
 
@@ -316,7 +316,7 @@ echo ""
 echo "⚠️  BLOCKED: Town root must stay on main branch"
 echo ""
 echo "   You're trying to switch from '$CURRENT_BRANCH' to '$TARGET_BRANCH'"
-echo "   in the Gas Town HQ directory."
+echo "   in the GongShow HQ directory."
 echo ""
 echo "   The town root (~/gt) should always be on main. Switching branches"
 echo "   can break gt commands (missing rigs.json, wrong configs, etc.)."
@@ -350,13 +350,13 @@ func InstallPreCheckoutHook(hqRoot string) error {
 			return fmt.Errorf("reading existing hook: %w", err)
 		}
 
-		if strings.Contains(string(content), "Gas Town pre-checkout hook") {
+		if strings.Contains(string(content), "GongShow pre-checkout hook") {
 			fmt.Printf("   ✓ Pre-checkout hook already installed\n")
 			return nil
 		}
 
 		// There's an existing hook that's not ours - don't overwrite
-		fmt.Printf("   %s Pre-checkout hook exists but is not Gas Town's (skipping)\n", style.Dim.Render("⚠"))
+		fmt.Printf("   %s Pre-checkout hook exists but is not GongShow's (skipping)\n", style.Dim.Render("⚠"))
 		return nil
 	}
 
@@ -369,7 +369,7 @@ func InstallPreCheckoutHook(hqRoot string) error {
 	return nil
 }
 
-// IsPreCheckoutHookInstalled checks if the Gas Town pre-checkout hook is installed.
+// IsPreCheckoutHookInstalled checks if the GongShow pre-checkout hook is installed.
 func IsPreCheckoutHookInstalled(hqRoot string) bool {
 	hookPath := filepath.Join(hqRoot, ".git", "hooks", "pre-checkout")
 
@@ -378,5 +378,5 @@ func IsPreCheckoutHookInstalled(hqRoot string) bool {
 		return false
 	}
 
-	return strings.Contains(string(content), "Gas Town pre-checkout hook")
+	return strings.Contains(string(content), "GongShow pre-checkout hook")
 }

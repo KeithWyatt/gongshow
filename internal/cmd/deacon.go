@@ -12,17 +12,17 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/claude"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/constants"
-	"github.com/steveyegge/gastown/internal/deacon"
-	"github.com/steveyegge/gastown/internal/polecat"
-	"github.com/steveyegge/gastown/internal/runtime"
-	"github.com/steveyegge/gastown/internal/session"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/tmux"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/claude"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/constants"
+	"github.com/KeithWyatt/gongshow/internal/deacon"
+	"github.com/KeithWyatt/gongshow/internal/polecat"
+	"github.com/KeithWyatt/gongshow/internal/runtime"
+	"github.com/KeithWyatt/gongshow/internal/session"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 // getDeaconSessionName returns the Deacon session name.
@@ -38,7 +38,7 @@ var deaconCmd = &cobra.Command{
 	RunE:    requireSubcommand,
 	Long: `Manage the Deacon tmux session.
 
-The Deacon is the hierarchical health-check orchestrator for Gas Town.
+The Deacon is the hierarchical health-check orchestrator for GongShow.
 It monitors the Mayor and Witnesses, handles lifecycle requests, and
 keeps the town running. Use the subcommands to start, stop, attach,
 and check status.`,
@@ -146,8 +146,8 @@ Exit codes:
   2 - Agent should be force-killed (consecutive failures exceeded)
 
 Examples:
-  gt deacon health-check gastown/polecats/max
-  gt deacon health-check gastown/witness --timeout=60s
+  gt deacon health-check gongshow/polecats/max
+  gt deacon health-check gongshow/witness --timeout=60s
   gt deacon health-check deacon --failures=5`,
 	Args: cobra.ExactArgs(1),
 	RunE: runDeaconHealthCheck,
@@ -173,8 +173,8 @@ After force-kill, the agent is 'asleep'. Normal wake mechanisms apply:
 This respects the cooldown period - won't kill if recently killed.
 
 Examples:
-  gt deacon force-kill gastown/polecats/max
-  gt deacon force-kill gastown/witness --reason="unresponsive for 90s"`,
+  gt deacon force-kill gongshow/polecats/max
+  gt deacon force-kill gongshow/witness --reason="unresponsive for 90s"`,
 	Args: cobra.ExactArgs(1),
 	RunE: runDeaconForceKill,
 }
@@ -336,7 +336,7 @@ func startDeaconSession(t *tmux.Tmux, sessionName, agentOverride string) error {
 	// Find workspace root
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	// Deacon runs from its own directory (for correct role detection by gt prime)
@@ -360,7 +360,7 @@ func startDeaconSession(t *tmux.Tmux, sessionName, agentOverride string) error {
 	}
 
 	// Create session with command directly to avoid send-keys race condition.
-	// See: https://github.com/anthropics/gastown/issues/280
+	// See: https://github.com/anthropics/gongshow/issues/280
 	fmt.Println("Starting Deacon session...")
 	if err := t.NewSessionWithCommand(sessionName, deaconDir, startupCmd); err != nil {
 		return fmt.Errorf("creating session: %w", err)
@@ -399,7 +399,7 @@ func startDeaconSession(t *tmux.Tmux, sessionName, agentOverride string) error {
 		style.PrintWarning("failed to send startup nudge: %v", err)
 	}
 
-	// GUPP: Gas Town Universal Propulsion Principle
+	// GUPP: GongShow Universal Propulsion Principle
 	// Send the propulsion nudge to trigger autonomous patrol execution.
 	// Wait for beacon to be fully processed (needs to be separate prompt)
 	time.Sleep(2 * time.Second)
@@ -550,7 +550,7 @@ func runDeaconRestart(cmd *cobra.Command, args []string) error {
 func runDeaconHeartbeat(cmd *cobra.Command, args []string) error {
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	// Check if Deacon is paused - if so, refuse to update heartbeat
@@ -589,7 +589,7 @@ func runDeaconHeartbeat(cmd *cobra.Command, args []string) error {
 func runDeaconTriggerPending(cmd *cobra.Command, args []string) error {
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	// Step 1: Check inbox for new POLECAT_STARTED messages
@@ -649,7 +649,7 @@ func runDeaconHealthCheck(cmd *cobra.Command, args []string) error {
 
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	// Load health check state
@@ -768,7 +768,7 @@ func runDeaconForceKill(cmd *cobra.Command, args []string) error {
 
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	// Load health check state
@@ -849,7 +849,7 @@ func runDeaconForceKill(cmd *cobra.Command, args []string) error {
 func runDeaconHealthState(cmd *cobra.Command, args []string) error {
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	state, err := deacon.LoadHealthCheckState(townRoot)
@@ -893,7 +893,7 @@ func runDeaconHealthState(cmd *cobra.Command, args []string) error {
 }
 
 // agentAddressToIDs converts an agent address to bead ID and session name.
-// Supports formats: "gastown/polecats/max", "gastown/witness", "deacon", "mayor"
+// Supports formats: "gongshow/polecats/max", "gongshow/witness", "deacon", "mayor"
 // Note: Town-level agents (Mayor, Deacon) use hq- prefix bead IDs stored in town beads.
 func agentAddressToIDs(address string) (beadID, sessionName string, err error) {
 	switch address {
@@ -906,7 +906,7 @@ func agentAddressToIDs(address string) (beadID, sessionName string, err error) {
 	parts := strings.Split(address, "/")
 	switch len(parts) {
 	case 2:
-		// rig/role: "gastown/witness", "gastown/refinery"
+		// rig/role: "gongshow/witness", "gongshow/refinery"
 		rig, role := parts[0], parts[1]
 		switch role {
 		case "witness":
@@ -917,7 +917,7 @@ func agentAddressToIDs(address string) (beadID, sessionName string, err error) {
 			return "", "", fmt.Errorf("unknown role: %s", role)
 		}
 	case 3:
-		// rig/type/name: "gastown/polecats/max", "gastown/crew/alpha"
+		// rig/type/name: "gongshow/polecats/max", "gongshow/crew/alpha"
 		rig, agentType, name := parts[0], parts[1], parts[2]
 		switch agentType {
 		case "polecats":
@@ -980,7 +980,7 @@ func updateAgentBeadState(townRoot, agent, state, _ string) { // reason unused b
 func runDeaconStaleHooks(cmd *cobra.Command, args []string) error {
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	cfg := &deacon.StaleHookConfig{
@@ -1045,7 +1045,7 @@ func runDeaconStaleHooks(cmd *cobra.Command, args []string) error {
 func runDeaconPause(cmd *cobra.Command, args []string) error {
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	// Check if already paused
@@ -1082,7 +1082,7 @@ func runDeaconPause(cmd *cobra.Command, args []string) error {
 func runDeaconResume(cmd *cobra.Command, args []string) error {
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	// Check if paused

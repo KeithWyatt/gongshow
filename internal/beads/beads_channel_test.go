@@ -17,7 +17,7 @@ func TestFormatChannelDescription(t *testing.T) {
 			title: "Channel: alerts",
 			fields: &ChannelFields{
 				Name:        "alerts",
-				Subscribers: []string{"gastown/crew/max", "gastown/witness"},
+				Subscribers: []string{"gongshow/crew/max", "gongshow/witness"},
 				Status:      ChannelStatusActive,
 				CreatedBy:   "human",
 				CreatedAt:   "2024-01-15T10:00:00Z",
@@ -25,7 +25,7 @@ func TestFormatChannelDescription(t *testing.T) {
 			want: []string{
 				"Channel: alerts",
 				"name: alerts",
-				"subscribers: gastown/crew/max,gastown/witness",
+				"subscribers: gongshow/crew/max,gongshow/witness",
 				"status: active",
 				"created_by: human",
 				"created_at: 2024-01-15T10:00:00Z",
@@ -103,7 +103,7 @@ func TestParseChannelFields(t *testing.T) {
 			description: `Channel: alerts
 
 name: alerts
-subscribers: gastown/crew/max,gastown/witness,*/refinery
+subscribers: gongshow/crew/max,gongshow/witness,*/refinery
 status: active
 retention_count: 50
 retention_hours: 48
@@ -111,7 +111,7 @@ created_by: human
 created_at: 2024-01-15T10:00:00Z`,
 			want: &ChannelFields{
 				Name:           "alerts",
-				Subscribers:    []string{"gastown/crew/max", "gastown/witness", "*/refinery"},
+				Subscribers:    []string{"gongshow/crew/max", "gongshow/witness", "*/refinery"},
 				Status:         ChannelStatusActive,
 				RetentionCount: 50,
 				RetentionHours: 48,
@@ -137,11 +137,11 @@ created_by: admin`,
 		{
 			name: "single subscriber",
 			description: `name: solo
-subscribers: gastown/crew/max
+subscribers: gongshow/crew/max
 status: active`,
 			want: &ChannelFields{
 				Name:        "solo",
-				Subscribers: []string{"gastown/crew/max"},
+				Subscribers: []string{"gongshow/crew/max"},
 				Status:      ChannelStatusActive,
 			},
 		},
@@ -231,7 +231,7 @@ func TestChannelRoundTrip(t *testing.T) {
 	// Test that Format -> Parse preserves data
 	original := &ChannelFields{
 		Name:           "test-channel",
-		Subscribers:    []string{"gastown/crew/max", "*/witness", "@town"},
+		Subscribers:    []string{"gongshow/crew/max", "*/witness", "@town"},
 		Status:         ChannelStatusActive,
 		RetentionCount: 100,
 		RetentionHours: 72,

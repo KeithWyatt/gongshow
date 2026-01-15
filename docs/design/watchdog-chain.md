@@ -1,10 +1,10 @@
 # Daemon/Boot/Deacon Watchdog Chain
 
-> Autonomous health monitoring and recovery in Gas Town.
+> Autonomous health monitoring and recovery in GongShow.
 
 ## Overview
 
-Gas Town uses a three-tier watchdog chain for autonomous health monitoring:
+GongShow uses a three-tier watchdog chain for autonomous health monitoring:
 
 ```
 Daemon (Go process)          ← Dumb transport, 3-min heartbeat
@@ -170,7 +170,7 @@ If the marker exists and is recent, daemon skips Boot spawn for that tick.
 
 ## Degraded Mode
 
-When tmux is unavailable, Gas Town enters degraded mode:
+When tmux is unavailable, GongShow enters degraded mode:
 
 | Capability | Normal | Degraded |
 |------------|--------|----------|

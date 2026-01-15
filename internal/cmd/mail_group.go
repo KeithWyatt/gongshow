@@ -8,8 +8,8 @@ import (
 	"text/tabwriter"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 // Group command flags
@@ -25,16 +25,16 @@ var mailGroupCmd = &cobra.Command{
 
 Groups are named collections of addresses used for mail distribution.
 Members can be:
-  - Direct addresses (gastown/crew/max)
-  - Patterns (*/witness, gastown/*)
+  - Direct addresses (gongshow/crew/max)
+  - Patterns (*/witness, gongshow/*)
   - Other group names (nested groups)
 
 Examples:
   gt mail group list                              # List all groups
   gt mail group show ops-team                     # Show group members
-  gt mail group create ops-team gastown/witness gastown/crew/max
+  gt mail group create ops-team gongshow/witness gongshow/crew/max
   gt mail group add ops-team deacon/
-  gt mail group remove ops-team gastown/witness
+  gt mail group remove ops-team gongshow/witness
   gt mail group delete ops-team`,
 	RunE: requireSubcommand,
 }
@@ -63,8 +63,8 @@ var groupCreateCmd = &cobra.Command{
 Members can be specified as positional arguments or with --member flags.
 
 Examples:
-  gt mail group create ops-team gastown/witness gastown/crew/max
-  gt mail group create ops-team --member gastown/witness --member gastown/crew/max`,
+  gt mail group create ops-team gongshow/witness gongshow/crew/max
+  gt mail group create ops-team --member gongshow/witness --member gongshow/crew/max`,
 	Args: cobra.MinimumNArgs(1),
 	RunE: runGroupCreate,
 }
@@ -117,7 +117,7 @@ func init() {
 func runGroupList(cmd *cobra.Command, args []string) error {
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	b := beads.New(townRoot)
@@ -155,7 +155,7 @@ func runGroupShow(cmd *cobra.Command, args []string) error {
 
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	b := beads.New(townRoot)
@@ -210,7 +210,7 @@ func runGroupCreate(cmd *cobra.Command, args []string) error {
 
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	// Detect creator
@@ -249,7 +249,7 @@ func runGroupAdd(cmd *cobra.Command, args []string) error {
 
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	b := beads.New(townRoot)
@@ -267,7 +267,7 @@ func runGroupRemove(cmd *cobra.Command, args []string) error {
 
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	b := beads.New(townRoot)
@@ -284,7 +284,7 @@ func runGroupDelete(cmd *cobra.Command, args []string) error {
 
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	b := beads.New(townRoot)
@@ -323,8 +323,8 @@ func isValidGroupName(name string) bool {
 
 // isValidMemberPattern checks if a member pattern is syntactically valid.
 // Valid patterns include:
-// - Direct addresses: gastown/crew/max, mayor/, deacon/
-// - Wildcards: */witness, gastown/*, gastown/crew/*
+// - Direct addresses: gongshow/crew/max, mayor/, deacon/
+// - Wildcards: */witness, gongshow/*, gongshow/crew/*
 // - Special patterns: @town, @crew, @witnesses
 // - Group names: ops-team
 func isValidMemberPattern(pattern string) bool {

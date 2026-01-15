@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
 )
 
 // StartupNudgeConfig configures a startup nudge message.
 type StartupNudgeConfig struct {
 	// Recipient is the address of the agent being nudged.
-	// Examples: "gastown/crew/gus", "deacon", "gastown/witness"
+	// Examples: "gongshow/crew/gus", "deacon", "gongshow/witness"
 	Recipient string
 
 	// Sender is the agent initiating the nudge.
@@ -31,12 +31,12 @@ type StartupNudgeConfig struct {
 // The message becomes the session title in Claude Code's /resume picker,
 // enabling workers to find predecessor sessions.
 //
-// Format: [GAS TOWN] <recipient> <- <sender> • <timestamp> • <topic[:mol-id]>
+// Format: [GONGSHOW] <recipient> <- <sender> • <timestamp> • <topic[:mol-id]>
 //
 // Examples:
-//   - [GAS TOWN] gastown/crew/gus <- deacon • 2025-12-30T15:42 • assigned:gt-abc12
-//   - [GAS TOWN] deacon <- mayor • 2025-12-30T08:00 • cold-start
-//   - [GAS TOWN] gastown/witness <- self • 2025-12-30T14:00 • handoff
+//   - [GONGSHOW] gongshow/crew/gus <- deacon • 2025-12-30T15:42 • assigned:gt-abc12
+//   - [GONGSHOW] deacon <- mayor • 2025-12-30T08:00 • cold-start
+//   - [GONGSHOW] gongshow/witness <- self • 2025-12-30T14:00 • handoff
 //
 // The message content doesn't trigger GUPP - CLAUDE.md and hooks handle that.
 // The metadata makes sessions identifiable in /resume.
@@ -61,8 +61,8 @@ func FormatStartupNudge(cfg StartupNudgeConfig) string {
 		topic = "ready"
 	}
 
-	// Build the beacon: [GAS TOWN] recipient <- sender • timestamp • topic
-	beacon := fmt.Sprintf("[GAS TOWN] %s <- %s • %s • %s",
+	// Build the beacon: [GONGSHOW] recipient <- sender • timestamp • topic
+	beacon := fmt.Sprintf("[GONGSHOW] %s <- %s • %s • %s",
 		cfg.Recipient, cfg.Sender, timestamp, topic)
 
 	// For handoff and cold-start, add explicit instructions so the agent knows what to do

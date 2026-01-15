@@ -1,4 +1,4 @@
-// Package config provides configuration types and serialization for Gas Town.
+// Package config provides configuration types and serialization for GongShow.
 package config
 
 import (
@@ -58,8 +58,8 @@ type TownSettings struct {
 	RoleAgents map[string]string `json:"role_agents,omitempty"`
 
 	// AgentEmailDomain is the domain used for agent git identity emails.
-	// Agent addresses like "gastown/crew/jack" become "gastown.crew.jack@{domain}".
-	// Default: "gastown.local"
+	// Agent addresses like "gongshow/crew/jack" become "gongshow.crew.jack@{domain}".
+	// Default: "gongshow.local"
 	AgentEmailDomain string `json:"agent_email_domain,omitempty"`
 }
 
@@ -285,7 +285,7 @@ type RuntimeConfig struct {
 	Instructions *RuntimeInstructionsConfig `json:"instructions,omitempty"`
 }
 
-// RuntimeSessionConfig configures how Gas Town discovers runtime session IDs.
+// RuntimeSessionConfig configures how GongShow discovers runtime session IDs.
 type RuntimeSessionConfig struct {
 	// SessionIDEnv is the environment variable set by the runtime to identify a session.
 	// Default: "CLAUDE_SESSION_ID" for claude, empty for codex/generic.
@@ -534,7 +534,7 @@ func defaultHooksFile(provider string) string {
 	case "claude":
 		return "settings.json"
 	case "opencode":
-		return "gastown.js"
+		return "gongshow.js"
 	default:
 		return ""
 	}
@@ -709,7 +709,7 @@ func DefaultNamepoolConfig() *NamepoolConfig {
 }
 
 // AccountsConfig represents Claude Code account configuration (mayor/accounts.json).
-// This enables Gas Town to manage multiple Claude Code accounts with easy switching.
+// This enables GongShow to manage multiple Claude Code accounts with easy switching.
 type AccountsConfig struct {
 	Version  int                `json:"version"`  // schema version
 	Accounts map[string]Account `json:"accounts"` // handle -> account details
@@ -740,12 +740,12 @@ type MessagingConfig struct {
 
 	// Lists are static mailing lists. Messages are fanned out to all recipients.
 	// Each recipient gets their own copy of the message.
-	// Example: {"oncall": ["mayor/", "gastown/witness"]}
+	// Example: {"oncall": ["mayor/", "gongshow/witness"]}
 	Lists map[string][]string `json:"lists,omitempty"`
 
 	// Queues are shared work queues. Only one copy exists; workers claim messages.
 	// Messages sit in the queue until explicitly claimed by a worker.
-	// Example: {"work/gastown": ["gastown/polecats/*"]}
+	// Example: {"work/gongshow": ["gongshow/polecats/*"]}
 	Queues map[string]QueueConfig `json:"queues,omitempty"`
 
 	// Announces are bulletin boards. One copy exists; anyone can read, no claiming.
@@ -755,14 +755,14 @@ type MessagingConfig struct {
 
 	// NudgeChannels are named groups for real-time nudge fan-out.
 	// Like mailing lists but for tmux send-keys instead of durable mail.
-	// Example: {"workers": ["gastown/polecats/*", "gastown/crew/*"], "witnesses": ["*/witness"]}
+	// Example: {"workers": ["gongshow/polecats/*", "gongshow/crew/*"], "witnesses": ["*/witness"]}
 	NudgeChannels map[string][]string `json:"nudge_channels,omitempty"`
 }
 
 // QueueConfig represents a work queue configuration.
 type QueueConfig struct {
 	// Workers lists addresses eligible to claim from this queue.
-	// Supports wildcards: "gastown/polecats/*" matches all polecats in gastown.
+	// Supports wildcards: "gongshow/polecats/*" matches all polecats in gongshow.
 	Workers []string `json:"workers"`
 
 	// MaxClaims is the maximum number of concurrent claims (0 = unlimited).
@@ -772,7 +772,7 @@ type QueueConfig struct {
 // AnnounceConfig represents a bulletin board configuration.
 type AnnounceConfig struct {
 	// Readers lists addresses eligible to read from this announce channel.
-	// Supports @group syntax: "@town", "@rig/gastown", "@witnesses".
+	// Supports @group syntax: "@town", "@rig/gongshow", "@witnesses".
 	Readers []string `json:"readers"`
 
 	// RetainCount is the number of messages to retain (0 = unlimited).

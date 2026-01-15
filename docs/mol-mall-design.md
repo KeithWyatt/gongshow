@@ -1,10 +1,10 @@
 # Mol Mall Design
 
-> A marketplace for Gas Town formulas
+> A marketplace for GongShow formulas
 
 ## Vision
 
-**Mol Mall** is a registry for sharing formulas across Gas Town installations. Think npm for molecules, or Terraform Registry for workflows.
+**Mol Mall** is a registry for sharing formulas across GongShow installations. Think npm for molecules, or Terraform Registry for workflows.
 
 ```
 "Cook a formula, sling it to a polecat, the witness watches, refinery merges."
@@ -15,7 +15,7 @@ have your polecats executing world-class workflows?
 
 ### The Network Effect
 
-A well-designed formula for "code review" or "security audit" or "deploy to K8s" can spread across thousands of Gas Town installations. Each adoption means:
+A well-designed formula for "code review" or "security audit" or "deploy to K8s" can spread across thousands of GongShow installations. Each adoption means:
 - More agents executing proven workflows
 - More structured, trackable work output
 - Better capability routing (agents with track records on a formula get similar work)
@@ -29,9 +29,9 @@ A well-designed formula for "code review" or "security audit" or "deploy to K8s"
 │                      MOL MALL REGISTRIES                         │
 └─────────────────────────────────────────────────────────────────┘
 
-PUBLIC REGISTRY (molmall.gastown.io)
+PUBLIC REGISTRY (molmall.gongshow.io)
 ├── Community formulas (MIT licensed)
-├── Official Gas Town formulas (blessed)
+├── Official GongShow formulas (blessed)
 ├── Verified publisher formulas
 └── Open contribution model
 
@@ -51,7 +51,7 @@ FEDERATED REGISTRY (HOP future)
 ### URI Scheme
 
 ```
-hop://molmall.gastown.io/formulas/mol-polecat-work@4.0.0
+hop://molmall.gongshow.io/formulas/mol-polecat-work@4.0.0
        └──────────────────┘         └──────────────┘ └───┘
            registry host              formula name   version
 
@@ -81,7 +81,7 @@ GET /formulas
       - name: mol-polecat-work
         version: 4.0.0
         description: "Full polecat work lifecycle..."
-        author: steve@gastown.io
+        author: steve@gongshow.io
         downloads: 12543
         capabilities: [go, testing, code-review]
 
@@ -91,8 +91,8 @@ GET /formulas/{name}
     name: mol-polecat-work
     versions: [4.0.0, 3.2.1, 3.2.0, ...]
     latest: 4.0.0
-    author: steve@gastown.io
-    repository: https://github.com/steveyegge/gastown
+    author: steve@gongshow.io
+    repository: https://github.com/KeithWyatt/gongshow
     license: MIT
     capabilities:
       primary: [go, testing]
@@ -174,9 +174,9 @@ gt formula install mol-deploy-k8s
 $ gt formula install mol-polecat-code-review
 
 Resolving mol-polecat-code-review...
-  Registry: molmall.gastown.io
+  Registry: molmall.gongshow.io
   Version:  1.2.0 (latest)
-  Author:   steve@gastown.io
+  Author:   steve@gongshow.io
   Skills:   code-review, security
 
 Downloading... ████████████████████ 100%
@@ -229,14 +229,14 @@ Installed: mol-polecat-code-review@1.3.0
       "pinned": true,
       "checksum": "sha256:abc123...",
       "installed_at": "2026-01-10T00:00:00Z",
-      "source": "hop://molmall.gastown.io/formulas/mol-polecat-work@4.0.0"
+      "source": "hop://molmall.gongshow.io/formulas/mol-polecat-work@4.0.0"
     },
     "mol-polecat-code-review": {
       "version": "1.3.0",
       "pinned": false,
       "checksum": "sha256:def456...",
       "installed_at": "2026-01-10T12:00:00Z",
-      "source": "hop://molmall.gastown.io/formulas/mol-polecat-code-review@1.3.0"
+      "source": "hop://molmall.gongshow.io/formulas/mol-polecat-code-review@1.3.0"
     }
   }
 }
@@ -251,13 +251,13 @@ $ gt formula publish --init
 
 Setting up Mol Mall publishing...
 
-1. Create account at https://molmall.gastown.io/signup
-2. Generate API token at https://molmall.gastown.io/settings/tokens
+1. Create account at https://molmall.gongshow.io/signup
+2. Generate API token at https://molmall.gongshow.io/settings/tokens
 3. Run: gt formula login
 
 $ gt formula login
 Token: ********
-Logged in as: steve@gastown.io
+Logged in as: steve@gongshow.io
 ```
 
 ### Publishing
@@ -273,12 +273,12 @@ Pre-flight checks:
   ✓ Required fields present (name, version, description)
   ✓ Skills declared
 
-Publish to molmall.gastown.io? [y/N] y
+Publish to molmall.gongshow.io? [y/N] y
 
 Uploading... ✓
-Published: hop://molmall.gastown.io/formulas/mol-polecat-work@4.0.0
+Published: hop://molmall.gongshow.io/formulas/mol-polecat-work@4.0.0
 
-View at: https://molmall.gastown.io/formulas/mol-polecat-work
+View at: https://molmall.gongshow.io/formulas/mol-polecat-work
 ```
 
 ### Verification Levels
@@ -299,7 +299,7 @@ VERIFIED PUBLISHER
   Higher search ranking
 
 OFFICIAL
-  Maintained by Gas Town team
+  Maintained by GongShow team
   Displayed with 🏛️ badge
   Included in embedded defaults
 
@@ -374,7 +374,7 @@ registries:
     priority: 1  # Check first
 
   - name: public
-    url: https://molmall.gastown.io
+    url: https://molmall.gongshow.io
     auth: none
     priority: 2  # Fallback
 ```
@@ -387,7 +387,7 @@ docker run -d \
   -p 8080:8080 \
   -v /data/formulas:/formulas \
   -e AUTH_PROVIDER=oidc \
-  gastown/molmall-registry:latest
+  gongshow/molmall-registry:latest
 
 # Configuration
 MOLMALL_STORAGE=s3://bucket/formulas
@@ -406,7 +406,7 @@ $ gt formula search "deploy kubernetes" --federated
 
 Searching across federated registries...
 
-  molmall.gastown.io:
+  molmall.gongshow.io:
     mol-deploy-k8s           v3.0.0   🏛️ Official
 
   molmall.acme.corp:
@@ -450,7 +450,7 @@ gt formula install hop://molmall.acme.corp/formulas/@acme/mol-deploy@2.1.0
 
 ### Phase 3: Public Registry
 
-- molmall.gastown.io launch
+- molmall.gongshow.io launch
 - `gt formula install` from registry
 - `gt formula publish` flow
 - Basic search and browse
@@ -473,4 +473,4 @@ gt formula install hop://molmall.acme.corp/formulas/@acme/mol-deploy@2.1.0
 
 - [Formula Resolution](formula-resolution.md) - Local resolution order
 - [molecules.md](molecules.md) - Formula lifecycle (cook, pour, squash)
-- [understanding-gas-town.md](../../../docs/understanding-gas-town.md) - Gas Town architecture
+- [understanding-gas-town.md](../../../docs/understanding-gas-town.md) - GongShow architecture

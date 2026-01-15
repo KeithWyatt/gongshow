@@ -7,14 +7,14 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/version"
+	"github.com/KeithWyatt/gongshow/internal/version"
 )
 
 var infoCmd = &cobra.Command{
 	Use:     "info",
 	GroupID: GroupDiag,
-	Short:   "Show Gas Town information and what's new",
-	Long: `Display information about the current Gas Town installation.
+	Short:   "Show GongShow information and what's new",
+	Long: `Display information about the current GongShow installation.
 
 This command shows:
   - Version information
@@ -53,7 +53,7 @@ Examples:
 			return
 		}
 
-		fmt.Printf("Gas Town v%s (%s)\n", Version, Build)
+		fmt.Printf("GongShow v%s (%s)\n", Version, Build)
 		if commit, ok := info["commit"].(string); ok {
 			if branch, ok := info["branch"].(string); ok {
 				fmt.Printf("  %s@%s\n", branch, commit)
@@ -78,7 +78,7 @@ var versionChanges = []VersionChange{
 		Version: "0.2.0",
 		Date:    "2026-01-04",
 		Changes: []string{
-			"NEW: Convoy Dashboard - Web UI for monitoring Gas Town (gt dashboard)",
+			"NEW: Convoy Dashboard - Web UI for monitoring GongShow (gt dashboard)",
 			"NEW: Two-level beads architecture - hq-* prefix for town, rig prefixes for projects",
 			"NEW: Multi-agent support with pluggable registry",
 			"NEW: gt rig start/stop/restart/status - Multi-rig management commands",
@@ -108,7 +108,7 @@ var versionChanges = []VersionChange{
 		Version: "0.1.1",
 		Date:    "2026-01-02",
 		Changes: []string{
-			"FIX: Tmux keybindings scoped to Gas Town sessions only",
+			"FIX: Tmux keybindings scoped to GongShow sessions only",
 			"NEW: OSS project files - CHANGELOG.md, .golangci.yml, RELEASING.md",
 			"NEW: Version bump script - scripts/bump-version.sh",
 			"FIX: gt rig add and gt crew add CLI syntax documentation",
@@ -120,7 +120,7 @@ var versionChanges = []VersionChange{
 		Version: "0.1.0",
 		Date:    "2026-01-02",
 		Changes: []string{
-			"Initial public release of Gas Town",
+			"Initial public release of GongShow",
 			"NEW: Town structure - Hierarchical workspace with rigs, crews, and polecats",
 			"NEW: Rig management - gt rig add/list/remove",
 			"NEW: Crew workspaces - gt crew add for persistent developer workspaces",
@@ -157,7 +157,7 @@ func showWhatsNew(jsonOutput bool) {
 	}
 
 	// Human-readable output
-	fmt.Printf("\nWhat's New in Gas Town (Current: v%s)\n", Version)
+	fmt.Printf("\nWhat's New in GongShow (Current: v%s)\n", Version)
 	fmt.Println(strings.Repeat("=", 50))
 	fmt.Println()
 

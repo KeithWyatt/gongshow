@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/mail"
+	"github.com/KeithWyatt/gongshow/internal/mail"
 )
 
 func TestParseMessageType(t *testing.T) {
@@ -83,16 +83,16 @@ func TestIsProtocolMessage(t *testing.T) {
 }
 
 func TestNewMergeReadyMessage(t *testing.T) {
-	msg := NewMergeReadyMessage("gastown", "nux", "polecat/nux/gt-abc", "gt-abc")
+	msg := NewMergeReadyMessage("gongshow", "nux", "polecat/nux/gt-abc", "gt-abc")
 
 	if msg.Subject != "MERGE_READY nux" {
 		t.Errorf("Subject = %q, want %q", msg.Subject, "MERGE_READY nux")
 	}
-	if msg.From != "gastown/witness" {
-		t.Errorf("From = %q, want %q", msg.From, "gastown/witness")
+	if msg.From != "gongshow/witness" {
+		t.Errorf("From = %q, want %q", msg.From, "gongshow/witness")
 	}
-	if msg.To != "gastown/refinery" {
-		t.Errorf("To = %q, want %q", msg.To, "gastown/refinery")
+	if msg.To != "gongshow/refinery" {
+		t.Errorf("To = %q, want %q", msg.To, "gongshow/refinery")
 	}
 	if msg.Priority != mail.PriorityHigh {
 		t.Errorf("Priority = %q, want %q", msg.Priority, mail.PriorityHigh)
@@ -106,16 +106,16 @@ func TestNewMergeReadyMessage(t *testing.T) {
 }
 
 func TestNewMergedMessage(t *testing.T) {
-	msg := NewMergedMessage("gastown", "nux", "polecat/nux/gt-abc", "gt-abc", "main", "abc123")
+	msg := NewMergedMessage("gongshow", "nux", "polecat/nux/gt-abc", "gt-abc", "main", "abc123")
 
 	if msg.Subject != "MERGED nux" {
 		t.Errorf("Subject = %q, want %q", msg.Subject, "MERGED nux")
 	}
-	if msg.From != "gastown/refinery" {
-		t.Errorf("From = %q, want %q", msg.From, "gastown/refinery")
+	if msg.From != "gongshow/refinery" {
+		t.Errorf("From = %q, want %q", msg.From, "gongshow/refinery")
 	}
-	if msg.To != "gastown/witness" {
-		t.Errorf("To = %q, want %q", msg.To, "gastown/witness")
+	if msg.To != "gongshow/witness" {
+		t.Errorf("To = %q, want %q", msg.To, "gongshow/witness")
 	}
 	if !strings.Contains(msg.Body, "Merge-Commit: abc123") {
 		t.Errorf("Body missing merge commit: %s", msg.Body)
@@ -123,7 +123,7 @@ func TestNewMergedMessage(t *testing.T) {
 }
 
 func TestNewMergeFailedMessage(t *testing.T) {
-	msg := NewMergeFailedMessage("gastown", "nux", "polecat/nux/gt-abc", "gt-abc", "main", "tests", "Test failed")
+	msg := NewMergeFailedMessage("gongshow", "nux", "polecat/nux/gt-abc", "gt-abc", "main", "tests", "Test failed")
 
 	if msg.Subject != "MERGE_FAILED nux" {
 		t.Errorf("Subject = %q, want %q", msg.Subject, "MERGE_FAILED nux")
@@ -138,7 +138,7 @@ func TestNewMergeFailedMessage(t *testing.T) {
 
 func TestNewReworkRequestMessage(t *testing.T) {
 	conflicts := []string{"file1.go", "file2.go"}
-	msg := NewReworkRequestMessage("gastown", "nux", "polecat/nux/gt-abc", "gt-abc", "main", conflicts)
+	msg := NewReworkRequestMessage("gongshow", "nux", "polecat/nux/gt-abc", "gt-abc", "main", conflicts)
 
 	if msg.Subject != "REWORK_REQUEST nux" {
 		t.Errorf("Subject = %q, want %q", msg.Subject, "REWORK_REQUEST nux")
@@ -155,7 +155,7 @@ func TestParseMergeReadyPayload(t *testing.T) {
 	body := `Branch: polecat/nux/gt-abc
 Issue: gt-abc
 Polecat: nux
-Rig: gastown
+Rig: gongshow
 Verified: clean git state`
 
 	payload := ParseMergeReadyPayload(body)
@@ -169,8 +169,8 @@ Verified: clean git state`
 	if payload.Polecat != "nux" {
 		t.Errorf("Polecat = %q, want %q", payload.Polecat, "nux")
 	}
-	if payload.Rig != "gastown" {
-		t.Errorf("Rig = %q, want %q", payload.Rig, "gastown")
+	if payload.Rig != "gongshow" {
+		t.Errorf("Rig = %q, want %q", payload.Rig, "gongshow")
 	}
 }
 
@@ -179,7 +179,7 @@ func TestParseMergedPayload(t *testing.T) {
 	body := `Branch: polecat/nux/gt-abc
 Issue: gt-abc
 Polecat: nux
-Rig: gastown
+Rig: gongshow
 Target: main
 Merged-At: ` + ts + `
 Merge-Commit: abc123`
@@ -234,7 +234,7 @@ func TestWrapWitnessHandlers(t *testing.T) {
 	// Test MERGED
 	mergedMsg := &mail.Message{
 		Subject: "MERGED nux",
-		Body:    "Branch: polecat/nux\nIssue: gt-abc\nPolecat: nux\nRig: gastown\nTarget: main",
+		Body:    "Branch: polecat/nux\nIssue: gt-abc\nPolecat: nux\nRig: gongshow\nTarget: main",
 	}
 	if err := registry.Handle(mergedMsg); err != nil {
 		t.Errorf("HandleMerged error: %v", err)
@@ -246,7 +246,7 @@ func TestWrapWitnessHandlers(t *testing.T) {
 	// Test MERGE_FAILED
 	failedMsg := &mail.Message{
 		Subject: "MERGE_FAILED nux",
-		Body:    "Branch: polecat/nux\nIssue: gt-abc\nPolecat: nux\nRig: gastown\nTarget: main\nFailure-Type: tests\nError: failed",
+		Body:    "Branch: polecat/nux\nIssue: gt-abc\nPolecat: nux\nRig: gongshow\nTarget: main\nFailure-Type: tests\nError: failed",
 	}
 	if err := registry.Handle(failedMsg); err != nil {
 		t.Errorf("HandleMergeFailed error: %v", err)
@@ -258,7 +258,7 @@ func TestWrapWitnessHandlers(t *testing.T) {
 	// Test REWORK_REQUEST
 	reworkMsg := &mail.Message{
 		Subject: "REWORK_REQUEST nux",
-		Body:    "Branch: polecat/nux\nIssue: gt-abc\nPolecat: nux\nRig: gastown\nTarget: main",
+		Body:    "Branch: polecat/nux\nIssue: gt-abc\nPolecat: nux\nRig: gongshow\nTarget: main",
 	}
 	if err := registry.Handle(reworkMsg); err != nil {
 		t.Errorf("HandleReworkRequest error: %v", err)
@@ -274,7 +274,7 @@ func TestWrapRefineryHandlers(t *testing.T) {
 
 	msg := &mail.Message{
 		Subject: "MERGE_READY nux",
-		Body:    "Branch: polecat/nux\nIssue: gt-abc\nPolecat: nux\nRig: gastown",
+		Body:    "Branch: polecat/nux\nIssue: gt-abc\nPolecat: nux\nRig: gongshow",
 	}
 
 	if err := registry.Handle(msg); err != nil {
@@ -287,7 +287,7 @@ func TestWrapRefineryHandlers(t *testing.T) {
 
 func TestDefaultWitnessHandler(t *testing.T) {
 	tmpDir := t.TempDir()
-	handler := NewWitnessHandler("gastown", tmpDir)
+	handler := NewWitnessHandler("gongshow", tmpDir)
 
 	// Capture output
 	var buf bytes.Buffer
@@ -298,7 +298,7 @@ func TestDefaultWitnessHandler(t *testing.T) {
 		Branch:       "polecat/nux/gt-abc",
 		Issue:        "gt-abc",
 		Polecat:      "nux",
-		Rig:          "gastown",
+		Rig:          "gongshow",
 		TargetBranch: "main",
 		MergeCommit:  "abc123",
 	}
@@ -315,7 +315,7 @@ func TestDefaultWitnessHandler(t *testing.T) {
 		Branch:       "polecat/nux/gt-abc",
 		Issue:        "gt-abc",
 		Polecat:      "nux",
-		Rig:          "gastown",
+		Rig:          "gongshow",
 		TargetBranch: "main",
 		FailureType:  "tests",
 		Error:        "Test failed",
@@ -333,7 +333,7 @@ func TestDefaultWitnessHandler(t *testing.T) {
 		Branch:        "polecat/nux/gt-abc",
 		Issue:         "gt-abc",
 		Polecat:       "nux",
-		Rig:           "gastown",
+		Rig:           "gongshow",
 		TargetBranch:  "main",
 		ConflictFiles: []string{"file1.go"},
 	}

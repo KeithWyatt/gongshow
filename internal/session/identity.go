@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-// Role represents the type of Gas Town agent.
+// Role represents the type of GongShow agent.
 type Role string
 
 const (
@@ -18,7 +18,7 @@ const (
 	RolePolecat  Role = "polecat"
 )
 
-// AgentIdentity represents a parsed Gas Town agent identity.
+// AgentIdentity represents a parsed GongShow agent identity.
 type AgentIdentity struct {
 	Role Role   // mayor, deacon, witness, refinery, crew, polecat
 	Rig  string // rig name (empty for mayor/deacon)
@@ -119,10 +119,10 @@ func (a *AgentIdentity) SessionName() string {
 // Examples:
 //   - mayor → "mayor"
 //   - deacon → "deacon"
-//   - witness → "gastown/witness"
-//   - refinery → "gastown/refinery"
-//   - crew → "gastown/crew/max"
-//   - polecat → "gastown/polecats/Toast"
+//   - witness → "gongshow/witness"
+//   - refinery → "gongshow/refinery"
+//   - crew → "gongshow/crew/max"
+//   - polecat → "gongshow/polecats/Toast"
 func (a *AgentIdentity) Address() string {
 	switch a.Role {
 	case RoleMayor:

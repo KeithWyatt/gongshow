@@ -10,8 +10,8 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/style"
 )
 
 var (
@@ -55,16 +55,16 @@ COMMON LABELS:
 
 EXAMPLES:
   # Check current idle count
-  gt agent state gt-gastown-witness
+  gt agent state gt-gongshow-witness
 
   # Reset idle counter after finding work
-  gt agent state gt-gastown-witness --set idle=0
+  gt agent state gt-gongshow-witness --set idle=0
 
   # Increment idle counter on timeout
-  gt agent state gt-gastown-witness --incr idle
+  gt agent state gt-gongshow-witness --incr idle
 
   # Get state as JSON
-  gt agent state gt-gastown-witness --json`,
+  gt agent state gt-gongshow-witness --json`,
 	Args: cobra.ExactArgs(1),
 	RunE: runAgentState,
 }

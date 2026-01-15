@@ -6,8 +6,8 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/mail"
-	"github.com/steveyegge/gastown/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/mail"
+	"github.com/KeithWyatt/gongshow/internal/style"
 )
 
 func runMailCheck(cmd *cobra.Command, args []string) error {
@@ -26,7 +26,7 @@ func runMailCheck(cmd *cobra.Command, args []string) error {
 			// Inject mode: always exit 0, silent on error
 			return nil
 		}
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	// Get mailbox

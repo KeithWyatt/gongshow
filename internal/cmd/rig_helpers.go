@@ -3,11 +3,11 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/constants"
-	"github.com/steveyegge/gastown/internal/git"
-	"github.com/steveyegge/gastown/internal/rig"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/constants"
+	"github.com/KeithWyatt/gongshow/internal/git"
+	"github.com/KeithWyatt/gongshow/internal/rig"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 // getRig finds the town root and retrieves the specified rig.
@@ -16,7 +16,7 @@ import (
 func getRig(rigName string) (string, *rig.Rig, error) {
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return "", nil, fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return "", nil, fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	rigsConfigPath := constants.MayorRigsPath(townRoot)

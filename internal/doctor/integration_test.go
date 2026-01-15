@@ -1,6 +1,6 @@
 //go:build integration
 
-// Package doctor provides integration tests for Gas Town doctor functionality.
+// Package doctor provides integration tests for GongShow doctor functionality.
 // These tests verify that:
 // 1. New town setup works correctly
 // 2. Doctor accurately detects problems (no false positives/negatives)
@@ -62,13 +62,13 @@ func TestIntegrationOrphanSessionDetection(t *testing.T) {
 		sessionName  string
 		expectOrphan bool
 	}{
-		// Valid Gas Town sessions should NOT be detected as orphans
+		// Valid GongShow sessions should NOT be detected as orphans
 		{"mayor_session", "hq-mayor", false},
 		{"deacon_session", "hq-deacon", false},
-		{"witness_session", "gt-gastown-witness", false},
-		{"refinery_session", "gt-gastown-refinery", false},
-		{"crew_session", "gt-gastown-crew-max", false},
-		{"polecat_session", "gt-gastown-polecat-abc123", false},
+		{"witness_session", "gt-gongshow-witness", false},
+		{"refinery_session", "gt-gongshow-refinery", false},
+		{"crew_session", "gt-gongshow-crew-max", false},
+		{"polecat_session", "gt-gongshow-polecat-abc123", false},
 
 		// Different rig names
 		{"niflheim_witness", "gt-niflheim-witness", false},
@@ -77,13 +77,13 @@ func TestIntegrationOrphanSessionDetection(t *testing.T) {
 		// Invalid sessions SHOULD be detected as orphans
 		{"unknown_rig", "gt-unknownrig-witness", true},
 		{"malformed", "gt-only-two", true}, // Only 2 parts after gt
-		{"non_gt_prefix", "foo-gastown-witness", false}, // Not a gt- session, should be ignored
+		{"non_gt_prefix", "foo-gongshow-witness", false}, // Not a gt- session, should be ignored
 	}
 
 	townRoot := setupIntegrationTown(t)
 
 	// Create test rigs
-	createTestRig(t, townRoot, "gastown")
+	createTestRig(t, townRoot, "gongshow")
 	createTestRig(t, townRoot, "niflheim")
 
 	check := NewOrphanSessionCheck()
@@ -120,12 +120,12 @@ func TestIntegrationCrewSessionProtection(t *testing.T) {
 		session  string
 		isCrew   bool
 	}{
-		{"simple_crew", "gt-gastown-crew-max", true},
-		{"crew_with_numbers", "gt-gastown-crew-worker1", true},
+		{"simple_crew", "gt-gongshow-crew-max", true},
+		{"crew_with_numbers", "gt-gongshow-crew-worker1", true},
 		{"crew_different_rig", "gt-niflheim-crew-codex1", true},
-		{"witness_not_crew", "gt-gastown-witness", false},
-		{"refinery_not_crew", "gt-gastown-refinery", false},
-		{"polecat_not_crew", "gt-gastown-polecat-abc", false},
+		{"witness_not_crew", "gt-gongshow-witness", false},
+		{"refinery_not_crew", "gt-gongshow-refinery", false},
+		{"polecat_not_crew", "gt-gongshow-polecat-abc", false},
 		{"mayor_not_crew", "hq-mayor", false},
 	}
 
@@ -146,7 +146,7 @@ func TestIntegrationEnvVarsConsistency(t *testing.T) {
 	}
 
 	townRoot := setupIntegrationTown(t)
-	createTestRig(t, townRoot, "gastown")
+	createTestRig(t, townRoot, "gongshow")
 
 	// Test that expected env vars are computed correctly for different roles
 	tests := []struct {
@@ -156,9 +156,9 @@ func TestIntegrationEnvVarsConsistency(t *testing.T) {
 	}{
 		{"mayor", "", "mayor"},
 		{"deacon", "", "deacon"},
-		{"witness", "gastown", "gastown/witness"},
-		{"refinery", "gastown", "gastown/refinery"},
-		{"crew", "gastown", "gastown/crew/"},
+		{"witness", "gongshow", "gongshow/witness"},
+		{"refinery", "gongshow", "gongshow/refinery"},
+		{"crew", "gongshow", "gongshow/crew/"},
 	}
 
 	for _, tt := range tests {
@@ -177,7 +177,7 @@ func TestIntegrationEnvVarsConsistency(t *testing.T) {
 // operations to use the wrong database (e.g., rig ops used town beads with hq- prefix).
 func TestIntegrationBeadsDirRigLevel(t *testing.T) {
 	townRoot := setupIntegrationTown(t)
-	createTestRig(t, townRoot, "gastown")
+	createTestRig(t, townRoot, "gongshow")
 	createTestRig(t, townRoot, "niflheim")
 
 	tests := []struct {
@@ -201,8 +201,8 @@ func TestIntegrationBeadsDirRigLevel(t *testing.T) {
 		{
 			name:           "witness_uses_rig_beads",
 			role:           "witness",
-			rig:            "gastown",
-			wantBeadsSuffix: "/gastown/.beads",
+			rig:            "gongshow",
+			wantBeadsSuffix: "/gongshow/.beads",
 		},
 		{
 			name:           "refinery_uses_rig_beads",
@@ -213,8 +213,8 @@ func TestIntegrationBeadsDirRigLevel(t *testing.T) {
 		{
 			name:           "crew_uses_rig_beads",
 			role:           "crew",
-			rig:            "gastown",
-			wantBeadsSuffix: "/gastown/.beads",
+			rig:            "gongshow",
+			wantBeadsSuffix: "/gongshow/.beads",
 		},
 	}
 
@@ -250,15 +250,15 @@ func TestIntegrationBeadsDirRigLevel(t *testing.T) {
 func TestIntegrationEnvVarsBeadsDirMismatch(t *testing.T) {
 	townRoot := "/town" // Fixed path for consistent expected values
 	townBeadsDir := townRoot + "/.beads"
-	rigBeadsDir := townRoot + "/gastown/.beads"
+	rigBeadsDir := townRoot + "/gongshow/.beads"
 
 	// Create mock reader with mismatched BEADS_DIR
 	reader := &mockEnvReaderIntegration{
-		sessions: []string{"gt-gastown-witness"},
+		sessions: []string{"gt-gongshow-witness"},
 		sessionEnvs: map[string]map[string]string{
-			"gt-gastown-witness": {
+			"gt-gongshow-witness": {
 				"GT_ROLE":   "witness",
-				"GT_RIG":    "gastown",
+				"GT_RIG":    "gongshow",
 				"BEADS_DIR": townBeadsDir, // WRONG: Should be rigBeadsDir
 				"GT_ROOT":   townRoot,
 			},
@@ -298,10 +298,10 @@ func TestIntegrationAgentBeadsExist(t *testing.T) {
 	}
 
 	townRoot := setupIntegrationTown(t)
-	createTestRig(t, townRoot, "gastown")
+	createTestRig(t, townRoot, "gongshow")
 
 	// Create mock beads for testing
-	setupMockBeads(t, townRoot, "gastown")
+	setupMockBeads(t, townRoot, "gongshow")
 
 	check := NewAgentBeadsCheck()
 	ctx := &CheckContext{TownRoot: townRoot}
@@ -323,10 +323,10 @@ func TestIntegrationRigBeadsExist(t *testing.T) {
 	}
 
 	townRoot := setupIntegrationTown(t)
-	createTestRig(t, townRoot, "gastown")
+	createTestRig(t, townRoot, "gongshow")
 
 	// Create mock beads for testing
-	setupMockBeads(t, townRoot, "gastown")
+	setupMockBeads(t, townRoot, "gongshow")
 
 	check := NewRigBeadsCheck()
 	ctx := &CheckContext{TownRoot: townRoot}
@@ -346,7 +346,7 @@ func TestIntegrationDoctorFixReliability(t *testing.T) {
 	}
 
 	townRoot := setupIntegrationTown(t)
-	createTestRig(t, townRoot, "gastown")
+	createTestRig(t, townRoot, "gongshow")
 	ctx := &CheckContext{TownRoot: townRoot}
 
 	// Deliberately break something fixable
@@ -388,12 +388,12 @@ func TestIntegrationFixMultipleIssues(t *testing.T) {
 	}
 
 	townRoot := setupIntegrationTown(t)
-	createTestRig(t, townRoot, "gastown")
+	createTestRig(t, townRoot, "gongshow")
 	ctx := &CheckContext{TownRoot: townRoot}
 
 	// Break multiple things
 	breakRuntimeGitignore(t, townRoot)
-	breakCrewGitignore(t, townRoot, "gastown", "worker1")
+	breakCrewGitignore(t, townRoot, "gongshow", "worker1")
 
 	d := NewDoctor()
 	d.RegisterAll(NewRuntimeGitignoreCheck())
@@ -419,7 +419,7 @@ func TestIntegrationFixIdempotent(t *testing.T) {
 	}
 
 	townRoot := setupIntegrationTown(t)
-	createTestRig(t, townRoot, "gastown")
+	createTestRig(t, townRoot, "gongshow")
 	ctx := &CheckContext{TownRoot: townRoot}
 
 	// Break something
@@ -459,7 +459,7 @@ func TestIntegrationFixDoesntBreakWorking(t *testing.T) {
 	}
 
 	townRoot := setupIntegrationTown(t)
-	createTestRig(t, townRoot, "gastown")
+	createTestRig(t, townRoot, "gongshow")
 	ctx := &CheckContext{TownRoot: townRoot}
 
 	d := NewDoctor()
@@ -497,8 +497,8 @@ func TestIntegrationNoFalsePositives(t *testing.T) {
 	}
 
 	townRoot := setupIntegrationTown(t)
-	createTestRig(t, townRoot, "gastown")
-	setupMockBeads(t, townRoot, "gastown")
+	createTestRig(t, townRoot, "gongshow")
+	setupMockBeads(t, townRoot, "gongshow")
 	ctx := &CheckContext{TownRoot: townRoot}
 
 	d := NewDoctor()
@@ -540,15 +540,15 @@ func TestIntegrationSessionNaming(t *testing.T) {
 		},
 		{
 			name:        "witness",
-			sessionName: "gt-gastown-witness",
-			wantRig:     "gastown",
+			sessionName: "gt-gongshow-witness",
+			wantRig:     "gongshow",
 			wantRole:    "witness",
 			wantName:    "",
 		},
 		{
 			name:        "crew",
-			sessionName: "gt-gastown-crew-max",
-			wantRig:     "gastown",
+			sessionName: "gt-gongshow-crew-max",
+			wantRig:     "gongshow",
 			wantRole:    "crew",
 			wantName:    "max",
 		},
@@ -826,7 +826,7 @@ func setupMockBeads(t *testing.T, townRoot, rigName string) {
 func breakRuntimeGitignore(t *testing.T, townRoot string) {
 	t.Helper()
 	// Create a crew directory without .runtime in gitignore
-	crewDir := filepath.Join(townRoot, "gastown", "crew", "test-worker")
+	crewDir := filepath.Join(townRoot, "gongshow", "crew", "test-worker")
 	if err := os.MkdirAll(crewDir, 0755); err != nil {
 		t.Fatalf("failed to create crew dir: %v", err)
 	}

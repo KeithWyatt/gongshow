@@ -2,11 +2,11 @@
 
 > **Status: Design spec - not yet implemented**
 
-> Multi-workspace coordination for Gas Town and Beads
+> Multi-workspace coordination for GongShow and Beads
 
 ## Overview
 
-Federation enables multiple Gas Town instances to reference each other's work,
+Federation enables multiple GongShow instances to reference each other's work,
 coordinate across organizations, and track distributed projects.
 
 ## Why Federation?

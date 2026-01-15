@@ -13,28 +13,28 @@ func TestParseAddress(t *testing.T) {
 	}{
 		{
 			name:  "rig/polecat",
-			input: "gastown/rictus",
-			want:  &Address{Rig: "gastown", Polecat: "rictus"},
+			input: "gongshow/rictus",
+			want:  &Address{Rig: "gongshow", Polecat: "rictus"},
 		},
 		{
 			name:  "rig/ broadcast",
-			input: "gastown/",
-			want:  &Address{Rig: "gastown"},
+			input: "gongshow/",
+			want:  &Address{Rig: "gongshow"},
 		},
 		{
 			name:  "machine:rig/polecat",
-			input: "vm:gastown/rictus",
-			want:  &Address{Machine: "vm", Rig: "gastown", Polecat: "rictus"},
+			input: "vm:gongshow/rictus",
+			want:  &Address{Machine: "vm", Rig: "gongshow", Polecat: "rictus"},
 		},
 		{
 			name:  "machine:rig/ broadcast",
-			input: "vm:gastown/",
-			want:  &Address{Machine: "vm", Rig: "gastown"},
+			input: "vm:gongshow/",
+			want:  &Address{Machine: "vm", Rig: "gongshow"},
 		},
 		{
 			name:  "rig only (no slash)",
-			input: "gastown",
-			want:  &Address{Rig: "gastown"},
+			input: "gongshow",
+			want:  &Address{Rig: "gongshow"},
 		},
 		{
 			name:    "empty string",
@@ -43,7 +43,7 @@ func TestParseAddress(t *testing.T) {
 		},
 		{
 			name:    "empty machine",
-			input:   ":gastown/rictus",
+			input:   ":gongshow/rictus",
 			wantErr: true,
 		},
 		{
@@ -85,20 +85,20 @@ func TestAddressString(t *testing.T) {
 		want string
 	}{
 		{
-			addr: &Address{Rig: "gastown", Polecat: "rictus"},
-			want: "gastown/rictus",
+			addr: &Address{Rig: "gongshow", Polecat: "rictus"},
+			want: "gongshow/rictus",
 		},
 		{
-			addr: &Address{Rig: "gastown"},
-			want: "gastown/",
+			addr: &Address{Rig: "gongshow"},
+			want: "gongshow/",
 		},
 		{
-			addr: &Address{Machine: "vm", Rig: "gastown", Polecat: "rictus"},
-			want: "vm:gastown/rictus",
+			addr: &Address{Machine: "vm", Rig: "gongshow", Polecat: "rictus"},
+			want: "vm:gongshow/rictus",
 		},
 		{
-			addr: &Address{Machine: "vm", Rig: "gastown"},
-			want: "vm:gastown/",
+			addr: &Address{Machine: "vm", Rig: "gongshow"},
+			want: "vm:gongshow/",
 		},
 	}
 
@@ -117,10 +117,10 @@ func TestAddressIsLocal(t *testing.T) {
 		addr *Address
 		want bool
 	}{
-		{&Address{Rig: "gastown"}, true},
-		{&Address{Machine: "", Rig: "gastown"}, true},
-		{&Address{Machine: "local", Rig: "gastown"}, true},
-		{&Address{Machine: "vm", Rig: "gastown"}, false},
+		{&Address{Rig: "gongshow"}, true},
+		{&Address{Machine: "", Rig: "gongshow"}, true},
+		{&Address{Machine: "local", Rig: "gongshow"}, true},
+		{&Address{Machine: "vm", Rig: "gongshow"}, false},
 	}
 
 	for _, tt := range tests {
@@ -137,9 +137,9 @@ func TestAddressIsBroadcast(t *testing.T) {
 		addr *Address
 		want bool
 	}{
-		{&Address{Rig: "gastown"}, true},
-		{&Address{Rig: "gastown", Polecat: ""}, true},
-		{&Address{Rig: "gastown", Polecat: "rictus"}, false},
+		{&Address{Rig: "gongshow"}, true},
+		{&Address{Rig: "gongshow", Polecat: ""}, true},
+		{&Address{Rig: "gongshow", Polecat: "rictus"}, false},
 	}
 
 	for _, tt := range tests {
@@ -157,22 +157,22 @@ func TestAddressEqual(t *testing.T) {
 		want bool
 	}{
 		{
-			&Address{Rig: "gastown", Polecat: "rictus"},
-			&Address{Rig: "gastown", Polecat: "rictus"},
+			&Address{Rig: "gongshow", Polecat: "rictus"},
+			&Address{Rig: "gongshow", Polecat: "rictus"},
 			true,
 		},
 		{
-			&Address{Machine: "", Rig: "gastown"},
-			&Address{Machine: "local", Rig: "gastown"},
+			&Address{Machine: "", Rig: "gongshow"},
+			&Address{Machine: "local", Rig: "gongshow"},
 			true,
 		},
 		{
-			&Address{Rig: "gastown", Polecat: "rictus"},
-			&Address{Rig: "gastown", Polecat: "nux"},
+			&Address{Rig: "gongshow", Polecat: "rictus"},
+			&Address{Rig: "gongshow", Polecat: "nux"},
 			false,
 		},
 		{
-			&Address{Rig: "gastown"},
+			&Address{Rig: "gongshow"},
 			nil,
 			false,
 		},
@@ -422,16 +422,16 @@ func TestAddressRigPath(t *testing.T) {
 		want string
 	}{
 		{
-			addr: &Address{Rig: "gastown", Polecat: "rictus"},
-			want: "gastown/rictus",
+			addr: &Address{Rig: "gongshow", Polecat: "rictus"},
+			want: "gongshow/rictus",
 		},
 		{
-			addr: &Address{Rig: "gastown"},
-			want: "gastown/",
+			addr: &Address{Rig: "gongshow"},
+			want: "gongshow/",
 		},
 		{
-			addr: &Address{Machine: "vm", Rig: "gastown", Polecat: "rictus"},
-			want: "gastown/rictus",
+			addr: &Address{Machine: "vm", Rig: "gongshow", Polecat: "rictus"},
+			want: "gongshow/rictus",
 		},
 		{
 			addr: &Address{Rig: "a", Polecat: "b/c/d"},

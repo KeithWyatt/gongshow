@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/steveyegge/gastown/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/beads"
 )
 
 func TestBuildWitnessStartCommand_UsesRoleConfig(t *testing.T) {
@@ -12,19 +12,19 @@ func TestBuildWitnessStartCommand_UsesRoleConfig(t *testing.T) {
 		StartCommand: "exec run --town {town} --rig {rig} --role {role}",
 	}
 
-	got, err := buildWitnessStartCommand("/town/rig", "gastown", "/town", "", roleConfig)
+	got, err := buildWitnessStartCommand("/town/rig", "gongshow", "/town", "", roleConfig)
 	if err != nil {
 		t.Fatalf("buildWitnessStartCommand: %v", err)
 	}
 
-	want := "exec run --town /town --rig gastown --role witness"
+	want := "exec run --town /town --rig gongshow --role witness"
 	if got != want {
 		t.Errorf("buildWitnessStartCommand = %q, want %q", got, want)
 	}
 }
 
 func TestBuildWitnessStartCommand_DefaultsToRuntime(t *testing.T) {
-	got, err := buildWitnessStartCommand("/town/rig", "gastown", "/town", "", nil)
+	got, err := buildWitnessStartCommand("/town/rig", "gongshow", "/town", "", nil)
 	if err != nil {
 		t.Fatalf("buildWitnessStartCommand: %v", err)
 	}
@@ -32,8 +32,8 @@ func TestBuildWitnessStartCommand_DefaultsToRuntime(t *testing.T) {
 	if !strings.Contains(got, "GT_ROLE=witness") {
 		t.Errorf("expected GT_ROLE=witness in command, got %q", got)
 	}
-	if !strings.Contains(got, "BD_ACTOR=gastown/witness") {
-		t.Errorf("expected BD_ACTOR=gastown/witness in command, got %q", got)
+	if !strings.Contains(got, "BD_ACTOR=gongshow/witness") {
+		t.Errorf("expected BD_ACTOR=gongshow/witness in command, got %q", got)
 	}
 }
 
@@ -42,7 +42,7 @@ func TestBuildWitnessStartCommand_AgentOverrideWins(t *testing.T) {
 		StartCommand: "exec run --role {role}",
 	}
 
-	got, err := buildWitnessStartCommand("/town/rig", "gastown", "/town", "codex", roleConfig)
+	got, err := buildWitnessStartCommand("/town/rig", "gongshow", "/town", "codex", roleConfig)
 	if err != nil {
 		t.Fatalf("buildWitnessStartCommand: %v", err)
 	}

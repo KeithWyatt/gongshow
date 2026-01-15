@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/polecat"
-	"github.com/steveyegge/gastown/internal/rig"
-	"github.com/steveyegge/gastown/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/polecat"
+	"github.com/KeithWyatt/gongshow/internal/rig"
+	"github.com/KeithWyatt/gongshow/internal/style"
 )
 
 // polecatTarget represents a polecat to operate on.
@@ -55,7 +55,7 @@ func resolvePolecatTargets(args []string, useAll bool) ([]polecatTarget, error) 
 		for _, arg := range args {
 			// Validate format: must contain "/" to avoid misinterpreting rig names as polecat names
 			if !strings.Contains(arg, "/") {
-				return nil, fmt.Errorf("invalid address '%s': must be in 'rig/polecat' format (e.g., 'gastown/Toast')", arg)
+				return nil, fmt.Errorf("invalid address '%s': must be in 'rig/polecat' format (e.g., 'gongshow/Toast')", arg)
 			}
 
 			rigName, polecatName, err := parseAddress(arg)

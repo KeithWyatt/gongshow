@@ -10,17 +10,17 @@ import (
 
 	"github.com/gofrs/flock"
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/daemon"
-	"github.com/steveyegge/gastown/internal/events"
-	"github.com/steveyegge/gastown/internal/git"
-	"github.com/steveyegge/gastown/internal/polecat"
-	"github.com/steveyegge/gastown/internal/rig"
-	"github.com/steveyegge/gastown/internal/session"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/tmux"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/daemon"
+	"github.com/KeithWyatt/gongshow/internal/events"
+	"github.com/KeithWyatt/gongshow/internal/git"
+	"github.com/KeithWyatt/gongshow/internal/polecat"
+	"github.com/KeithWyatt/gongshow/internal/rig"
+	"github.com/KeithWyatt/gongshow/internal/session"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 const (
@@ -31,8 +31,8 @@ const (
 var downCmd = &cobra.Command{
 	Use:     "down",
 	GroupID: GroupServices,
-	Short:   "Stop all Gas Town services",
-	Long: `Stop Gas Town services (reversible pause).
+	Short:   "Stop all GongShow services",
+	Long: `Stop GongShow services (reversible pause).
 
 Shutdown levels (progressively more aggressive):
   gt down                    Stop infrastructure (default)
@@ -80,7 +80,7 @@ func init() {
 func runDown(cmd *cobra.Command, args []string) error {
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	t := tmux.NewTmux()
@@ -267,7 +267,7 @@ func runDown(cmd *cobra.Command, args []string) error {
 		} else if os.Getenv("GT_NUKE_ACKNOWLEDGED") == "" {
 			// Require explicit acknowledgement for destructive operation
 			fmt.Println()
-			fmt.Printf("%s The --nuke flag kills ALL tmux sessions, not just Gas Town.\n",
+			fmt.Printf("%s The --nuke flag kills ALL tmux sessions, not just GongShow.\n",
 				style.Bold.Render("⚠ BLOCKED:"))
 			fmt.Printf("This includes vim sessions, running builds, SSH connections, etc.\n")
 			fmt.Println()

@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/steveyegge/gastown/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/beads"
 )
 
 // HookAttachmentValidCheck verifies that attached molecules exist and are not closed.
@@ -438,11 +438,11 @@ func (c *OrphanedAttachmentsCheck) checkBeadsDir(beadsDir, townRoot string) []or
 
 // agentExists checks if an agent's worktree exists.
 // Agent identities follow patterns like:
-//   - "gastown/nux" → polecat at <townRoot>/gastown/polecats/nux
-//   - "gastown/crew/joe" → crew at <townRoot>/gastown/crew/joe
+//   - "gongshow/nux" → polecat at <townRoot>/gongshow/polecats/nux
+//   - "gongshow/crew/joe" → crew at <townRoot>/gongshow/crew/joe
 //   - "mayor" → mayor at <townRoot>/mayor
-//   - "gastown-witness" → witness at <townRoot>/gastown/witness
-//   - "gastown-refinery" → refinery at <townRoot>/gastown/refinery
+//   - "gongshow-witness" → witness at <townRoot>/gongshow/witness
+//   - "gongshow-refinery" → refinery at <townRoot>/gongshow/refinery
 func (c *OrphanedAttachmentsCheck) agentExists(agent, townRoot string) bool {
 	// Handle special roles with hyphen separator
 	if strings.HasSuffix(agent, "-witness") {

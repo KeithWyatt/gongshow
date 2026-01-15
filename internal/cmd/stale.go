@@ -6,8 +6,8 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/version"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/version"
 )
 
 var staleJSON bool
@@ -20,7 +20,7 @@ var staleCmd = &cobra.Command{
 	Long: `Check if the gt binary was built from an older commit than the current repo HEAD.
 
 This command compares the commit hash embedded in the binary at build time
-with the current HEAD of the gastown repository.
+with the current HEAD of the gongshow repository.
 
 Examples:
   gt stale              # Human-readable output
@@ -50,7 +50,7 @@ type StaleOutput struct {
 }
 
 func runStale(cmd *cobra.Command, args []string) error {
-	// Find the gastown repo
+	// Find the gongshow repo
 	repoRoot, err := version.GetRepoRoot()
 	if err != nil {
 		if staleQuiet {
@@ -59,7 +59,7 @@ func runStale(cmd *cobra.Command, args []string) error {
 		if staleJSON {
 			return outputStaleJSON(StaleOutput{Error: err.Error()})
 		}
-		return fmt.Errorf("cannot find gastown repo: %w", err)
+		return fmt.Errorf("cannot find gongshow repo: %w", err)
 	}
 
 	// Check staleness

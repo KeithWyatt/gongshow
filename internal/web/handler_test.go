@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/activity"
+	"github.com/KeithWyatt/gongshow/internal/activity"
 )
 
 // Test error for simulating fetch failures
@@ -239,7 +239,7 @@ func TestConvoyHandler_MergeQueueRendering(t *testing.T) {
 			},
 			{
 				Number:     456,
-				Repo:       "gastown",
+				Repo:       "gongshow",
 				Title:      "Add dashboard feature",
 				URL:        "https://github.com/test/repo/pull/456",
 				CIStatus:   "pending",
@@ -576,7 +576,7 @@ func TestConvoyHandler_FullDashboard(t *testing.T) {
 	body := w.Body.String()
 
 	// Verify all three sections are present
-	if !strings.Contains(body, "Gas Town Convoys") {
+	if !strings.Contains(body, "GongShow Convoys") {
 		t.Error("Response should contain main header")
 	}
 	if !strings.Contains(body, "hq-cv-full") {
@@ -676,7 +676,7 @@ func TestE2E_Server_FullDashboard(t *testing.T) {
 		name    string
 		content string
 	}{
-		{"Convoy section header", "Gas Town Convoys"},
+		{"Convoy section header", "GongShow Convoys"},
 		{"Convoy ID", "hq-cv-e2e"},
 		{"Convoy title", "E2E Test Convoy"},
 		{"Convoy progress", "2/4"},
@@ -870,7 +870,7 @@ func TestE2E_Server_HTMLStructure(t *testing.T) {
 		"<!DOCTYPE html>",
 		"<html",
 		"<head>",
-		"<title>Gas Town Dashboard</title>",
+		"<title>GongShow Dashboard</title>",
 		"htmx.org",
 		"<body>",
 		"</body>",

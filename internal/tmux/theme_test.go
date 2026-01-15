@@ -6,8 +6,8 @@ import (
 
 func TestAssignTheme_Deterministic(t *testing.T) {
 	// Same rig name should always get same theme
-	theme1 := AssignTheme("gastown")
-	theme2 := AssignTheme("gastown")
+	theme1 := AssignTheme("gongshow")
+	theme2 := AssignTheme("gongshow")
 
 	if theme1.Name != theme2.Name {
 		t.Errorf("AssignTheme not deterministic: got %s and %s for same input", theme1.Name, theme2.Name)
@@ -17,7 +17,7 @@ func TestAssignTheme_Deterministic(t *testing.T) {
 func TestAssignTheme_Distribution(t *testing.T) {
 	// Different rig names should (mostly) get different themes
 	// With 10 themes and good hashing, collisions should be rare
-	rigs := []string{"gastown", "beads", "myproject", "frontend", "backend", "api", "web", "mobile"}
+	rigs := []string{"gongshow", "beads", "myproject", "frontend", "backend", "api", "web", "mobile"}
 	themes := make(map[string]int)
 
 	for _, rig := range rigs {

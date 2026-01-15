@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/config"
 )
 
 // TestClaimPatternMatching tests claim pattern matching via the beads package.
@@ -21,40 +21,40 @@ func TestClaimPatternMatching(t *testing.T) {
 		// Exact matches
 		{
 			name:    "exact match",
-			pattern: "gastown/polecats/capable",
-			caller:  "gastown/polecats/capable",
+			pattern: "gongshow/polecats/capable",
+			caller:  "gongshow/polecats/capable",
 			want:    true,
 		},
 		{
 			name:    "exact match with different name",
-			pattern: "gastown/polecats/toast",
-			caller:  "gastown/polecats/capable",
+			pattern: "gongshow/polecats/toast",
+			caller:  "gongshow/polecats/capable",
 			want:    false,
 		},
 
 		// Wildcard at end
 		{
 			name:    "wildcard matches polecat",
-			pattern: "gastown/polecats/*",
-			caller:  "gastown/polecats/capable",
+			pattern: "gongshow/polecats/*",
+			caller:  "gongshow/polecats/capable",
 			want:    true,
 		},
 		{
 			name:    "wildcard matches different polecat",
-			pattern: "gastown/polecats/*",
-			caller:  "gastown/polecats/toast",
+			pattern: "gongshow/polecats/*",
+			caller:  "gongshow/polecats/toast",
 			want:    true,
 		},
 		{
 			name:    "wildcard doesn't match wrong rig",
-			pattern: "gastown/polecats/*",
+			pattern: "gongshow/polecats/*",
 			caller:  "beads/polecats/capable",
 			want:    false,
 		},
 		{
 			name:    "wildcard doesn't match nested path",
-			pattern: "gastown/polecats/*",
-			caller:  "gastown/polecats/sub/capable",
+			pattern: "gongshow/polecats/*",
+			caller:  "gongshow/polecats/sub/capable",
 			want:    false,
 		},
 
@@ -96,11 +96,11 @@ func TestQueueMessageReleaseValidation(t *testing.T) {
 			msgInfo: &queueMessageInfo{
 				ID:        "hq-test1",
 				Title:     "Test Message",
-				ClaimedBy: "gastown/polecats/nux",
+				ClaimedBy: "gongshow/polecats/nux",
 				QueueName: "work-requests",
 				Status:    "open",
 			},
-			caller:  "gastown/polecats/nux",
+			caller:  "gongshow/polecats/nux",
 			wantErr: false,
 		},
 		{
@@ -112,7 +112,7 @@ func TestQueueMessageReleaseValidation(t *testing.T) {
 				QueueName: "work-requests",
 				Status:    "open",
 			},
-			caller:      "gastown/polecats/nux",
+			caller:      "gongshow/polecats/nux",
 			wantErr:     true,
 			errContains: "not claimed",
 		},
@@ -121,11 +121,11 @@ func TestQueueMessageReleaseValidation(t *testing.T) {
 			msgInfo: &queueMessageInfo{
 				ID:        "hq-test3",
 				Title:     "Test Message",
-				ClaimedBy: "gastown/polecats/other",
+				ClaimedBy: "gongshow/polecats/other",
 				QueueName: "work-requests",
 				Status:    "open",
 			},
-			caller:      "gastown/polecats/nux",
+			caller:      "gongshow/polecats/nux",
 			wantErr:     true,
 			errContains: "was claimed by",
 		},
@@ -134,11 +134,11 @@ func TestQueueMessageReleaseValidation(t *testing.T) {
 			msgInfo: &queueMessageInfo{
 				ID:        "hq-test4",
 				Title:     "Test Message",
-				ClaimedBy: "gastown/polecats/nux",
+				ClaimedBy: "gongshow/polecats/nux",
 				QueueName: "", // No queue label
 				Status:    "open",
 			},
-			caller:      "gastown/polecats/nux",
+			caller:      "gongshow/polecats/nux",
 			wantErr:     true,
 			errContains: "not a queue message",
 		},
@@ -265,8 +265,8 @@ func TestAnnounceMessageParsing(t *testing.T) {
 		},
 		{
 			name:   "extracts from with rig path",
-			labels: []string{"announce_channel:alerts", "from:gastown/witness"},
-			want:   "gastown/witness",
+			labels: []string{"announce_channel:alerts", "from:gongshow/witness"},
+			want:   "gongshow/witness",
 		},
 		{
 			name:   "no from label",

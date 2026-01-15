@@ -7,7 +7,7 @@ import (
 func TestPluginRunRecord(t *testing.T) {
 	record := PluginRunRecord{
 		PluginName: "test-plugin",
-		RigName:    "gastown",
+		RigName:    "gongshow",
 		Result:     ResultSuccess,
 		Body:       "Test run completed successfully",
 	}
@@ -15,8 +15,8 @@ func TestPluginRunRecord(t *testing.T) {
 	if record.PluginName != "test-plugin" {
 		t.Errorf("expected plugin name 'test-plugin', got %q", record.PluginName)
 	}
-	if record.RigName != "gastown" {
-		t.Errorf("expected rig name 'gastown', got %q", record.RigName)
+	if record.RigName != "gongshow" {
+		t.Errorf("expected rig name 'gongshow', got %q", record.RigName)
 	}
 	if record.Result != ResultSuccess {
 		t.Errorf("expected result 'success', got %q", record.Result)

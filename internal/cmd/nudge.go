@@ -6,13 +6,13 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/events"
-	"github.com/steveyegge/gastown/internal/session"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/tmux"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/events"
+	"github.com/KeithWyatt/gongshow/internal/session"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 var nudgeMessageFlag string
@@ -47,7 +47,7 @@ Role shortcuts (expand to session names):
 Channel syntax:
   channel:<name>  Nudges all members of a named channel defined in
                   ~/gt/config/messaging.json under "nudge_channels".
-                  Patterns like "gastown/polecats/*" are expanded.
+                  Patterns like "gongshow/polecats/*" are expanded.
 
 DND (Do Not Disturb):
   If the target has DND enabled (gt dnd on), the nudge is skipped.
@@ -348,8 +348,8 @@ func runNudgeChannel(channelName, message string) error {
 
 // resolveNudgePattern resolves a nudge channel pattern to session names.
 // Patterns can be:
-//   - Literal: "gastown/witness" → gt-gastown-witness
-//   - Wildcard: "gastown/polecats/*" → all polecat sessions in gastown
+//   - Literal: "gongshow/witness" → gt-gongshow-witness
+//   - Wildcard: "gongshow/polecats/*" → all polecat sessions in gongshow
 //   - Role: "*/witness" → all witness sessions
 //   - Special: "mayor", "deacon" → gt-{town}-mayor, gt-{town}-deacon
 // townName is used to generate the correct session names for mayor/deacon.
@@ -451,8 +451,8 @@ func shouldNudgeTarget(townRoot, targetAddress string, force bool) (bool, string
 // Examples:
 //   - "mayor" -> "gt-{town}-mayor"
 //   - "deacon" -> "gt-{town}-deacon"
-//   - "gastown/witness" -> "gt-gastown-witness"
-//   - "gastown/alpha" -> "gt-gastown-polecat-alpha"
+//   - "gongshow/witness" -> "gt-gongshow-witness"
+//   - "gongshow/alpha" -> "gt-gongshow-polecat-alpha"
 //
 // Returns empty string if the address cannot be converted.
 func addressToAgentBeadID(address string) string {

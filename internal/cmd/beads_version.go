@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-// MinBeadsVersion is the minimum required beads version for Gas Town.
+// MinBeadsVersion is the minimum required beads version for GongShow.
 // This version must include custom type support (bd-i54l).
 const MinBeadsVersion = "0.44.0"
 

@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/steveyegge/gastown/internal/constants"
+	"github.com/KeithWyatt/gongshow/internal/constants"
 )
 
 // SettingsCheck verifies each rig has a settings/ directory.
@@ -183,54 +183,54 @@ func (c *RuntimeGitignoreCheck) findRigs(townRoot string) []string {
 	return findAllRigs(townRoot)
 }
 
-// LegacyGastownCheck warns if old .gastown/ directories still exist.
-type LegacyGastownCheck struct {
+// LegacyGongshowCheck warns if old .gongshow/ directories still exist.
+type LegacyGongshowCheck struct {
 	FixableCheck
 	legacyDirs []string // Cached during Run for use in Fix
 }
 
-// NewLegacyGastownCheck creates a new legacy gastown check.
-func NewLegacyGastownCheck() *LegacyGastownCheck {
-	return &LegacyGastownCheck{
+// NewLegacyGongshowCheck creates a new legacy gongshow check.
+func NewLegacyGongshowCheck() *LegacyGongshowCheck {
+	return &LegacyGongshowCheck{
 		FixableCheck: FixableCheck{
 			BaseCheck: BaseCheck{
-				CheckName:        "legacy-gastown",
-				CheckDescription: "Check for old .gastown/ directories that should be migrated",
+				CheckName:        "legacy-gongshow",
+				CheckDescription: "Check for old .gongshow/ directories that should be migrated",
 				CheckCategory:    CategoryConfig,
 			},
 		},
 	}
 }
 
-// Run checks for legacy .gastown/ directories.
-func (c *LegacyGastownCheck) Run(ctx *CheckContext) *CheckResult {
+// Run checks for legacy .gongshow/ directories.
+func (c *LegacyGongshowCheck) Run(ctx *CheckContext) *CheckResult {
 	var found []string
 
-	// Check town-level .gastown/
-	townGastown := filepath.Join(ctx.TownRoot, ".gastown")
-	if info, err := os.Stat(townGastown); err == nil && info.IsDir() {
-		found = append(found, ".gastown/ (town root)")
+	// Check town-level .gongshow/
+	townGongshow := filepath.Join(ctx.TownRoot, ".gongshow")
+	if info, err := os.Stat(townGongshow); err == nil && info.IsDir() {
+		found = append(found, ".gongshow/ (town root)")
 	}
 
-	// Check each rig for .gastown/
+	// Check each rig for .gongshow/
 	rigs := c.findRigs(ctx.TownRoot)
 	for _, rig := range rigs {
-		rigGastown := filepath.Join(rig, ".gastown")
-		if info, err := os.Stat(rigGastown); err == nil && info.IsDir() {
+		rigGongshow := filepath.Join(rig, ".gongshow")
+		if info, err := os.Stat(rigGongshow); err == nil && info.IsDir() {
 			relPath, _ := filepath.Rel(ctx.TownRoot, rig)
-			found = append(found, fmt.Sprintf("%s/.gastown/", relPath))
+			found = append(found, fmt.Sprintf("%s/.gongshow/", relPath))
 		}
 	}
 
 	// Cache for Fix
 	c.legacyDirs = nil
-	if info, err := os.Stat(townGastown); err == nil && info.IsDir() {
-		c.legacyDirs = append(c.legacyDirs, townGastown)
+	if info, err := os.Stat(townGongshow); err == nil && info.IsDir() {
+		c.legacyDirs = append(c.legacyDirs, townGongshow)
 	}
 	for _, rig := range rigs {
-		rigGastown := filepath.Join(rig, ".gastown")
-		if info, err := os.Stat(rigGastown); err == nil && info.IsDir() {
-			c.legacyDirs = append(c.legacyDirs, rigGastown)
+		rigGongshow := filepath.Join(rig, ".gongshow")
+		if info, err := os.Stat(rigGongshow); err == nil && info.IsDir() {
+			c.legacyDirs = append(c.legacyDirs, rigGongshow)
 		}
 	}
 
@@ -238,21 +238,21 @@ func (c *LegacyGastownCheck) Run(ctx *CheckContext) *CheckResult {
 		return &CheckResult{
 			Name:    c.Name(),
 			Status:  StatusOK,
-			Message: "No legacy .gastown/ directories found",
+			Message: "No legacy .gongshow/ directories found",
 		}
 	}
 
 	return &CheckResult{
 		Name:    c.Name(),
 		Status:  StatusWarning,
-		Message: fmt.Sprintf("%d legacy .gastown/ directory(ies) found", len(found)),
+		Message: fmt.Sprintf("%d legacy .gongshow/ directory(ies) found", len(found)),
 		Details: found,
 		FixHint: "Run 'gt doctor --fix' to remove after verifying migration is complete",
 	}
 }
 
-// Fix removes legacy .gastown/ directories.
-func (c *LegacyGastownCheck) Fix(ctx *CheckContext) error {
+// Fix removes legacy .gongshow/ directories.
+func (c *LegacyGongshowCheck) Fix(ctx *CheckContext) error {
 	for _, dir := range c.legacyDirs {
 		if err := os.RemoveAll(dir); err != nil {
 			return fmt.Errorf("failed to remove %s: %w", dir, err)
@@ -262,7 +262,7 @@ func (c *LegacyGastownCheck) Fix(ctx *CheckContext) error {
 }
 
 // findRigs returns rig directories within the town.
-func (c *LegacyGastownCheck) findRigs(townRoot string) []string {
+func (c *LegacyGongshowCheck) findRigs(townRoot string) []string {
 	return findAllRigs(townRoot)
 }
 
@@ -539,7 +539,7 @@ func containsFlag(s, flag string) bool {
 	return next == '"' || next == ' ' || next == '\'' || next == '\n' || next == '\t'
 }
 
-// CustomTypesCheck verifies Gas Town custom types are registered with beads.
+// CustomTypesCheck verifies GongShow custom types are registered with beads.
 type CustomTypesCheck struct {
 	FixableCheck
 	missingTypes []string // Cached during Run for use in Fix
@@ -552,7 +552,7 @@ func NewCustomTypesCheck() *CustomTypesCheck {
 		FixableCheck: FixableCheck{
 			BaseCheck: BaseCheck{
 				CheckName:        "beads-custom-types",
-				CheckDescription: "Check that Gas Town custom types are registered with beads",
+				CheckDescription: "Check that GongShow custom types are registered with beads",
 				CheckCategory:    CategoryConfig,
 			},
 		},
@@ -594,7 +594,7 @@ func (c *CustomTypesCheck) Run(ctx *CheckContext) *CheckResult {
 			Status:  StatusWarning,
 			Message: "Custom types not configured",
 			Details: []string{
-				"Gas Town custom types (agent, role, rig, convoy, slot) are not registered",
+				"GongShow custom types (agent, role, rig, convoy, slot) are not registered",
 				"This may cause bead creation/validation errors",
 			},
 			FixHint: "Run 'gt doctor --fix' or 'bd config set types.custom \"" + constants.BeadsCustomTypes + "\"'",

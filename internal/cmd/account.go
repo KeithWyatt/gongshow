@@ -7,10 +7,10 @@ import (
 	"sort"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/constants"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/constants"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 // Account command flags
@@ -25,7 +25,7 @@ var accountCmd = &cobra.Command{
 	GroupID: GroupConfig,
 	Short:   "Manage Claude Code accounts",
 	RunE:    requireSubcommand,
-	Long: `Manage multiple Claude Code accounts for Gas Town.
+	Long: `Manage multiple Claude Code accounts for GongShow.
 
 This enables switching between accounts (e.g., personal vs work) with
 easy account selection per spawn or globally.

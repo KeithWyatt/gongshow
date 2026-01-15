@@ -8,9 +8,9 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/git"
-	"github.com/steveyegge/gastown/internal/rig"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/git"
+	"github.com/KeithWyatt/gongshow/internal/rig"
 )
 
 // Common errors
@@ -53,7 +53,7 @@ func (m *Manager) stateFilePath(name string) string {
 }
 
 // Add creates a new dog in the kennel with worktrees into each rig.
-// Each dog gets a worktree per rig (e.g., dogs/alpha/gastown/, dogs/alpha/beads/).
+// Each dog gets a worktree per rig (e.g., dogs/alpha/gongshow/, dogs/alpha/beads/).
 // Worktrees are created from each rig's bare repo (.repo.git) or mayor/rig.
 func (m *Manager) Add(name string) (*Dog, error) {
 	if m.exists(name) {

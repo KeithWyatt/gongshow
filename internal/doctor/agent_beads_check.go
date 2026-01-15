@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/steveyegge/gastown/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/beads"
 )
 
 // AgentBeadsCheck verifies that agent beads exist for all agents.
@@ -16,7 +16,7 @@ import (
 // - Crew workers - stored in each rig's beads
 //
 // Agent beads are created by gt rig add (see gt-h3hak, gt-pinkq) and gt crew add.
-// Each rig uses its configured prefix (e.g., "gt-" for gastown, "bd-" for beads).
+// Each rig uses its configured prefix (e.g., "gt-" for gongshow, "bd-" for beads).
 type AgentBeadsCheck struct {
 	FixableCheck
 }
@@ -54,7 +54,7 @@ func (c *AgentBeadsCheck) Run(ctx *CheckContext) *CheckResult {
 	}
 
 	// Build prefix -> rigInfo map from routes
-	// Routes have format: prefix "gt-" -> path "gastown/mayor/rig" or "my-saas"
+	// Routes have format: prefix "gt-" -> path "gongshow/mayor/rig" or "my-saas"
 	prefixToRig := make(map[string]rigInfo) // prefix (without hyphen) -> rigInfo
 	for _, r := range routes {
 		// Extract rig name from path (first component)

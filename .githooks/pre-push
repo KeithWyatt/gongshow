@@ -1,6 +1,6 @@
 #!/bin/bash
 # Block PRs by preventing pushes to arbitrary feature branches.
-# Gas Town agents push to main (crew) or polecat/* branches (polecats).
+# GongShow agents push to main (crew) or polecat/* branches (polecats).
 # PRs are for external contributors only.
 
 # Allowed patterns:
@@ -15,7 +15,7 @@ while read local_ref local_sha remote_ref remote_sha; do
       # Allowed branches
       ;;
     *)
-      echo "ERROR: Invalid branch for Gas Town agents."
+      echo "ERROR: Invalid branch for GongShow agents."
       echo ""
       echo "Blocked push to: $branch"
       echo ""

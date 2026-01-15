@@ -1,4 +1,4 @@
-// Package web provides HTTP server and templates for the Gas Town dashboard.
+// Package web provides HTTP server and templates for the GongShow dashboard.
 package web
 
 import (
@@ -6,7 +6,7 @@ import (
 	"html/template"
 	"io/fs"
 
-	"github.com/steveyegge/gastown/internal/activity"
+	"github.com/KeithWyatt/gongshow/internal/activity"
 )
 
 //go:embed templates/*.html
@@ -22,7 +22,7 @@ type ConvoyData struct {
 // PolecatRow represents a polecat worker in the dashboard.
 type PolecatRow struct {
 	Name         string        // e.g., "dag", "nux"
-	Rig          string        // e.g., "roxas", "gastown"
+	Rig          string        // e.g., "roxas", "gongshow"
 	SessionID    string        // e.g., "gt-roxas-dag"
 	LastActivity activity.Info // Colored activity display
 	StatusHint   string        // Last line from pane (optional)
@@ -31,7 +31,7 @@ type PolecatRow struct {
 // MergeQueueRow represents a PR in the merge queue.
 type MergeQueueRow struct {
 	Number     int
-	Repo       string // Short repo name (e.g., "roxas", "gastown")
+	Repo       string // Short repo name (e.g., "roxas", "gongshow")
 	Title      string
 	URL        string
 	CIStatus   string // "pass", "fail", "pending"

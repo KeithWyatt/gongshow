@@ -12,21 +12,21 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/constants"
-	"github.com/steveyegge/gastown/internal/crew"
-	"github.com/steveyegge/gastown/internal/daemon"
-	"github.com/steveyegge/gastown/internal/deacon"
-	"github.com/steveyegge/gastown/internal/git"
-	"github.com/steveyegge/gastown/internal/mayor"
-	"github.com/steveyegge/gastown/internal/polecat"
-	"github.com/steveyegge/gastown/internal/refinery"
-	"github.com/steveyegge/gastown/internal/rig"
-	"github.com/steveyegge/gastown/internal/session"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/tmux"
-	"github.com/steveyegge/gastown/internal/witness"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/constants"
+	"github.com/KeithWyatt/gongshow/internal/crew"
+	"github.com/KeithWyatt/gongshow/internal/daemon"
+	"github.com/KeithWyatt/gongshow/internal/deacon"
+	"github.com/KeithWyatt/gongshow/internal/git"
+	"github.com/KeithWyatt/gongshow/internal/mayor"
+	"github.com/KeithWyatt/gongshow/internal/polecat"
+	"github.com/KeithWyatt/gongshow/internal/refinery"
+	"github.com/KeithWyatt/gongshow/internal/rig"
+	"github.com/KeithWyatt/gongshow/internal/session"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/witness"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 var (
@@ -47,8 +47,8 @@ var (
 var startCmd = &cobra.Command{
 	Use:     "start [path]",
 	GroupID: GroupServices,
-	Short:   "Start Gas Town or a crew workspace",
-	Long: `Start Gas Town by launching the Deacon and Mayor.
+	Short:   "Start GongShow or a crew workspace",
+	Long: `Start GongShow by launching the Deacon and Mayor.
 
 The Deacon is the health-check orchestrator that monitors Mayor and Witnesses.
 The Mayor is the global coordinator that dispatches work.
@@ -60,7 +60,7 @@ Crew shortcut:
   If a path like "rig/crew/name" is provided, starts that crew workspace.
   This is equivalent to 'gt start crew rig/name'.
 
-To stop Gas Town, use 'gt shutdown'.`,
+To stop GongShow, use 'gt shutdown'.`,
 	Args: cobra.MaximumNArgs(1),
 	RunE: runStart,
 }
@@ -68,8 +68,8 @@ To stop Gas Town, use 'gt shutdown'.`,
 var shutdownCmd = &cobra.Command{
 	Use:     "shutdown",
 	GroupID: GroupServices,
-	Short:   "Shutdown Gas Town with cleanup",
-	Long: `Shutdown Gas Town by stopping agents and cleaning up polecats.
+	Short:   "Shutdown GongShow with cleanup",
+	Long: `Shutdown GongShow by stopping agents and cleaning up polecats.
 
 This is the "done for the day" command - it stops everything AND removes
 polecat worktrees/branches. For a reversible pause, use 'gt down' instead.
@@ -107,7 +107,7 @@ If not specified, the rig is inferred from the current directory.
 
 Examples:
   gt start crew joe                    # Start joe in current rig
-  gt start crew greenplace/joe            # Start joe in gastown rig
+  gt start crew greenplace/joe            # Start joe in gongshow rig
   gt start crew joe --rig beads        # Start joe in beads rig`,
 	Args: cobra.ExactArgs(1),
 	RunE: runStartCrew,
@@ -154,10 +154,10 @@ func runStart(cmd *cobra.Command, args []string) error {
 		}
 	}
 
-	// Verify we're in a Gas Town workspace
+	// Verify we're in a GongShow workspace
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	if err := config.EnsureDaemonPatrolConfig(townRoot); err != nil {
@@ -166,7 +166,7 @@ func runStart(cmd *cobra.Command, args []string) error {
 
 	t := tmux.NewTmux()
 
-	fmt.Printf("Starting Gas Town from %s\n\n", style.Dim.Render(townRoot))
+	fmt.Printf("Starting GongShow from %s\n\n", style.Dim.Render(townRoot))
 	fmt.Println("Starting all agents in parallel...")
 	fmt.Println()
 
@@ -218,7 +218,7 @@ func runStart(cmd *cobra.Command, args []string) error {
 	}
 
 	fmt.Println()
-	fmt.Printf("%s Gas Town is running\n", style.Bold.Render("✓"))
+	fmt.Printf("%s GongShow is running\n", style.Bold.Render("✓"))
 	fmt.Println()
 	fmt.Printf("  Attach to Mayor:  %s\n", style.Dim.Render("gt mayor attach"))
 	fmt.Printf("  Attach to Deacon: %s\n", style.Dim.Render("gt deacon attach"))
@@ -439,7 +439,7 @@ func runShutdown(cmd *cobra.Command, args []string) error {
 	toStop, preserved := categorizeSessions(sessions, mayorSession, deaconSession)
 
 	if len(toStop) == 0 {
-		fmt.Printf("%s Gas Town was not running\n", style.Dim.Render("○"))
+		fmt.Printf("%s GongShow was not running\n", style.Dim.Render("○"))
 		return nil
 	}
 
@@ -479,9 +479,9 @@ func runShutdown(cmd *cobra.Command, args []string) error {
 // mayorSession and deaconSession are the dynamic session names for the current town.
 func categorizeSessions(sessions []string, mayorSession, deaconSession string) (toStop, preserved []string) {
 	for _, sess := range sessions {
-		// Gas Town sessions use gt- (rig-level) or hq- (town-level) prefix
+		// GongShow sessions use gt- (rig-level) or hq- (town-level) prefix
 		if !strings.HasPrefix(sess, "gt-") && !strings.HasPrefix(sess, "hq-") {
-			continue // Not a Gas Town session
+			continue // Not a GongShow session
 		}
 
 		// Check if it's a crew session (pattern: gt-<rig>-crew-<name>)
@@ -523,7 +523,7 @@ func categorizeSessions(sessions []string, mayorSession, deaconSession string) (
 }
 
 func runGracefulShutdown(t *tmux.Tmux, gtSessions []string, townRoot string) error {
-	fmt.Printf("Graceful shutdown of Gas Town (waiting up to %ds)...\n\n", shutdownWait)
+	fmt.Printf("Graceful shutdown of GongShow (waiting up to %ds)...\n\n", shutdownWait)
 
 	// Phase 1: Send ESC to all agents to interrupt them
 	fmt.Printf("Phase 1: Sending ESC to %d agent(s)...\n", len(gtSessions))
@@ -534,7 +534,7 @@ func runGracefulShutdown(t *tmux.Tmux, gtSessions []string, townRoot string) err
 
 	// Phase 2: Send shutdown message asking agents to handoff
 	fmt.Printf("\nPhase 2: Requesting handoff from agents...\n")
-	shutdownMsg := "[SHUTDOWN] Gas Town is shutting down. Please save your state and update your handoff bead, then type /exit or wait to be terminated."
+	shutdownMsg := "[SHUTDOWN] GongShow is shutting down. Please save your state and update your handoff bead, then type /exit or wait to be terminated."
 	for _, sess := range gtSessions {
 		// Small delay then send the message
 		time.Sleep(constants.ShutdownNotifyDelay)
@@ -581,7 +581,7 @@ func runGracefulShutdown(t *tmux.Tmux, gtSessions []string, townRoot string) err
 }
 
 func runImmediateShutdown(t *tmux.Tmux, gtSessions []string, townRoot string) error {
-	fmt.Println("Shutting down Gas Town...")
+	fmt.Println("Shutting down GongShow...")
 
 	mayorSession := getMayorSessionName()
 	deaconSession := getDeaconSessionName()
@@ -602,7 +602,7 @@ func runImmediateShutdown(t *tmux.Tmux, gtSessions []string, townRoot string) er
 	}
 
 	fmt.Println()
-	fmt.Printf("%s Gas Town shutdown complete (%d sessions stopped)\n", style.Bold.Render("✓"), stopped)
+	fmt.Printf("%s GongShow shutdown complete (%d sessions stopped)\n", style.Bold.Render("✓"), stopped)
 
 	return nil
 }
@@ -770,7 +770,7 @@ func stopDaemonIfRunning(townRoot string) {
 func runStartCrew(cmd *cobra.Command, args []string) error {
 	name := args[0]
 
-	// Parse rig/name format (e.g., "greenplace/joe" -> rig=gastown, name=joe)
+	// Parse rig/name format (e.g., "greenplace/joe" -> rig=gongshow, name=joe)
 	rigName := startCrewRig
 	if parsedRig, crewName, ok := parseRigSlashName(name); ok {
 		if rigName == "" {
@@ -782,7 +782,7 @@ func runStartCrew(cmd *cobra.Command, args []string) error {
 	// Find workspace
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
-		return fmt.Errorf("not in a Gas Town workspace: %w", err)
+		return fmt.Errorf("not in a GongShow workspace: %w", err)
 	}
 
 	// If rig still not specified, try to infer from cwd

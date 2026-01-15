@@ -36,7 +36,7 @@ func TestEnsurePluginAt_FileExists(t *testing.T) {
 
 	// Create the plugin file first
 	pluginDir := "plugins"
-	pluginFile := "gastown.js"
+	pluginFile := "gongshow.js"
 	pluginPath := filepath.Join(tmpDir, pluginDir, pluginFile)
 
 	if err := os.MkdirAll(filepath.Dir(pluginPath), 0755); err != nil {
@@ -70,7 +70,7 @@ func TestEnsurePluginAt_CreatesFile(t *testing.T) {
 	tmpDir := t.TempDir()
 
 	pluginDir := "plugins"
-	pluginFile := "gastown.js"
+	pluginFile := "gongshow.js"
 	pluginPath := filepath.Join(tmpDir, pluginDir, pluginFile)
 
 	// Ensure plugin doesn't exist
@@ -108,7 +108,7 @@ func TestEnsurePluginAt_CreatesDirectory(t *testing.T) {
 	tmpDir := t.TempDir()
 
 	pluginDir := "nested/plugins/dir"
-	pluginFile := "gastown.js"
+	pluginFile := "gongshow.js"
 	pluginPath := filepath.Join(tmpDir, pluginDir, pluginFile)
 
 	// Create the plugin
@@ -132,7 +132,7 @@ func TestEnsurePluginAt_FilePermissions(t *testing.T) {
 	tmpDir := t.TempDir()
 
 	pluginDir := "plugins"
-	pluginFile := "gastown.js"
+	pluginFile := "gongshow.js"
 	pluginPath := filepath.Join(tmpDir, pluginDir, pluginFile)
 
 	err := EnsurePluginAt(tmpDir, pluginDir, pluginFile)

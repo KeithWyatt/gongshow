@@ -1,6 +1,6 @@
 ---
 name: Feature Request
-about: Suggest a new feature for Gas Town
+about: Suggest a new feature for GongShow
 title: ''
 labels: enhancement
 assignees: ''

@@ -11,10 +11,10 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/steveyegge/gastown/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/beads"
 )
 
-// setupHookTestTown creates a minimal Gas Town with a polecat for testing hooks.
+// setupHookTestTown creates a minimal GongShow with a polecat for testing hooks.
 // Returns townRoot and the path to the polecat's worktree.
 func setupHookTestTown(t *testing.T) (townRoot, polecatDir string) {
 	t.Helper()
@@ -30,29 +30,29 @@ func setupHookTestTown(t *testing.T) (townRoot, polecatDir string) {
 	// Create routes.jsonl
 	routes := []beads.Route{
 		{Prefix: "hq-", Path: "."},                     // Town-level beads
-		{Prefix: "gt-", Path: "gastown/mayor/rig"},     // Gastown rig
+		{Prefix: "gt-", Path: "gongshow/mayor/rig"},     // Gongshow rig
 	}
 	if err := beads.WriteRoutes(townBeadsDir, routes); err != nil {
 		t.Fatalf("write routes: %v", err)
 	}
 
-	// Create gastown rig structure
-	gasRigPath := filepath.Join(townRoot, "gastown", "mayor", "rig")
+	// Create gongshow rig structure
+	gasRigPath := filepath.Join(townRoot, "gongshow", "mayor", "rig")
 	if err := os.MkdirAll(gasRigPath, 0755); err != nil {
-		t.Fatalf("mkdir gastown: %v", err)
+		t.Fatalf("mkdir gongshow: %v", err)
 	}
 
-	// Create gastown .beads directory with its own config
+	// Create gongshow .beads directory with its own config
 	gasBeadsDir := filepath.Join(gasRigPath, ".beads")
 	if err := os.MkdirAll(gasBeadsDir, 0755); err != nil {
-		t.Fatalf("mkdir gastown .beads: %v", err)
+		t.Fatalf("mkdir gongshow .beads: %v", err)
 	}
 	if err := os.WriteFile(filepath.Join(gasBeadsDir, "config.yaml"), []byte("prefix: gt\n"), 0644); err != nil {
-		t.Fatalf("write gastown config: %v", err)
+		t.Fatalf("write gongshow config: %v", err)
 	}
 
 	// Create polecat worktree with redirect
-	polecatDir = filepath.Join(townRoot, "gastown", "polecats", "toast")
+	polecatDir = filepath.Join(townRoot, "gongshow", "polecats", "toast")
 	if err := os.MkdirAll(polecatDir, 0755); err != nil {
 		t.Fatalf("mkdir polecats: %v", err)
 	}
@@ -109,7 +109,7 @@ func TestHookSlot_BasicHook(t *testing.T) {
 	t.Logf("Created bead: %s", issue.ID)
 
 	// Hook the bead to the polecat
-	agentID := "gastown/polecats/toast"
+	agentID := "gongshow/polecats/toast"
 	status := beads.StatusHooked
 	if err := b.Update(issue.ID, beads.UpdateOptions{
 		Status:   &status,
@@ -150,7 +150,7 @@ func TestHookSlot_Singleton(t *testing.T) {
 	initBeadsDB(t, rigDir)
 
 	b := beads.New(rigDir)
-	agentID := "gastown/polecats/toast"
+	agentID := "gongshow/polecats/toast"
 	status := beads.StatusHooked
 
 	// Create and hook first bead
@@ -224,7 +224,7 @@ func TestHookSlot_Unhook(t *testing.T) {
 	initBeadsDB(t, rigDir)
 
 	b := beads.New(rigDir)
-	agentID := "gastown/polecats/toast"
+	agentID := "gongshow/polecats/toast"
 
 	// Create and hook a bead
 	issue, err := b.Create(beads.CreateOptions{
@@ -276,7 +276,7 @@ func TestHookSlot_DifferentAgents(t *testing.T) {
 	townRoot, polecatDir := setupHookTestTown(t)
 
 	// Create second polecat directory
-	polecat2Dir := filepath.Join(townRoot, "gastown", "polecats", "nux")
+	polecat2Dir := filepath.Join(townRoot, "gongshow", "polecats", "nux")
 	if err := os.MkdirAll(polecat2Dir, 0755); err != nil {
 		t.Fatalf("mkdir polecat2: %v", err)
 	}
@@ -285,8 +285,8 @@ func TestHookSlot_DifferentAgents(t *testing.T) {
 	initBeadsDB(t, rigDir)
 
 	b := beads.New(rigDir)
-	agent1 := "gastown/polecats/toast"
-	agent2 := "gastown/polecats/nux"
+	agent1 := "gongshow/polecats/toast"
+	agent2 := "gongshow/polecats/nux"
 	status := beads.StatusHooked
 
 	// Create and hook bead to first agent
@@ -370,7 +370,7 @@ func TestHookSlot_HookPersistence(t *testing.T) {
 	rigDir := filepath.Join(polecatDir, "..", "..", "mayor", "rig")
 	initBeadsDB(t, rigDir)
 
-	agentID := "gastown/polecats/toast"
+	agentID := "gongshow/polecats/toast"
 	status := beads.StatusHooked
 
 	// Create first beads instance and hook a bead
@@ -426,7 +426,7 @@ func TestHookSlot_StatusTransitions(t *testing.T) {
 	initBeadsDB(t, rigDir)
 
 	b := beads.New(rigDir)
-	agentID := "gastown/polecats/toast"
+	agentID := "gongshow/polecats/toast"
 
 	// Create a bead
 	issue, err := b.Create(beads.CreateOptions{

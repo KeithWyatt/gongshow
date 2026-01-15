@@ -7,24 +7,24 @@ import (
 	"testing"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/rig"
+	"github.com/KeithWyatt/gongshow/internal/rig"
 )
 
 func TestAgentStartResult_Fields(t *testing.T) {
 	result := agentStartResult{
-		name:   "Witness (gastown)",
+		name:   "Witness (gongshow)",
 		ok:     true,
-		detail: "gt-gastown-witness",
+		detail: "gt-gongshow-witness",
 	}
 
-	if result.name != "Witness (gastown)" {
-		t.Errorf("name = %q, want %q", result.name, "Witness (gastown)")
+	if result.name != "Witness (gongshow)" {
+		t.Errorf("name = %q, want %q", result.name, "Witness (gongshow)")
 	}
 	if !result.ok {
 		t.Error("ok should be true")
 	}
-	if result.detail != "gt-gastown-witness" {
-		t.Errorf("detail = %q, want %q", result.detail, "gt-gastown-witness")
+	if result.detail != "gt-gongshow-witness" {
+		t.Errorf("detail = %q, want %q", result.detail, "gt-gongshow-witness")
 	}
 }
 

@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-// Prefix is the common prefix for rig-level Gas Town tmux sessions.
+// Prefix is the common prefix for rig-level GongShow tmux sessions.
 const Prefix = "gt-"
 
 // HQPrefix is the prefix for town-level services (Mayor, Deacon).
@@ -46,7 +46,7 @@ func PolecatSessionName(rig, name string) string {
 	return fmt.Sprintf("%s%s-%s", Prefix, rig, name)
 }
 
-// PropulsionNudge generates the GUPP (Gas Town Universal Propulsion Principle) nudge.
+// PropulsionNudge generates the GUPP (GongShow Universal Propulsion Principle) nudge.
 // This is sent after the beacon to trigger autonomous work execution.
 // The agent receives this as user input, triggering the propulsion principle:
 // "If work is on your hook, YOU RUN IT."

@@ -1,5 +1,5 @@
-// ABOUTME: Quick-add command for adding a repo to Gas Town with minimal friction.
-// ABOUTME: Used by shell hook for automatic "add to Gas Town?" prompts.
+// ABOUTME: Quick-add command for adding a repo to GongShow with minimal friction.
+// ABOUTME: Used by shell hook for automatic "add to GongShow?" prompts.
 
 package cmd
 
@@ -11,8 +11,8 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 var (
@@ -23,11 +23,11 @@ var (
 
 var rigQuickAddCmd = &cobra.Command{
 	Use:    "quick-add [path]",
-	Short:  "Quickly add current repo to Gas Town",
+	Short:  "Quickly add current repo to GongShow",
 	Hidden: true,
-	Long: `Quickly add a git repository to Gas Town with minimal interaction.
+	Long: `Quickly add a git repository to GongShow with minimal interaction.
 
-This command is designed for the shell hook's "Add to Gas Town?" prompt.
+This command is designed for the shell hook's "Add to GongShow?" prompt.
 It infers the rig name from the directory and git URL from the remote.
 
 Examples:
@@ -57,7 +57,7 @@ func runRigQuickAdd(cmd *cobra.Command, args []string) error {
 	}
 
 	if townRoot, err := workspace.Find(absPath); err == nil && townRoot != "" {
-		return fmt.Errorf("already part of a Gas Town workspace: %s", townRoot)
+		return fmt.Errorf("already part of a GongShow workspace: %s", townRoot)
 	}
 
 	gitRoot, err := findGitRoot(absPath)
@@ -74,7 +74,7 @@ func runRigQuickAdd(cmd *cobra.Command, args []string) error {
 
 	townRoot, err := findOrCreateTown()
 	if err != nil {
-		return fmt.Errorf("finding Gas Town: %w", err)
+		return fmt.Errorf("finding GongShow: %w", err)
 	}
 
 	rigPath := filepath.Join(townRoot, rigName)
@@ -88,7 +88,7 @@ func runRigQuickAdd(cmd *cobra.Command, args []string) error {
 	}
 
 	if !quickAddQuiet {
-		fmt.Printf("Adding %s to Gas Town...\n", style.Bold.Render(rigName))
+		fmt.Printf("Adding %s to GongShow...\n", style.Bold.Render(rigName))
 		fmt.Printf("  Repository: %s\n", gitURL)
 		fmt.Printf("  Town: %s\n", townRoot)
 	}
@@ -128,7 +128,7 @@ func runRigQuickAdd(cmd *cobra.Command, args []string) error {
 
 	crewPath := filepath.Join(townRoot, rigName, "crew", user)
 	if !quickAddQuiet {
-		fmt.Printf("\n%s Added to Gas Town!\n", style.Success.Render("✓"))
+		fmt.Printf("\n%s Added to GongShow!\n", style.Success.Render("✓"))
 		fmt.Printf("\nYour workspace: %s\n", style.Bold.Render(crewPath))
 	}
 
@@ -172,7 +172,7 @@ func findOrCreateTown() (string, error) {
 
 	candidates := []string{
 		filepath.Join(home, "gt"),
-		filepath.Join(home, "gastown"),
+		filepath.Join(home, "gongshow"),
 	}
 
 	for _, path := range candidates {
@@ -182,5 +182,5 @@ func findOrCreateTown() (string, error) {
 		}
 	}
 
-	return "", fmt.Errorf("no Gas Town found - run 'gt install ~/gt' first")
+	return "", fmt.Errorf("no GongShow found - run 'gt install ~/gt' first")
 }

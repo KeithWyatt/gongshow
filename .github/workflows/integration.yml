@@ -27,7 +27,7 @@ jobs:
       - name: Configure Git
         run: |
           git config --global user.name "CI Bot"
-          git config --global user.email "ci@gastown.test"
+          git config --global user.email "ci@gongshow.test"
 
       - name: Install beads (bd)
         run: go install github.com/steveyegge/beads/cmd/bd@latest

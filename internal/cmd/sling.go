@@ -9,10 +9,10 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/events"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/events"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 var slingCmd = &cobra.Command{
@@ -21,7 +21,7 @@ var slingCmd = &cobra.Command{
 	Short:   "Assign work to an agent (THE unified work dispatch command)",
 	Long: `Sling work onto an agent's hook and start working immediately.
 
-This is THE command for assigning work in Gas Town. It handles:
+This is THE command for assigning work in GongShow. It handles:
   - Existing agents (mayor, crew, witness, refinery)
   - Auto-spawning polecats when target is a rig
   - Dispatching to dogs (Deacon's helper workers)
@@ -33,8 +33,8 @@ Auto-Convoy:
   a convoy to track the work unless --no-convoy is specified. This ensures
   all work appears in 'gt convoy list', even "swarm of one" assignments.
 
-  gt sling gt-abc gastown              # Creates "Work: <issue-title>" convoy
-  gt sling gt-abc gastown --no-convoy  # Skip auto-convoy creation
+  gt sling gt-abc gongshow              # Creates "Work: <issue-title>" convoy
+  gt sling gt-abc gongshow --no-convoy  # Skip auto-convoy creation
 
 Target Resolution:
   gt sling gt-abc                       # Self (current agent)
@@ -73,7 +73,7 @@ Compare:
 The propulsion principle: if it's on your hook, YOU RUN IT.
 
 Batch Slinging:
-  gt sling gt-abc gt-def gt-ghi gastown   # Sling multiple beads to a rig
+  gt sling gt-abc gt-def gt-ghi gongshow   # Sling multiple beads to a rig
 
   When multiple beads are provided with a rig target, each bead gets its own
   polecat. This parallelizes work dispatch without running gt sling N times.`,
@@ -135,7 +135,7 @@ func runSling(cmd *cobra.Command, args []string) error {
 	}
 
 	// Batch mode detection: multiple beads with rig target
-	// Pattern: gt sling gt-abc gt-def gt-ghi gastown
+	// Pattern: gt sling gt-abc gt-def gt-ghi gongshow
 	// When len(args) > 2 and last arg is a rig, sling each bead to its own polecat
 	if len(args) > 2 {
 		lastArg := args[len(args)-1]
@@ -439,7 +439,7 @@ func runSling(cmd *cobra.Command, args []string) error {
 	}
 
 	// Hook the bead using bd update.
-	// See: https://github.com/steveyegge/gastown/issues/148
+	// See: https://github.com/KeithWyatt/gongshow/issues/148
 	hookCmd := exec.Command("bd", "--no-daemon", "update", beadID, "--status=hooked", "--assignee="+targetAgent)
 	hookCmd.Dir = beads.ResolveHookDir(townRoot, beadID, hookWorkDir)
 	hookCmd.Stderr = os.Stderr

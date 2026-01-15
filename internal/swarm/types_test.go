@@ -166,7 +166,7 @@ func TestSwarmJSON(t *testing.T) {
 	now := time.Now().Truncate(time.Second)
 	swarm := &Swarm{
 		ID:           "swarm-123",
-		RigName:      "gastown",
+		RigName:      "gongshow",
 		EpicID:       "gt-abc",
 		BaseCommit:   "abc123",
 		Integration:  "swarm-123-integration",

@@ -246,16 +246,16 @@ func TestOrphanedAttachmentsCheck_FormatOrphan(t *testing.T) {
 		{
 			orph: orphanedHandoff{
 				beadID: "hq-123",
-				agent:  "gastown/nux",
+				agent:  "gongshow/nux",
 			},
-			expected: `hq-123: agent "gastown/nux" no longer exists`,
+			expected: `hq-123: agent "gongshow/nux" no longer exists`,
 		},
 		{
 			orph: orphanedHandoff{
 				beadID: "gt-456",
-				agent:  "gastown/crew/joe",
+				agent:  "gongshow/crew/joe",
 			},
-			expected: `gt-456: agent "gastown/crew/joe" no longer exists`,
+			expected: `gt-456: agent "gongshow/crew/joe" no longer exists`,
 		},
 	}
 
@@ -271,12 +271,12 @@ func TestOrphanedAttachmentsCheck_AgentExists(t *testing.T) {
 	tmpDir := t.TempDir()
 
 	// Create some agent directories
-	polecatDir := filepath.Join(tmpDir, "gastown", "polecats", "nux")
+	polecatDir := filepath.Join(tmpDir, "gongshow", "polecats", "nux")
 	if err := os.MkdirAll(polecatDir, 0755); err != nil {
 		t.Fatal(err)
 	}
 
-	crewDir := filepath.Join(tmpDir, "gastown", "crew", "joe")
+	crewDir := filepath.Join(tmpDir, "gongshow", "crew", "joe")
 	if err := os.MkdirAll(crewDir, 0755); err != nil {
 		t.Fatal(err)
 	}
@@ -286,7 +286,7 @@ func TestOrphanedAttachmentsCheck_AgentExists(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	witnessDir := filepath.Join(tmpDir, "gastown", "witness")
+	witnessDir := filepath.Join(tmpDir, "gongshow", "witness")
 	if err := os.MkdirAll(witnessDir, 0755); err != nil {
 		t.Fatal(err)
 	}
@@ -298,14 +298,14 @@ func TestOrphanedAttachmentsCheck_AgentExists(t *testing.T) {
 		expected bool
 	}{
 		// Existing agents
-		{"gastown/nux", true},
-		{"gastown/crew/joe", true},
+		{"gongshow/nux", true},
+		{"gongshow/crew/joe", true},
 		{"mayor", true},
-		{"gastown-witness", true},
+		{"gongshow-witness", true},
 
 		// Non-existent agents
-		{"gastown/deleted", false},
-		{"gastown/crew/gone", false},
+		{"gongshow/deleted", false},
+		{"gongshow/crew/gone", false},
 		{"otherrig-witness", false},
 	}
 

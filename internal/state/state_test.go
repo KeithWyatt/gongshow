@@ -11,7 +11,7 @@ import (
 
 func TestStateDir(t *testing.T) {
 	home, _ := os.UserHomeDir()
-	expected := filepath.Join(home, ".local", "state", "gastown")
+	expected := filepath.Join(home, ".local", "state", "gongshow")
 
 	os.Unsetenv("XDG_STATE_HOME")
 	if got := StateDir(); got != expected {
@@ -20,14 +20,14 @@ func TestStateDir(t *testing.T) {
 
 	os.Setenv("XDG_STATE_HOME", "/custom/state")
 	defer os.Unsetenv("XDG_STATE_HOME")
-	if got := StateDir(); got != "/custom/state/gastown" {
-		t.Errorf("StateDir() with XDG = %q, want /custom/state/gastown", got)
+	if got := StateDir(); got != "/custom/state/gongshow" {
+		t.Errorf("StateDir() with XDG = %q, want /custom/state/gongshow", got)
 	}
 }
 
 func TestConfigDir(t *testing.T) {
 	home, _ := os.UserHomeDir()
-	expected := filepath.Join(home, ".config", "gastown")
+	expected := filepath.Join(home, ".config", "gongshow")
 
 	os.Unsetenv("XDG_CONFIG_HOME")
 	if got := ConfigDir(); got != expected {
@@ -36,14 +36,14 @@ func TestConfigDir(t *testing.T) {
 
 	os.Setenv("XDG_CONFIG_HOME", "/custom/config")
 	defer os.Unsetenv("XDG_CONFIG_HOME")
-	if got := ConfigDir(); got != "/custom/config/gastown" {
-		t.Errorf("ConfigDir() with XDG = %q, want /custom/config/gastown", got)
+	if got := ConfigDir(); got != "/custom/config/gongshow" {
+		t.Errorf("ConfigDir() with XDG = %q, want /custom/config/gongshow", got)
 	}
 }
 
 func TestCacheDir(t *testing.T) {
 	home, _ := os.UserHomeDir()
-	expected := filepath.Join(home, ".cache", "gastown")
+	expected := filepath.Join(home, ".cache", "gongshow")
 
 	os.Unsetenv("XDG_CACHE_HOME")
 	if got := CacheDir(); got != expected {
@@ -52,34 +52,34 @@ func TestCacheDir(t *testing.T) {
 
 	os.Setenv("XDG_CACHE_HOME", "/custom/cache")
 	defer os.Unsetenv("XDG_CACHE_HOME")
-	if got := CacheDir(); got != "/custom/cache/gastown" {
-		t.Errorf("CacheDir() with XDG = %q, want /custom/cache/gastown", got)
+	if got := CacheDir(); got != "/custom/cache/gongshow" {
+		t.Errorf("CacheDir() with XDG = %q, want /custom/cache/gongshow", got)
 	}
 }
 
 func TestIsEnabled_EnvOverride(t *testing.T) {
-	os.Setenv("GASTOWN_DISABLED", "1")
-	defer os.Unsetenv("GASTOWN_DISABLED")
+	os.Setenv("GONGSHOW_DISABLED", "1")
+	defer os.Unsetenv("GONGSHOW_DISABLED")
 	if IsEnabled() {
-		t.Error("IsEnabled() should return false when GASTOWN_DISABLED=1")
+		t.Error("IsEnabled() should return false when GONGSHOW_DISABLED=1")
 	}
 
-	os.Unsetenv("GASTOWN_DISABLED")
-	os.Setenv("GASTOWN_ENABLED", "1")
-	defer os.Unsetenv("GASTOWN_ENABLED")
+	os.Unsetenv("GONGSHOW_DISABLED")
+	os.Setenv("GONGSHOW_ENABLED", "1")
+	defer os.Unsetenv("GONGSHOW_ENABLED")
 	if !IsEnabled() {
-		t.Error("IsEnabled() should return true when GASTOWN_ENABLED=1")
+		t.Error("IsEnabled() should return true when GONGSHOW_ENABLED=1")
 	}
 }
 
 func TestIsEnabled_DisabledOverridesEnabled(t *testing.T) {
-	os.Setenv("GASTOWN_DISABLED", "1")
-	os.Setenv("GASTOWN_ENABLED", "1")
-	defer os.Unsetenv("GASTOWN_DISABLED")
-	defer os.Unsetenv("GASTOWN_ENABLED")
+	os.Setenv("GONGSHOW_DISABLED", "1")
+	os.Setenv("GONGSHOW_ENABLED", "1")
+	defer os.Unsetenv("GONGSHOW_DISABLED")
+	defer os.Unsetenv("GONGSHOW_ENABLED")
 
 	if IsEnabled() {
-		t.Error("GASTOWN_DISABLED should take precedence over GASTOWN_ENABLED")
+		t.Error("GONGSHOW_DISABLED should take precedence over GONGSHOW_ENABLED")
 	}
 }
 
@@ -87,8 +87,8 @@ func TestEnableDisable(t *testing.T) {
 	tmpDir := t.TempDir()
 	os.Setenv("XDG_STATE_HOME", tmpDir)
 	defer os.Unsetenv("XDG_STATE_HOME")
-	os.Unsetenv("GASTOWN_DISABLED")
-	os.Unsetenv("GASTOWN_ENABLED")
+	os.Unsetenv("GONGSHOW_DISABLED")
+	os.Unsetenv("GONGSHOW_ENABLED")
 
 	if err := Enable("1.0.0"); err != nil {
 		t.Fatalf("Enable() failed: %v", err)

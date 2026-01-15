@@ -15,14 +15,14 @@ func TestFormatStartupNudge(t *testing.T) {
 		{
 			name: "assigned with mol-id",
 			cfg: StartupNudgeConfig{
-				Recipient: "gastown/crew/gus",
+				Recipient: "gongshow/crew/gus",
 				Sender:    "deacon",
 				Topic:     "assigned",
 				MolID:     "gt-abc12",
 			},
 			wantSub: []string{
-				"[GAS TOWN]",
-				"gastown/crew/gus",
+				"[GONGSHOW]",
+				"gongshow/crew/gus",
 				"<- deacon",
 				"assigned:gt-abc12",
 				"Work is on your hook", // assigned includes actionable instructions
@@ -37,7 +37,7 @@ func TestFormatStartupNudge(t *testing.T) {
 				Topic:     "cold-start",
 			},
 			wantSub: []string{
-				"[GAS TOWN]",
+				"[GONGSHOW]",
 				"deacon",
 				"<- mayor",
 				"cold-start",
@@ -50,13 +50,13 @@ func TestFormatStartupNudge(t *testing.T) {
 		{
 			name: "handoff self",
 			cfg: StartupNudgeConfig{
-				Recipient: "gastown/witness",
+				Recipient: "gongshow/witness",
 				Sender:    "self",
 				Topic:     "handoff",
 			},
 			wantSub: []string{
-				"[GAS TOWN]",
-				"gastown/witness",
+				"[GONGSHOW]",
+				"gongshow/witness",
 				"<- self",
 				"handoff",
 				"Check your hook and mail", // handoff includes explicit instructions
@@ -67,13 +67,13 @@ func TestFormatStartupNudge(t *testing.T) {
 		{
 			name: "mol-id only",
 			cfg: StartupNudgeConfig{
-				Recipient: "gastown/polecats/Toast",
+				Recipient: "gongshow/polecats/Toast",
 				Sender:    "witness",
 				MolID:     "gt-xyz99",
 			},
 			wantSub: []string{
-				"[GAS TOWN]",
-				"gastown/polecats/Toast",
+				"[GONGSHOW]",
+				"gongshow/polecats/Toast",
 				"<- witness",
 				"gt-xyz99",
 			},
@@ -85,7 +85,7 @@ func TestFormatStartupNudge(t *testing.T) {
 				Sender:    "mayor",
 			},
 			wantSub: []string{
-				"[GAS TOWN]",
+				"[GONGSHOW]",
 				"ready",
 			},
 		},
@@ -97,7 +97,7 @@ func TestFormatStartupNudge(t *testing.T) {
 				Topic:     "start",
 			},
 			wantSub: []string{
-				"[GAS TOWN]",
+				"[GONGSHOW]",
 				"beads/crew/fang",
 				"<- human",
 				"start",
@@ -107,13 +107,13 @@ func TestFormatStartupNudge(t *testing.T) {
 		{
 			name: "restart includes fallback instructions",
 			cfg: StartupNudgeConfig{
-				Recipient: "gastown/crew/george",
+				Recipient: "gongshow/crew/george",
 				Sender:    "human",
 				Topic:     "restart",
 			},
 			wantSub: []string{
-				"[GAS TOWN]",
-				"gastown/crew/george",
+				"[GONGSHOW]",
+				"gongshow/crew/george",
 				"restart",
 				"gt prime", // fallback instruction for when SessionStart hook fails
 			},

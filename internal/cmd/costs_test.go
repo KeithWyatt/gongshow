@@ -15,35 +15,35 @@ func TestDeriveSessionName(t *testing.T) {
 			name: "polecat session",
 			envVars: map[string]string{
 				"GT_ROLE":    "polecat",
-				"GT_RIG":     "gastown",
+				"GT_RIG":     "gongshow",
 				"GT_POLECAT": "toast",
 			},
-			expected: "gt-gastown-toast",
+			expected: "gt-gongshow-toast",
 		},
 		{
 			name: "crew session",
 			envVars: map[string]string{
 				"GT_ROLE": "crew",
-				"GT_RIG":  "gastown",
+				"GT_RIG":  "gongshow",
 				"GT_CREW": "max",
 			},
-			expected: "gt-gastown-crew-max",
+			expected: "gt-gongshow-crew-max",
 		},
 		{
 			name: "witness session",
 			envVars: map[string]string{
 				"GT_ROLE": "witness",
-				"GT_RIG":  "gastown",
+				"GT_RIG":  "gongshow",
 			},
-			expected: "gt-gastown-witness",
+			expected: "gt-gongshow-witness",
 		},
 		{
 			name: "refinery session",
 			envVars: map[string]string{
 				"GT_ROLE": "refinery",
-				"GT_RIG":  "gastown",
+				"GT_RIG":  "gongshow",
 			},
-			expected: "gt-gastown-refinery",
+			expected: "gt-gongshow-refinery",
 		},
 		{
 			name: "mayor session",

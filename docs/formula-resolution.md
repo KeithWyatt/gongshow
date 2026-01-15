@@ -31,7 +31,7 @@ TIER 1: PROJECT (rig-level)
   Location: <project>/.beads/formulas/
   Source:   Committed to project repo
   Use case: Project-specific workflows (deploy, test, release)
-  Example:  ~/gt/gastown/.beads/formulas/mol-gastown-release.formula.toml
+  Example:  ~/gt/gongshow/.beads/formulas/mol-gongshow-release.formula.toml
 
 TIER 2: TOWN (user-level)
   Location: ~/gt/.beads/formulas/
@@ -41,7 +41,7 @@ TIER 2: TOWN (user-level)
 
 TIER 3: SYSTEM (embedded)
   Location: Compiled into gt binary
-  Source:   gastown/mayor/rig/.beads/formulas/ at build time
+  Source:   gongshow/mayor/rig/.beads/formulas/ at build time
   Use case: Defaults, blessed patterns, fallback
   Example:  mol-polecat-work.formula.toml (factory default)
 ```
@@ -107,14 +107,14 @@ description = "..."
 [formula]
 name = "mol-polecat-work"
 version = "4.0.0"                          # Semver
-author = "steve@gastown.io"                # Author identity
+author = "steve@gongshow.io"                # Author identity
 license = "MIT"
-repository = "https://github.com/steveyegge/gastown"
+repository = "https://github.com/KeithWyatt/gongshow"
 
 [formula.registry]
-uri = "hop://molmall.gastown.io/formulas/mol-polecat-work@4.0.0"
+uri = "hop://molmall.gongshow.io/formulas/mol-polecat-work@4.0.0"
 checksum = "sha256:abc123..."              # Integrity verification
-signed_by = "steve@gastown.io"             # Optional signing
+signed_by = "steve@gongshow.io"             # Optional signing
 
 [formula.capabilities]
 # What capabilities does this formula exercise? Used for agent routing.
@@ -137,7 +137,7 @@ bd cook mol-polecat-work@latest   # Explicit latest
 
 ### Current State
 
-Crew directories (`gastown/crew/max/`) are sparse checkouts of gastown. They have:
+Crew directories (`gongshow/crew/max/`) are sparse checkouts of gongshow. They have:
 - Their own `.beads/formulas/` (from the checkout)
 - These can diverge from `mayor/rig/.beads/formulas/`
 
@@ -183,12 +183,12 @@ bd formula list
 # Show resolution path
 bd formula show mol-polecat-work --resolve
   Resolving: mol-polecat-work
-  ✓ Found at: ~/gt/gastown/.beads/formulas/mol-polecat-work.formula.toml
+  ✓ Found at: ~/gt/gongshow/.beads/formulas/mol-polecat-work.formula.toml
   Tier: project
   Version: 4
 
   Resolution path checked:
-  1. [project] ~/gt/gastown/.beads/formulas/ ← FOUND
+  1. [project] ~/gt/gongshow/.beads/formulas/ ← FOUND
   2. [town]    ~/gt/.beads/formulas/
   3. [system]  <embedded>
 
@@ -245,4 +245,4 @@ gt formula uninstall mol-code-review-strict
 
 - [Mol Mall Design](mol-mall-design.md) - Registry architecture
 - [molecules.md](molecules.md) - Formula → Proto → Mol lifecycle
-- [understanding-gas-town.md](../../../docs/understanding-gas-town.md) - Gas Town architecture
+- [understanding-gas-town.md](../../../docs/understanding-gas-town.md) - GongShow architecture

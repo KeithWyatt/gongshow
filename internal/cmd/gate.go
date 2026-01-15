@@ -7,14 +7,14 @@ import (
 	"os/exec"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/mail"
-	"github.com/steveyegge/gastown/internal/style"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/mail"
+	"github.com/KeithWyatt/gongshow/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 // Gate command provides gt wrappers for gate operations.
 // Most gate commands are in beads (bd gate ...), but gt provides
-// integration with the Gas Town mail system for wake notifications.
+// integration with the GongShow mail system for wake notifications.
 
 var gateCmd = &cobra.Command{
 	Use:     "gate",
@@ -30,7 +30,7 @@ Most gate commands are in beads:
   bd gate approve  - Approve a human gate
   bd gate eval     - Evaluate and close elapsed gates
 
-The gt gate command provides Gas Town integration:
+The gt gate command provides GongShow integration:
   gt gate wake     - Send wake mail to gate waiters after close`,
 }
 

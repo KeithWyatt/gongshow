@@ -33,7 +33,7 @@ func (b *Beads) FindMRForBranch(branch string) (*Issue, error) {
 
 // AddGateWaiter registers an agent as a waiter on a gate bead.
 // When the gate closes, the waiter will receive a wake notification via gt gate wake.
-// The waiter is typically the polecat's address (e.g., "gastown/polecats/Toast").
+// The waiter is typically the polecat's address (e.g., "gongshow/polecats/Toast").
 func (b *Beads) AddGateWaiter(gateID, waiter string) error {
 	// Use bd gate add-waiter to register the waiter on the gate
 	// This adds the waiter to the gate's native waiters field

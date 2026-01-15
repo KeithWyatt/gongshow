@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/steveyegge/gastown/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/beads"
 )
 
 func TestNewBeadsDatabaseCheck(t *testing.T) {
@@ -140,7 +140,7 @@ func TestPrefixMismatchCheck_NoRigsJson(t *testing.T) {
 
 	// Create routes.jsonl
 	routesPath := filepath.Join(beadsDir, "routes.jsonl")
-	routesContent := `{"prefix":"gt-","path":"gastown/mayor/rig"}`
+	routesContent := `{"prefix":"gt-","path":"gongshow/mayor/rig"}`
 	if err := os.WriteFile(routesPath, []byte(routesContent), 0644); err != nil {
 		t.Fatal(err)
 	}
@@ -168,7 +168,7 @@ func TestPrefixMismatchCheck_Matching(t *testing.T) {
 
 	// Create routes.jsonl with gt- prefix
 	routesPath := filepath.Join(beadsDir, "routes.jsonl")
-	routesContent := `{"prefix":"gt-","path":"gastown/mayor/rig"}`
+	routesContent := `{"prefix":"gt-","path":"gongshow/mayor/rig"}`
 	if err := os.WriteFile(routesPath, []byte(routesContent), 0644); err != nil {
 		t.Fatal(err)
 	}
@@ -178,8 +178,8 @@ func TestPrefixMismatchCheck_Matching(t *testing.T) {
 	rigsContent := `{
 		"version": 1,
 		"rigs": {
-			"gastown": {
-				"git_url": "https://github.com/example/gastown",
+			"gongshow": {
+				"git_url": "https://github.com/example/gongshow",
 				"beads": {
 					"prefix": "gt"
 				}
@@ -213,7 +213,7 @@ func TestPrefixMismatchCheck_Mismatch(t *testing.T) {
 
 	// Create routes.jsonl with gt- prefix
 	routesPath := filepath.Join(beadsDir, "routes.jsonl")
-	routesContent := `{"prefix":"gt-","path":"gastown/mayor/rig"}`
+	routesContent := `{"prefix":"gt-","path":"gongshow/mayor/rig"}`
 	if err := os.WriteFile(routesPath, []byte(routesContent), 0644); err != nil {
 		t.Fatal(err)
 	}
@@ -223,8 +223,8 @@ func TestPrefixMismatchCheck_Mismatch(t *testing.T) {
 	rigsContent := `{
 		"version": 1,
 		"rigs": {
-			"gastown": {
-				"git_url": "https://github.com/example/gastown",
+			"gongshow": {
+				"git_url": "https://github.com/example/gongshow",
 				"beads": {
 					"prefix": "ga"
 				}
@@ -262,7 +262,7 @@ func TestPrefixMismatchCheck_Fix(t *testing.T) {
 
 	// Create routes.jsonl with gt- prefix
 	routesPath := filepath.Join(beadsDir, "routes.jsonl")
-	routesContent := `{"prefix":"gt-","path":"gastown/mayor/rig"}`
+	routesContent := `{"prefix":"gt-","path":"gongshow/mayor/rig"}`
 	if err := os.WriteFile(routesPath, []byte(routesContent), 0644); err != nil {
 		t.Fatal(err)
 	}
@@ -272,8 +272,8 @@ func TestPrefixMismatchCheck_Fix(t *testing.T) {
 	rigsContent := `{
 		"version": 1,
 		"rigs": {
-			"gastown": {
-				"git_url": "https://github.com/example/gastown",
+			"gongshow": {
+				"git_url": "https://github.com/example/gongshow",
 				"beads": {
 					"prefix": "ga"
 				}
@@ -313,8 +313,8 @@ func TestPrefixMismatchCheck_Fix(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load fixed rigs.json: %v (content: %s)", err, data)
 	}
-	if cfg.Rigs["gastown"].BeadsConfig.Prefix != "gt" {
-		t.Errorf("expected prefix 'gt' after fix, got %q", cfg.Rigs["gastown"].BeadsConfig.Prefix)
+	if cfg.Rigs["gongshow"].BeadsConfig.Prefix != "gt" {
+		t.Errorf("expected prefix 'gt' after fix, got %q", cfg.Rigs["gongshow"].BeadsConfig.Prefix)
 	}
 }
 

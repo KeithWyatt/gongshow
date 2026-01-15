@@ -7,9 +7,9 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/polecat"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/polecat"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 var (
@@ -21,7 +21,7 @@ var namepoolCmd = &cobra.Command{
 	Use:     "namepool",
 	GroupID: GroupWorkspace,
 	Short:   "Manage polecat name pools",
-	Long: `Manage themed name pools for polecats in Gas Town.
+	Long: `Manage themed name pools for polecats in GongShow.
 
 By default, polecats get themed names from the Mad Max universe
 (furiosa, nux, slit, etc.). You can change the theme or add custom names.

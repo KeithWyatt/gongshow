@@ -10,14 +10,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/claude"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/git"
-	"github.com/steveyegge/gastown/internal/rig"
-	"github.com/steveyegge/gastown/internal/session"
-	"github.com/steveyegge/gastown/internal/tmux"
-	"github.com/steveyegge/gastown/internal/util"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/claude"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/git"
+	"github.com/KeithWyatt/gongshow/internal/rig"
+	"github.com/KeithWyatt/gongshow/internal/session"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/util"
 )
 
 // Common errors
@@ -173,9 +173,9 @@ func (m *Manager) Add(name string, createBranch bool) (*CrewWorker, error) {
 		fmt.Printf("Warning: could not set up shared beads: %v\n", err)
 	}
 
-	// Provision PRIME.md with Gas Town context for this worker.
+	// Provision PRIME.md with GongShow context for this worker.
 	// This is the fallback if SessionStart hook fails - ensures crew workers
-	// always have GUPP and essential Gas Town context.
+	// always have GUPP and essential GongShow context.
 	if err := beads.ProvisionPrimeMDForWorktree(crewPath); err != nil {
 		// Non-fatal - crew can still work via hook, warn but don't fail
 		fmt.Printf("Warning: could not provision PRIME.md: %v\n", err)
@@ -192,9 +192,9 @@ func (m *Manager) Add(name string, createBranch bool) (*CrewWorker, error) {
 	// All agents inherit them via Claude's directory traversal - no per-workspace copies needed.
 
 	// NOTE: We intentionally do NOT write to CLAUDE.md here.
-	// Gas Town context is injected ephemerally via SessionStart hook (gt prime).
+	// GongShow context is injected ephemerally via SessionStart hook (gt prime).
 	// Writing to CLAUDE.md would overwrite project instructions and leak
-	// Gas Town internals into the project repo when workers commit/push.
+	// GongShow internals into the project repo when workers commit/push.
 
 	// Create crew worker state
 	now := time.Now()
@@ -515,7 +515,7 @@ func (m *Manager) Start(name string, opts StartOptions) error {
 	}
 
 	// Create session with command directly to avoid send-keys race condition.
-	// See: https://github.com/anthropics/gastown/issues/280
+	// See: https://github.com/anthropics/gongshow/issues/280
 	if err := t.NewSessionWithCommand(sessionID, worker.ClonePath, claudeCmd); err != nil {
 		return fmt.Errorf("creating session: %w", err)
 	}

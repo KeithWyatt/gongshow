@@ -1,4 +1,4 @@
-// Package daemon provides the town-level background service for Gas Town.
+// Package daemon provides the town-level background service for GongShow.
 //
 // The daemon is a simple Go process (not a Claude agent) that:
 // 1. Pokes agents periodically (heartbeat)
@@ -14,7 +14,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/steveyegge/gastown/internal/util"
+	"github.com/KeithWyatt/gongshow/internal/util"
 )
 
 // Config holds daemon configuration.
@@ -22,7 +22,7 @@ type Config struct {
 	// HeartbeatInterval is how often to poke agents.
 	HeartbeatInterval time.Duration `json:"heartbeat_interval"`
 
-	// TownRoot is the Gas Town workspace root.
+	// TownRoot is the GongShow workspace root.
 	TownRoot string `json:"town_root"`
 
 	// LogFile is the path to the daemon log file.
@@ -112,7 +112,7 @@ const (
 
 // LifecycleRequest represents a request from an agent to the daemon.
 type LifecycleRequest struct {
-	// From is the agent requesting the action (e.g., "mayor/", "gastown/witness").
+	// From is the agent requesting the action (e.g., "mayor/", "gongshow/witness").
 	From string `json:"from"`
 
 	// Action is what lifecycle action to perform.

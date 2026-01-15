@@ -123,7 +123,7 @@ func (g *Git) Clone(url, dest string) error {
 	if err := cmd.Run(); err != nil {
 		return g.wrapError(err, stdout.String(), stderr.String(), []string{"clone", url})
 	}
-	// Configure hooks path for Gas Town clones
+	// Configure hooks path for GongShow clones
 	if err := configureHooksPath(dest); err != nil {
 		return err
 	}
@@ -141,7 +141,7 @@ func (g *Git) CloneWithReference(url, dest, reference string) error {
 	if err := cmd.Run(); err != nil {
 		return g.wrapError(err, stdout.String(), stderr.String(), []string{"clone", "--reference-if-able", url})
 	}
-	// Configure hooks path for Gas Town clones
+	// Configure hooks path for GongShow clones
 	if err := configureHooksPath(dest); err != nil {
 		return err
 	}
@@ -164,7 +164,7 @@ func (g *Git) CloneBare(url, dest string) error {
 }
 
 // configureHooksPath sets core.hooksPath to use the repo's .githooks directory
-// if it exists. This ensures Gas Town agents use the pre-push hook that blocks
+// if it exists. This ensures GongShow agents use the pre-push hook that blocks
 // pushes to non-main branches (internal PRs are not allowed).
 func configureHooksPath(repoPath string) error {
 	hooksDir := filepath.Join(repoPath, ".githooks")
@@ -186,7 +186,7 @@ func configureHooksPath(repoPath string) error {
 // Bare clones don't have this set by default, which breaks worktrees that need to
 // fetch and see origin/* refs. Without this, `git fetch` only updates FETCH_HEAD
 // and origin/main never appears in refs/remotes/origin/main.
-// See: https://github.com/anthropics/gastown/issues/286
+// See: https://github.com/anthropics/gongshow/issues/286
 func configureRefspec(repoPath string) error {
 	cmd := exec.Command("git", "-C", repoPath, "config", "remote.origin.fetch", "+refs/heads/*:refs/remotes/origin/*")
 	var stderr bytes.Buffer
@@ -645,7 +645,7 @@ func (g *Git) WorktreeAddExistingForce(path, branch string) error {
 }
 
 // ConfigureSparseCheckout sets up sparse checkout for a clone or worktree to exclude .claude/.
-// This ensures source repo settings don't override Gas Town agent settings.
+// This ensures source repo settings don't override GongShow agent settings.
 // Exported for use by doctor checks.
 func ConfigureSparseCheckout(repoPath string) error {
 	// Enable sparse checkout
@@ -673,7 +673,7 @@ func ConfigureSparseCheckout(repoPath string) error {
 	// Write patterns directly to sparse-checkout file
 	// (git sparse-checkout set --stdin escapes the ! character incorrectly)
 	// Exclude all Claude Code context files to prevent source repo instructions
-	// from interfering with Gas Town agent context:
+	// from interfering with GongShow agent context:
 	// - .claude/      : settings, rules, agents, commands
 	// - CLAUDE.md     : primary context file
 	// - CLAUDE.local.md : personal context file

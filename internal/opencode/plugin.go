@@ -8,10 +8,10 @@ import (
 	"path/filepath"
 )
 
-//go:embed plugin/gastown.js
+//go:embed plugin/gongshow.js
 var pluginFS embed.FS
 
-// EnsurePluginAt ensures the Gas Town OpenCode plugin exists.
+// EnsurePluginAt ensures the GongShow OpenCode plugin exists.
 // If the file already exists, it's left unchanged.
 func EnsurePluginAt(workDir, pluginDir, pluginFile string) error {
 	if pluginDir == "" || pluginFile == "" {
@@ -27,7 +27,7 @@ func EnsurePluginAt(workDir, pluginDir, pluginFile string) error {
 		return fmt.Errorf("creating plugin directory: %w", err)
 	}
 
-	content, err := pluginFS.ReadFile("plugin/gastown.js")
+	content, err := pluginFS.ReadFile("plugin/gongshow.js")
 	if err != nil {
 		return fmt.Errorf("reading plugin template: %w", err)
 	}

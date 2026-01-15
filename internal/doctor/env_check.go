@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/session"
-	"github.com/steveyegge/gastown/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/session"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
 )
 
 // SessionEnvReader abstracts tmux session environment access for testing.
@@ -52,7 +52,7 @@ func NewEnvVarsCheckWithReader(reader SessionEnvReader) *EnvVarsCheck {
 	return c
 }
 
-// Run checks environment variables for all Gas Town sessions.
+// Run checks environment variables for all GongShow sessions.
 func (c *EnvVarsCheck) Run(ctx *CheckContext) *CheckResult {
 	reader := c.reader
 	if reader == nil {
@@ -61,7 +61,7 @@ func (c *EnvVarsCheck) Run(ctx *CheckContext) *CheckResult {
 
 	sessions, err := reader.ListSessions()
 	if err != nil {
-		// No tmux server - treat as success (valid when Gas Town is down)
+		// No tmux server - treat as success (valid when GongShow is down)
 		return &CheckResult{
 			Name:    c.Name(),
 			Status:  StatusOK,
@@ -69,7 +69,7 @@ func (c *EnvVarsCheck) Run(ctx *CheckContext) *CheckResult {
 		}
 	}
 
-	// Filter to Gas Town sessions only (gt-* and hq-*)
+	// Filter to GongShow sessions only (gt-* and hq-*)
 	var gtSessions []string
 	for _, sess := range sessions {
 		if strings.HasPrefix(sess, "gt-") || strings.HasPrefix(sess, "hq-") {
@@ -78,11 +78,11 @@ func (c *EnvVarsCheck) Run(ctx *CheckContext) *CheckResult {
 	}
 
 	if len(gtSessions) == 0 {
-		// No Gas Town sessions - treat as success (valid when Gas Town is down)
+		// No GongShow sessions - treat as success (valid when GongShow is down)
 		return &CheckResult{
 			Name:    c.Name(),
 			Status:  StatusOK,
-			Message: "No Gas Town sessions running",
+			Message: "No GongShow sessions running",
 		}
 	}
 

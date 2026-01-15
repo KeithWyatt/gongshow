@@ -8,10 +8,10 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/constants"
-	"github.com/steveyegge/gastown/internal/git"
-	"github.com/steveyegge/gastown/internal/rig"
-	"github.com/steveyegge/gastown/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/constants"
+	"github.com/KeithWyatt/gongshow/internal/git"
+	"github.com/KeithWyatt/gongshow/internal/rig"
+	"github.com/KeithWyatt/gongshow/internal/style"
 )
 
 var initForce bool
@@ -19,8 +19,8 @@ var initForce bool
 var initCmd = &cobra.Command{
 	Use:     "init",
 	GroupID: GroupWorkspace,
-	Short:   "Initialize current directory as a Gas Town rig",
-	Long: `Initialize the current directory for use as a Gas Town rig.
+	Short:   "Initialize current directory as a GongShow rig",
+	Long: `Initialize the current directory for use as a GongShow rig.
 
 This creates the standard agent directories (polecats/, witness/, refinery/,
 mayor/) and updates .git/info/exclude to ignore them.
@@ -53,7 +53,7 @@ func runInit(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("rig already initialized (use --force to reinitialize)")
 	}
 
-	fmt.Printf("%s Initializing Gas Town rig in %s\n\n",
+	fmt.Printf("%s Initializing GongShow rig in %s\n\n",
 		style.Bold.Render("⚙️"), style.Dim.Render(cwd))
 
 	// Create agent directories
@@ -82,7 +82,7 @@ func runInit(cmd *cobra.Command, args []string) error {
 		fmt.Printf("   ✓ Updated .git/info/exclude\n")
 	}
 
-	// Register custom beads types for Gas Town (agent, role, rig, convoy, slot).
+	// Register custom beads types for GongShow (agent, role, rig, convoy, slot).
 	// This is best-effort: if beads isn't installed or DB doesn't exist, we skip.
 	// The doctor check will catch missing types later.
 	if err := registerCustomTypes(cwd); err != nil {
@@ -119,13 +119,13 @@ func updateGitExclude(repoPath string) error {
 		return err
 	}
 
-	// Check if already has Gas Town section
-	if strings.Contains(string(content), "Gas Town") {
+	// Check if already has GongShow section
+	if strings.Contains(string(content), "GongShow") {
 		return nil // Already configured
 	}
 
 	// Append agent dirs
-	additions := "\n# Gas Town agent directories\n"
+	additions := "\n# GongShow agent directories\n"
 	for _, dir := range rig.AgentDirs {
 		// Get first component (e.g., "polecats" from "polecats")
 		// or "refinery" from "refinery/rig"
@@ -140,7 +140,7 @@ func updateGitExclude(repoPath string) error {
 	return os.WriteFile(excludePath, append(content, []byte(additions)...), 0644)
 }
 
-// registerCustomTypes registers Gas Town custom issue types with beads.
+// registerCustomTypes registers GongShow custom issue types with beads.
 // This is best-effort: returns nil if beads isn't available or DB doesn't exist.
 // Handles gracefully: beads not installed, no .beads directory, or config errors.
 func registerCustomTypes(workDir string) error {

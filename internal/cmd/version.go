@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/version"
+	"github.com/KeithWyatt/gongshow/internal/version"
 )
 
 // Version information - set at build time via ldflags

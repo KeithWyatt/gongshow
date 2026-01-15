@@ -21,7 +21,7 @@ jobs:
             const body = [
               '**Internal PRs are not allowed.**',
               '',
-              'Gas Town agents push directly to main. PRs are for external contributors only.',
+              'GongShow agents push directly to main. PRs are for external contributors only.',
               '',
               'To land your changes:',
               '```bash',

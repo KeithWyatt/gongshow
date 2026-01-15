@@ -8,10 +8,10 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/events"
-	"github.com/steveyegge/gastown/internal/runtime"
-	"github.com/steveyegge/gastown/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/events"
+	"github.com/KeithWyatt/gongshow/internal/runtime"
+	"github.com/KeithWyatt/gongshow/internal/style"
 )
 
 var hookCmd = &cobra.Command{
@@ -76,12 +76,12 @@ Use cases:
 
 Examples:
   gt hook show                         # What's on MY hook? (auto-detect)
-  gt hook show gastown/polecats/nux    # What's nux working on?
-  gt hook show gastown/witness         # What's the witness hooked to?
+  gt hook show gongshow/polecats/nux    # What's nux working on?
+  gt hook show gongshow/witness         # What's the witness hooked to?
   gt hook show mayor                   # What's the mayor working on?
 
 Output format (one line):
-  gastown/polecats/nux: gt-abc123 'Fix the widget bug' [in_progress]`,
+  gongshow/polecats/nux: gt-abc123 'Fix the widget bug' [in_progress]`,
 	Args: cobra.MaximumNArgs(1),
 	RunE: runHookShow,
 }
@@ -440,7 +440,7 @@ func runHookShow(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-// findTownRoot finds the Gas Town root directory.
+// findTownRoot finds the GongShow root directory.
 func findTownRoot() (string, error) {
 	cmd := exec.Command("gt", "root")
 	out, err := cmd.Output()

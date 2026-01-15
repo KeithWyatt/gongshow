@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/style"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/style"
 )
 
 // MQ next command flags
@@ -31,10 +31,10 @@ The priority scoring function considers:
 Use --strategy=fifo for first-in-first-out ordering instead.
 
 Examples:
-  gt mq next gastown                    # Show highest-priority MR
-  gt mq next gastown --strategy=fifo    # Show oldest MR instead
-  gt mq next gastown --quiet            # Just print the MR ID
-  gt mq next gastown --json             # Output as JSON`,
+  gt mq next gongshow                    # Show highest-priority MR
+  gt mq next gongshow --strategy=fifo    # Show oldest MR instead
+  gt mq next gongshow --quiet            # Just print the MR ID
+  gt mq next gongshow --json             # Output as JSON`,
 	Args: cobra.ExactArgs(1),
 	RunE: runMQNext,
 }

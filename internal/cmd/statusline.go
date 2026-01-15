@@ -8,11 +8,11 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/steveyegge/gastown/internal/beads"
-	"github.com/steveyegge/gastown/internal/config"
-	"github.com/steveyegge/gastown/internal/mail"
-	"github.com/steveyegge/gastown/internal/tmux"
-	"github.com/steveyegge/gastown/internal/workspace"
+	"github.com/KeithWyatt/gongshow/internal/beads"
+	"github.com/KeithWyatt/gongshow/internal/config"
+	"github.com/KeithWyatt/gongshow/internal/mail"
+	"github.com/KeithWyatt/gongshow/internal/tmux"
+	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
 
 var (
@@ -698,7 +698,7 @@ func getMailPreview(identity string, maxLen int) (int, string) {
 
 // getMailPreviewWithRoot is like getMailPreview but uses an explicit town root.
 func getMailPreviewWithRoot(identity string, maxLen int, townRoot string) (int, string) {
-	// Use NewMailboxFromAddress to normalize identity (e.g., gastown/crew/gus -> gastown/gus)
+	// Use NewMailboxFromAddress to normalize identity (e.g., gongshow/crew/gus -> gongshow/gus)
 	mailbox := mail.NewMailboxFromAddress(identity, townRoot)
 
 	// Get unread messages
