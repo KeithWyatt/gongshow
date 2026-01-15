@@ -276,6 +276,11 @@ func extractMoleculeID(description string) string {
 }
 
 func runMoleculeStatus(cmd *cobra.Command, args []string) error {
+	// Check for GT_JSON_OUTPUT environment variable (agent token optimization)
+	if !moleculeJSON && shouldDefaultJSON() {
+		moleculeJSON = true
+	}
+
 	cwd, err := os.Getwd()
 	if err != nil {
 		return fmt.Errorf("getting current directory: %w", err)

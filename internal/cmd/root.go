@@ -155,6 +155,16 @@ func checkStaleBinaryWarning() {
 	}
 }
 
+// shouldDefaultJSON returns true if commands should default to JSON output.
+// This is used for agent-facing tool optimization: when GT_JSON_OUTPUT=1 is set,
+// commands that support --json will output JSON by default, reducing token usage.
+//
+// Set GT_JSON_OUTPUT=1 in agent environments (e.g., .claude/settings.json) to
+// enable compact JSON output without modifying command invocations.
+func shouldDefaultJSON() bool {
+	return os.Getenv("GT_JSON_OUTPUT") == "1"
+}
+
 // Execute runs the root command and returns an exit code.
 // The caller (main) should call os.Exit with this code.
 func Execute() int {

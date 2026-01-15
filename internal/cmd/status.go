@@ -131,6 +131,11 @@ type StatusSum struct {
 }
 
 func runStatus(cmd *cobra.Command, args []string) error {
+	// Check for GT_JSON_OUTPUT environment variable (agent token optimization)
+	if !statusJSON && shouldDefaultJSON() {
+		statusJSON = true
+	}
+
 	if statusWatch {
 		return runStatusWatch(cmd, args)
 	}

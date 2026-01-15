@@ -30,6 +30,11 @@ func getMailbox(address string) (*mail.Mailbox, error) {
 }
 
 func runMailInbox(cmd *cobra.Command, args []string) error {
+	// Check for GT_JSON_OUTPUT environment variable (agent token optimization)
+	if !mailInboxJSON && shouldDefaultJSON() {
+		mailInboxJSON = true
+	}
+
 	// Determine which inbox to check (priority: --identity flag, positional arg, auto-detect)
 	address := ""
 	if mailInboxIdentity != "" {

@@ -73,6 +73,11 @@ type ReadySummary struct {
 }
 
 func runReady(cmd *cobra.Command, args []string) error {
+	// Check for GT_JSON_OUTPUT environment variable (agent token optimization)
+	if !readyJSON && shouldDefaultJSON() {
+		readyJSON = true
+	}
+
 	// Find town root
 	townRoot, err := workspace.FindFromCwdOrError()
 	if err != nil {
