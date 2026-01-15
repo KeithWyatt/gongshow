@@ -8,10 +8,15 @@ import (
 	"fmt"
 	"os/exec"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"sync"
 	"time"
 )
+
+// issueIDPattern validates issue IDs to prevent SQL injection.
+// Issue IDs can contain alphanumerics, hyphens, underscores, and colons (for external refs).
+var issueIDPattern = regexp.MustCompile(`^[a-zA-Z0-9_:-]+$`)
 
 // ConvoyWatcher monitors bd activity for issue closes and triggers convoy completion checks.
 // When an issue closes, it checks if the issue is tracked by any convoy and runs the
@@ -152,11 +157,18 @@ func (w *ConvoyWatcher) processLine(line string) {
 
 // getTrackingConvoys returns convoy IDs that track the given issue.
 func (w *ConvoyWatcher) getTrackingConvoys(issueID string) []string {
+	// Validate issue ID to prevent SQL injection
+	if !issueIDPattern.MatchString(issueID) {
+		w.logger("convoy watcher: invalid issue ID format: %s", issueID)
+		return nil
+	}
+
 	townBeads := filepath.Join(w.townRoot, ".beads")
 	dbPath := filepath.Join(townBeads, "beads.db")
 
 	// Query for convoys that track this issue
 	// Handle both direct ID and external reference format
+	// Note: issueID is validated above to contain only safe characters
 	safeIssueID := strings.ReplaceAll(issueID, "'", "''")
 
 	// Query for dependencies where this issue is the target
@@ -192,10 +204,17 @@ func (w *ConvoyWatcher) getTrackingConvoys(issueID string) []string {
 // checkConvoyCompletion checks if all issues tracked by a convoy are closed.
 // If so, runs gt convoy check to close the convoy.
 func (w *ConvoyWatcher) checkConvoyCompletion(convoyID string) {
+	// Validate convoy ID to prevent SQL injection
+	if !issueIDPattern.MatchString(convoyID) {
+		w.logger("convoy watcher: invalid convoy ID format: %s", convoyID)
+		return
+	}
+
 	townBeads := filepath.Join(w.townRoot, ".beads")
 	dbPath := filepath.Join(townBeads, "beads.db")
 
 	// First check if the convoy is still open
+	// Note: convoyID is validated above to contain only safe characters
 	convoyQuery := fmt.Sprintf(`SELECT status FROM issues WHERE id = '%s'`,
 		strings.ReplaceAll(convoyID, "'", "''"))
 
