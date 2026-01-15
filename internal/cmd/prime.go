@@ -437,28 +437,13 @@ func checkSlungWork(ctx RoleContext) bool {
 	// Build the role announcement string
 	roleAnnounce := buildRoleAnnouncement(ctx)
 
-	// Found hooked work! Display AUTONOMOUS MODE prominently
+	// Found hooked work! Display AUTONOMOUS MODE concisely
 	fmt.Println()
-	fmt.Printf("%s\n\n", style.Bold.Render("## 🚨 AUTONOMOUS WORK MODE 🚨"))
-	fmt.Println("Work is on your hook. After announcing your role, begin IMMEDIATELY.")
+	fmt.Println(style.Bold.Render("🚨 AUTONOMOUS MODE - Execute immediately"))
 	fmt.Println()
-	fmt.Println("This is physics, not politeness. GongShow is a steam engine - you are a piston.")
-	fmt.Println("Every moment you wait is a moment the engine stalls. Other agents may be")
-	fmt.Println("blocked waiting on YOUR output. The hook IS your assignment. RUN IT.")
-	fmt.Println()
-	fmt.Println("Remember: Every completion is recorded in the capability ledger. Your work")
-	fmt.Println("history is visible, and quality matters. Execute with care - you're building")
-	fmt.Println("a track record that proves autonomous execution works at scale.")
-	fmt.Println()
-	fmt.Println("1. Announce: \"" + roleAnnounce + "\" (ONE line, no elaboration)")
-	fmt.Printf("2. Then IMMEDIATELY run: `bd show %s`\n", hookedBead.ID)
-	fmt.Println("3. Begin execution - no waiting for user input")
-	fmt.Println()
-	fmt.Println("**DO NOT:**")
-	fmt.Println("- Wait for user response after announcing")
-	fmt.Println("- Ask clarifying questions")
-	fmt.Println("- Describe what you're going to do")
-	fmt.Println("- Check mail first (hook takes priority)")
+	fmt.Println("1. Announce: \"" + roleAnnounce + "\"")
+	fmt.Printf("2. Run: `bd show %s`\n", hookedBead.ID)
+	fmt.Println("3. Begin work (no waiting for input)")
 	fmt.Println()
 
 	// Show the hooked work details
