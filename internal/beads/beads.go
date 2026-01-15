@@ -497,7 +497,10 @@ func (b *Beads) Update(id string, opts UpdateOptions) error {
 	}
 
 	_, err := b.run(args...)
-	return err
+	if err != nil {
+		return fmt.Errorf("updating bead: %w", err)
+	}
+	return nil
 }
 
 // Close closes one or more issues.
@@ -516,7 +519,10 @@ func (b *Beads) Close(ids ...string) error {
 	}
 
 	_, err := b.run(args...)
-	return err
+	if err != nil {
+		return fmt.Errorf("closing bead: %w", err)
+	}
+	return nil
 }
 
 // CloseWithReason closes one or more issues with a reason.
@@ -536,7 +542,10 @@ func (b *Beads) CloseWithReason(reason string, ids ...string) error {
 	}
 
 	_, err := b.run(args...)
-	return err
+	if err != nil {
+		return fmt.Errorf("closing bead with reason: %w", err)
+	}
+	return nil
 }
 
 // Release moves an in_progress issue back to open status.
@@ -557,31 +566,46 @@ func (b *Beads) ReleaseWithReason(id, reason string) error {
 	}
 
 	_, err := b.run(args...)
-	return err
+	if err != nil {
+		return fmt.Errorf("releasing bead %s: %w", id, err)
+	}
+	return nil
 }
 
 // AddDependency adds a dependency: issue depends on dependsOn.
 func (b *Beads) AddDependency(issue, dependsOn string) error {
 	_, err := b.run("dep", "add", issue, dependsOn)
-	return err
+	if err != nil {
+		return fmt.Errorf("adding dependency %s -> %s: %w", issue, dependsOn, err)
+	}
+	return nil
 }
 
 // RemoveDependency removes a dependency.
 func (b *Beads) RemoveDependency(issue, dependsOn string) error {
 	_, err := b.run("dep", "remove", issue, dependsOn)
-	return err
+	if err != nil {
+		return fmt.Errorf("removing dependency %s -> %s: %w", issue, dependsOn, err)
+	}
+	return nil
 }
 
 // Sync syncs beads with remote.
 func (b *Beads) Sync() error {
 	_, err := b.run("sync")
-	return err
+	if err != nil {
+		return fmt.Errorf("syncing beads: %w", err)
+	}
+	return nil
 }
 
 // SyncFromMain syncs beads updates from main branch.
 func (b *Beads) SyncFromMain() error {
 	_, err := b.run("sync", "--from-main")
-	return err
+	if err != nil {
+		return fmt.Errorf("syncing beads from main: %w", err)
+	}
+	return nil
 }
 
 // GetSyncStatus returns the sync status without performing a sync.

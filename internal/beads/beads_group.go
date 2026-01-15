@@ -190,7 +190,7 @@ func (b *Beads) GetGroupByID(id string) (*Issue, *GroupFields, error) {
 func (b *Beads) UpdateGroupMembers(name string, members []string) error {
 	issue, fields, err := b.GetGroupBead(name)
 	if err != nil {
-		return err
+		return fmt.Errorf("getting group bead %s: %w", name, err)
 	}
 	if issue == nil {
 		return fmt.Errorf("group %q not found", name)
@@ -206,7 +206,7 @@ func (b *Beads) UpdateGroupMembers(name string, members []string) error {
 func (b *Beads) AddGroupMember(name string, member string) error {
 	issue, fields, err := b.GetGroupBead(name)
 	if err != nil {
-		return err
+		return fmt.Errorf("getting group bead %s: %w", name, err)
 	}
 	if issue == nil {
 		return fmt.Errorf("group %q not found", name)
@@ -229,7 +229,7 @@ func (b *Beads) AddGroupMember(name string, member string) error {
 func (b *Beads) RemoveGroupMember(name string, member string) error {
 	issue, fields, err := b.GetGroupBead(name)
 	if err != nil {
-		return err
+		return fmt.Errorf("getting group bead %s: %w", name, err)
 	}
 	if issue == nil {
 		return fmt.Errorf("group %q not found", name)
@@ -253,7 +253,10 @@ func (b *Beads) RemoveGroupMember(name string, member string) error {
 func (b *Beads) DeleteGroupBead(name string) error {
 	id := GroupBeadID(name)
 	_, err := b.run("delete", id, "--hard", "--force")
-	return err
+	if err != nil {
+		return fmt.Errorf("deleting group bead %s: %w", name, err)
+	}
+	return nil
 }
 
 // ListGroupBeads returns all group beads.

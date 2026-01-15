@@ -344,7 +344,7 @@ func (m *Mailbox) closeInDir(id, beadsDir string) error {
 		if bdErr, ok := err.(*bdError); ok && bdErr.ContainsError("not found") {
 			return ErrMessageNotFound
 		}
-		return err
+		return fmt.Errorf("marking message %s as read: %w", id, err)
 	}
 
 	return nil
@@ -353,7 +353,7 @@ func (m *Mailbox) closeInDir(id, beadsDir string) error {
 func (m *Mailbox) markReadLegacy(id string) error {
 	messages, err := m.List()
 	if err != nil {
-		return err
+		return fmt.Errorf("listing messages: %w", err)
 	}
 
 	found := false
@@ -391,7 +391,7 @@ func (m *Mailbox) markReadOnlyBeads(id string) error {
 		if bdErr, ok := err.(*bdError); ok && bdErr.ContainsError("not found") {
 			return ErrMessageNotFound
 		}
-		return err
+		return fmt.Errorf("adding read label to message %s: %w", id, err)
 	}
 
 	return nil
@@ -420,7 +420,7 @@ func (m *Mailbox) markUnreadOnlyBeads(id string) error {
 		if bdErr, ok := err.(*bdError); ok && bdErr.ContainsError("does not have label") {
 			return nil
 		}
-		return err
+		return fmt.Errorf("removing read label from message %s: %w", id, err)
 	}
 
 	return nil
@@ -442,7 +442,7 @@ func (m *Mailbox) markUnreadBeads(id string) error {
 		if bdErr, ok := err.(*bdError); ok && bdErr.ContainsError("not found") {
 			return ErrMessageNotFound
 		}
-		return err
+		return fmt.Errorf("reopening message %s: %w", id, err)
 	}
 
 	return nil
@@ -451,7 +451,7 @@ func (m *Mailbox) markUnreadBeads(id string) error {
 func (m *Mailbox) markUnreadLegacy(id string) error {
 	messages, err := m.List()
 	if err != nil {
-		return err
+		return fmt.Errorf("listing messages: %w", err)
 	}
 
 	found := false
@@ -480,7 +480,7 @@ func (m *Mailbox) Delete(id string) error {
 func (m *Mailbox) deleteLegacy(id string) error {
 	messages, err := m.List()
 	if err != nil {
-		return err
+		return fmt.Errorf("listing messages: %w", err)
 	}
 
 	var filtered []*Message
@@ -505,12 +505,12 @@ func (m *Mailbox) Archive(id string) error {
 	// Get the message first
 	msg, err := m.Get(id)
 	if err != nil {
-		return err
+		return fmt.Errorf("getting message %s: %w", id, err)
 	}
 
 	// Append to archive file
 	if err := m.appendToArchive(msg); err != nil {
-		return err
+		return fmt.Errorf("appending message %s to archive: %w", id, err)
 	}
 
 	// Delete from inbox
@@ -532,23 +532,26 @@ func (m *Mailbox) appendToArchive(msg *Message) error {
 	// Ensure directory exists
 	dir := filepath.Dir(archivePath)
 	if err := os.MkdirAll(dir, 0755); err != nil {
-		return err
+		return fmt.Errorf("creating archive directory: %w", err)
 	}
 
 	// Open for append
 	file, err := os.OpenFile(archivePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644) //nolint:gosec // G302: archive is non-sensitive operational data
 	if err != nil {
-		return err
+		return fmt.Errorf("opening archive file: %w", err)
 	}
 	defer func() { _ = file.Close() }()
 
 	data, err := json.Marshal(msg)
 	if err != nil {
-		return err
+		return fmt.Errorf("marshaling message: %w", err)
 	}
 
 	_, err = file.WriteString(string(data) + "\n")
-	return err
+	if err != nil {
+		return fmt.Errorf("writing to archive: %w", err)
+	}
+	return nil
 }
 
 // ListArchived returns all messages in the archive file.
@@ -560,7 +563,7 @@ func (m *Mailbox) ListArchived() ([]*Message, error) {
 		if os.IsNotExist(err) {
 			return nil, nil
 		}
-		return nil, err
+		return nil, fmt.Errorf("opening archive file: %w", err)
 	}
 	defer func() { _ = file.Close() }()
 
@@ -626,7 +629,7 @@ func (m *Mailbox) PurgeArchive(olderThanDays int) (int, error) {
 		}
 	} else {
 		if err := m.rewriteArchive(keep); err != nil {
-			return 0, err
+			return 0, fmt.Errorf("rewriting archive: %w", err)
 		}
 	}
 
@@ -639,7 +642,7 @@ func (m *Mailbox) rewriteArchive(messages []*Message) error {
 
 	file, err := os.Create(tmpPath)
 	if err != nil {
-		return err
+		return fmt.Errorf("creating temp archive file: %w", err)
 	}
 
 	for _, msg := range messages {
@@ -647,17 +650,20 @@ func (m *Mailbox) rewriteArchive(messages []*Message) error {
 		if err != nil {
 			_ = file.Close()
 			_ = os.Remove(tmpPath)
-			return err
+			return fmt.Errorf("marshaling message: %w", err)
 		}
 		_, _ = file.WriteString(string(data) + "\n")
 	}
 
 	if err := file.Close(); err != nil {
 		_ = os.Remove(tmpPath)
-		return err
+		return fmt.Errorf("closing temp archive file: %w", err)
 	}
 
-	return os.Rename(tmpPath, archivePath)
+	if err := os.Rename(tmpPath, archivePath); err != nil {
+		return fmt.Errorf("renaming temp archive file: %w", err)
+	}
+	return nil
 }
 
 // SearchOptions specifies search parameters.
@@ -690,13 +696,13 @@ func (m *Mailbox) Search(opts SearchOptions) ([]*Message, error) {
 	// Get inbox messages
 	inbox, err := m.List()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("listing inbox: %w", err)
 	}
 
 	// Get archived messages
 	archived, err := m.ListArchived()
 	if err != nil && !os.IsNotExist(err) {
-		return nil, err
+		return nil, fmt.Errorf("listing archive: %w", err)
 	}
 
 	// Combine and search
@@ -764,23 +770,26 @@ func (m *Mailbox) appendLegacy(msg *Message) error {
 	// Ensure directory exists
 	dir := filepath.Dir(m.path)
 	if err := os.MkdirAll(dir, 0755); err != nil {
-		return err
+		return fmt.Errorf("creating mailbox directory: %w", err)
 	}
 
 	// Open for append
 	file, err := os.OpenFile(m.path, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0600)
 	if err != nil {
-		return err
+		return fmt.Errorf("opening mailbox file: %w", err)
 	}
 	defer func() { _ = file.Close() }() // non-fatal: OS will close on exit
 
 	data, err := json.Marshal(msg)
 	if err != nil {
-		return err
+		return fmt.Errorf("marshaling message: %w", err)
 	}
 
 	_, err = file.WriteString(string(data) + "\n")
-	return err
+	if err != nil {
+		return fmt.Errorf("writing to mailbox: %w", err)
+	}
+	return nil
 }
 
 // rewriteLegacy rewrites the mailbox with the given messages.
@@ -794,7 +803,7 @@ func (m *Mailbox) rewriteLegacy(messages []*Message) error {
 	tmpPath := m.path + ".tmp"
 	file, err := os.Create(tmpPath)
 	if err != nil {
-		return err
+		return fmt.Errorf("creating temp mailbox file: %w", err)
 	}
 
 	for _, msg := range messages {
@@ -802,18 +811,21 @@ func (m *Mailbox) rewriteLegacy(messages []*Message) error {
 		if err != nil {
 			_ = file.Close()         // best-effort cleanup
 			_ = os.Remove(tmpPath)   // best-effort cleanup
-			return err
+			return fmt.Errorf("marshaling message: %w", err)
 		}
 		_, _ = file.WriteString(string(data) + "\n") // non-fatal: partial write is acceptable
 	}
 
 	if err := file.Close(); err != nil {
 		_ = os.Remove(tmpPath) // best-effort cleanup
-		return err
+		return fmt.Errorf("closing temp mailbox file: %w", err)
 	}
 
 	// Atomic rename
-	return os.Rename(tmpPath, m.path)
+	if err := os.Rename(tmpPath, m.path); err != nil {
+		return fmt.Errorf("renaming temp mailbox file: %w", err)
+	}
+	return nil
 }
 
 // ListByThread returns all messages in a given thread.

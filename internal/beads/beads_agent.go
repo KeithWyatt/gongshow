@@ -331,7 +331,7 @@ func (b *Beads) UpdateAgentCleanupStatus(id string, cleanupStatus string) error 
 	// First get current issue to preserve other fields
 	issue, err := b.Show(id)
 	if err != nil {
-		return err
+		return fmt.Errorf("getting agent bead %s: %w", id, err)
 	}
 
 	// Parse existing fields
@@ -351,7 +351,7 @@ func (b *Beads) UpdateAgentActiveMR(id string, activeMR string) error {
 	// First get current issue to preserve other fields
 	issue, err := b.Show(id)
 	if err != nil {
-		return err
+		return fmt.Errorf("getting agent bead %s: %w", id, err)
 	}
 
 	// Parse existing fields
@@ -376,7 +376,7 @@ func (b *Beads) UpdateAgentNotificationLevel(id string, level string) error {
 	// First get current issue to preserve other fields
 	issue, err := b.Show(id)
 	if err != nil {
-		return err
+		return fmt.Errorf("getting agent bead %s: %w", id, err)
 	}
 
 	// Parse existing fields
@@ -417,7 +417,10 @@ func (b *Beads) GetAgentNotificationLevel(id string) (string, error) {
 // to reopen the bead on re-spawn.
 func (b *Beads) DeleteAgentBead(id string) error {
 	_, err := b.run("delete", id, "--hard", "--force")
-	return err
+	if err != nil {
+		return fmt.Errorf("deleting agent bead %s: %w", id, err)
+	}
+	return nil
 }
 
 // CloseAndClearAgentBead closes an agent bead (soft delete).
@@ -468,7 +471,10 @@ func (b *Beads) CloseAndClearAgentBead(id, reason string) error {
 		args = append(args, "--reason="+reason)
 	}
 	_, err = b.run(args...)
-	return err
+	if err != nil {
+		return fmt.Errorf("closing agent bead %s: %w", id, err)
+	}
+	return nil
 }
 
 // GetAgentBead retrieves an agent bead by ID.

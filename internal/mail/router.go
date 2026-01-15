@@ -749,7 +749,7 @@ func (r *Router) sendToAnnounce(msg *Message) error {
 	// Validate announce channel exists and get config
 	announceCfg, err := r.expandAnnounce(announceName)
 	if err != nil {
-		return err
+		return fmt.Errorf("expanding announce channel %q: %w", announceName, err)
 	}
 
 	// Apply retention pruning BEFORE creating new message
