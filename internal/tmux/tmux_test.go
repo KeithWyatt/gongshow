@@ -5,6 +5,7 @@ import (
 	"regexp"
 	"strings"
 	"testing"
+	"time"
 )
 
 func hasTmux() bool {
@@ -550,6 +551,89 @@ func TestGetAllDescendants(t *testing.T) {
 				t.Errorf("getAllDescendants returned non-numeric PID: %q", pid)
 			}
 		}
+	}
+}
+
+func TestGetAllDescendantsWithRetry(t *testing.T) {
+	// Test the retry variant of getAllDescendants
+
+	// Test with nonexistent PID - should return empty slice
+	got := getAllDescendantsWithRetry("999999999")
+	if len(got) != 0 {
+		t.Errorf("getAllDescendantsWithRetry(nonexistent) = %v, want empty slice", got)
+	}
+
+	// Test with PID 1 (init/launchd) - should find descendants
+	descendants := getAllDescendantsWithRetry("1")
+	t.Logf("getAllDescendantsWithRetry(\"1\") found %d descendants", len(descendants))
+
+	// On a live system, there should always be some descendants of init
+	if len(descendants) == 0 {
+		t.Error("getAllDescendantsWithRetry(\"1\") found no descendants - expected some")
+	}
+
+	// Verify returned PIDs are all numeric strings and unique
+	seen := make(map[string]bool)
+	for _, pid := range descendants {
+		if seen[pid] {
+			t.Errorf("getAllDescendantsWithRetry returned duplicate PID: %q", pid)
+		}
+		seen[pid] = true
+
+		for _, c := range pid {
+			if c < '0' || c > '9' {
+				t.Errorf("getAllDescendantsWithRetry returned non-numeric PID: %q", pid)
+			}
+		}
+	}
+
+	// Note: We don't compare with getAllDescendants because process counts
+	// fluctuate on a live system. The retry version may find different (not
+	// necessarily more) processes due to timing.
+}
+
+func TestHasClaudeDescendant(t *testing.T) {
+	// Test the recursive descendant check
+
+	// Test with nonexistent PID - should return false
+	got := hasClaudeDescendant("999999999", make(map[string]bool))
+	if got {
+		t.Error("hasClaudeDescendant should return false for nonexistent PID")
+	}
+
+	// Test cycle detection - should not infinite loop
+	visited := make(map[string]bool)
+	visited["1"] = true
+	got = hasClaudeDescendant("1", visited)
+	if got {
+		t.Error("hasClaudeDescendant should return false when PID already visited")
+	}
+
+	// Test with PID 1 (init) - should handle deep trees without stack overflow
+	got = hasClaudeDescendant("1", make(map[string]bool))
+	t.Logf("hasClaudeDescendant(\"1\") = %v", got)
+	// Result depends on whether claude/node is running, but it should not panic
+}
+
+func TestProcessCleanupConstants(t *testing.T) {
+	// Verify the constants are reasonable values
+
+	if SIGTERMGracePeriod < 100*time.Millisecond {
+		t.Errorf("SIGTERMGracePeriod too short: %v", SIGTERMGracePeriod)
+	}
+	if SIGTERMGracePeriod > 5*time.Second {
+		t.Errorf("SIGTERMGracePeriod too long: %v", SIGTERMGracePeriod)
+	}
+
+	if DescendantRescanDelay < 10*time.Millisecond {
+		t.Errorf("DescendantRescanDelay too short: %v", DescendantRescanDelay)
+	}
+
+	if DescendantRescanAttempts < 1 {
+		t.Errorf("DescendantRescanAttempts too low: %d", DescendantRescanAttempts)
+	}
+	if DescendantRescanAttempts > 10 {
+		t.Errorf("DescendantRescanAttempts too high: %d", DescendantRescanAttempts)
 	}
 }
 

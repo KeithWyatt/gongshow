@@ -18,6 +18,21 @@ import (
 // versionPattern matches Claude Code version numbers like "2.0.76"
 var versionPattern = regexp.MustCompile(`^\d+\.\d+\.\d+$`)
 
+// Process cleanup constants
+const (
+	// SIGTERMGracePeriod is the time to wait after SIGTERM before sending SIGKILL.
+	// 500ms gives processes time to handle cleanup gracefully.
+	SIGTERMGracePeriod = 500 * time.Millisecond
+
+	// DescendantRescanDelay is the delay between descendant discovery passes.
+	// This helps catch processes that fork during the initial scan.
+	DescendantRescanDelay = 50 * time.Millisecond
+
+	// DescendantRescanAttempts is the number of times to rescan for new descendants.
+	// Multiple passes help catch race conditions where processes fork during cleanup.
+	DescendantRescanAttempts = 3
+)
+
 // validSessionNameRe validates session names to prevent shell injection
 var validSessionNameRe = regexp.MustCompile(`^[a-zA-Z0-9_-]+$`)
 
@@ -145,13 +160,15 @@ func (t *Tmux) KillSession(name string) error {
 //
 // Process:
 // 1. Get the pane's main process PID
-// 2. Find all descendant processes recursively (not just direct children)
+// 2. Find all descendant processes with retry/rescan to catch forks
 // 3. Send SIGTERM to all descendants (deepest first)
-// 4. Wait 100ms for graceful shutdown
-// 5. Send SIGKILL to any remaining descendants
-// 6. Kill the tmux session
+// 4. Wait for graceful shutdown (500ms)
+// 5. Rescan for any new processes that may have forked
+// 6. Send SIGKILL to any remaining descendants
+// 7. Kill the tmux session
 //
-// This ensures Claude processes and all their children are properly terminated.
+// The retry/rescan approach addresses race conditions where processes fork new children
+// after the initial descendant list is built but before kill signals are sent.
 func (t *Tmux) KillSessionWithProcesses(name string) error {
 	// Get the pane PID
 	pid, err := t.GetPanePID(name)
@@ -161,19 +178,32 @@ func (t *Tmux) KillSessionWithProcesses(name string) error {
 	}
 
 	if pid != "" {
-		// Get all descendant PIDs recursively (returns deepest-first order)
-		descendants := getAllDescendants(pid)
+		// Get all descendant PIDs with multiple passes to catch race conditions
+		descendants := getAllDescendantsWithRetry(pid)
 
 		// Send SIGTERM to all descendants (deepest first to avoid orphaning)
 		for _, dpid := range descendants {
 			_ = exec.Command("kill", "-TERM", dpid).Run()
 		}
 
-		// Wait for graceful shutdown
-		time.Sleep(100 * time.Millisecond)
+		// Wait for graceful shutdown - longer period for proper cleanup
+		time.Sleep(SIGTERMGracePeriod)
+
+		// Rescan to catch any processes that may have forked during SIGTERM handling
+		// or were missed in the initial scan
+		finalDescendants := getAllDescendantsWithRetry(pid)
+
+		// Build set of all PIDs to SIGKILL (original + newly discovered)
+		killSet := make(map[string]bool)
+		for _, dpid := range descendants {
+			killSet[dpid] = true
+		}
+		for _, dpid := range finalDescendants {
+			killSet[dpid] = true
+		}
 
 		// Send SIGKILL to any remaining descendants
-		for _, dpid := range descendants {
+		for dpid := range killSet {
 			_ = exec.Command("kill", "-KILL", dpid).Run()
 		}
 	}
@@ -199,6 +229,47 @@ func getAllDescendants(pid string) []string {
 		result = append(result, getAllDescendants(child)...)
 		// Then add this child
 		result = append(result, child)
+	}
+
+	return result
+}
+
+// getAllDescendantsWithRetry finds all descendant PIDs with multiple passes.
+// This addresses race conditions where processes fork during the scan.
+// Each pass may discover new children that were created after the previous pass.
+// Returns PIDs in deepest-first order, deduplicated.
+func getAllDescendantsWithRetry(pid string) []string {
+	seen := make(map[string]bool)
+	var result []string
+
+	for attempt := 0; attempt < DescendantRescanAttempts; attempt++ {
+		if attempt > 0 {
+			time.Sleep(DescendantRescanDelay)
+		}
+
+		descendants := getAllDescendants(pid)
+		newFound := false
+
+		for _, dpid := range descendants {
+			if !seen[dpid] {
+				seen[dpid] = true
+				newFound = true
+			}
+		}
+
+		// If no new processes found, we've likely caught everything
+		if !newFound && attempt > 0 {
+			break
+		}
+	}
+
+	// Build result in deepest-first order by re-running getAllDescendants
+	// This ensures proper ordering even with the deduplication
+	finalDescendants := getAllDescendants(pid)
+	for _, dpid := range finalDescendants {
+		if seen[dpid] {
+			result = append(result, dpid)
+		}
 	}
 
 	return result
@@ -566,16 +637,30 @@ func (t *Tmux) GetPanePID(session string) (string, error) {
 	return strings.TrimSpace(out), nil
 }
 
-// hasClaudeChild checks if a process has a child running claude/node.
+// hasClaudeChild checks if a process has a descendant running claude/node.
 // Used when the pane command is a shell (bash, zsh) that launched claude.
+// This recursively checks all descendants, not just direct children, to handle
+// cases like: shell → wrapper script → node/claude
 func hasClaudeChild(pid string) bool {
+	return hasClaudeDescendant(pid, make(map[string]bool))
+}
+
+// hasClaudeDescendant recursively checks if any descendant is running claude/node.
+// The visited map prevents infinite loops in case of any process tree anomalies.
+func hasClaudeDescendant(pid string, visited map[string]bool) bool {
+	if visited[pid] {
+		return false
+	}
+	visited[pid] = true
+
 	// Use pgrep to find child processes
 	cmd := exec.Command("pgrep", "-P", pid, "-l")
 	out, err := cmd.Output()
 	if err != nil {
 		return false
 	}
-	// Check if any child is node or claude
+
+	// Check each child
 	lines := strings.Split(string(out), "\n")
 	for _, line := range lines {
 		line = strings.TrimSpace(line)
@@ -585,8 +670,16 @@ func hasClaudeChild(pid string) bool {
 		// Format: "PID name" e.g., "29677 node"
 		parts := strings.Fields(line)
 		if len(parts) >= 2 {
+			childPID := parts[0]
 			name := parts[1]
+
+			// Check if this child is claude/node
 			if name == "node" || name == "claude" {
+				return true
+			}
+
+			// Recursively check this child's descendants
+			if hasClaudeDescendant(childPID, visited) {
 				return true
 			}
 		}
