@@ -8,11 +8,14 @@ import (
 	"os"
 	"os/exec"
 	"regexp"
+	"strconv"
 	"strings"
+	"syscall"
 	"time"
 
 	"github.com/KeithWyatt/gongshow/internal/config"
 	"github.com/KeithWyatt/gongshow/internal/constants"
+	"github.com/KeithWyatt/gongshow/internal/proc"
 )
 
 // versionPattern matches Claude Code version numbers like "2.0.76"
@@ -170,22 +173,28 @@ func (t *Tmux) KillSession(name string) error {
 // The retry/rescan approach addresses race conditions where processes fork new children
 // after the initial descendant list is built but before kill signals are sent.
 // SIGKILL is sent in deepest-first order to prevent brief orphaning of grandchildren.
+//
+// Performance: Uses native Go syscalls instead of spawning shell commands for each signal.
 func (t *Tmux) KillSessionWithProcesses(name string) error {
 	// Get the pane PID
-	pid, err := t.GetPanePID(name)
+	pidStr, err := t.GetPanePID(name)
 	if err != nil {
 		// Session might not exist or be in bad state, try direct kill
 		return t.KillSession(name)
 	}
 
-	if pid != "" {
+	if pidStr != "" {
+		pid, err := strconv.Atoi(pidStr)
+		if err != nil {
+			return t.KillSession(name)
+		}
+
 		// Get all descendant PIDs with multiple passes to catch race conditions
+		// Uses native /proc filesystem - no shell spawning
 		descendants := getAllDescendantsWithRetry(pid)
 
-		// Send SIGTERM to all descendants (deepest first to avoid orphaning)
-		for _, dpid := range descendants {
-			_ = exec.Command("kill", "-TERM", dpid).Run()
-		}
+		// Send SIGTERM to all descendants using native syscalls (no shell spawning)
+		proc.SignalAll(descendants, syscall.SIGTERM)
 
 		// Wait for graceful shutdown - longer period for proper cleanup
 		time.Sleep(SIGTERMGracePeriod)
@@ -195,8 +204,7 @@ func (t *Tmux) KillSessionWithProcesses(name string) error {
 		finalDescendants := getAllDescendantsWithRetry(pid)
 
 		// Build set of all PIDs to SIGKILL (original + newly discovered)
-		// Use map for O(1) membership check, but iterate in order
-		killSet := make(map[string]bool)
+		killSet := make(map[int]bool)
 		for _, dpid := range descendants {
 			killSet[dpid] = true
 		}
@@ -204,16 +212,9 @@ func (t *Tmux) KillSessionWithProcesses(name string) error {
 			killSet[dpid] = true
 		}
 
-		// Send SIGKILL in deepest-first order (using finalDescendants for ordering)
-		// This prevents brief orphaning of grandchildren during cleanup
-		for _, dpid := range finalDescendants {
-			_ = exec.Command("kill", "-KILL", dpid).Run()
-			delete(killSet, dpid) // Mark as handled
-		}
-		// Kill any remaining from original scan that died before final scan
-		// (order doesn't matter for these - they're likely already dead)
+		// Send SIGKILL to all PIDs in the set using native syscalls
 		for dpid := range killSet {
-			_ = exec.Command("kill", "-KILL", dpid).Run()
+			_ = syscall.Kill(dpid, syscall.SIGKILL)
 		}
 	}
 
@@ -223,40 +224,25 @@ func (t *Tmux) KillSessionWithProcesses(name string) error {
 
 // getAllDescendants recursively finds all descendant PIDs of a process.
 // Returns PIDs in deepest-first order so killing them doesn't orphan grandchildren.
-func getAllDescendants(pid string) []string {
-	var result []string
-
-	// Get direct children using pgrep
-	out, err := exec.Command("pgrep", "-P", pid).Output()
-	if err != nil {
-		return result
-	}
-
-	children := strings.Fields(strings.TrimSpace(string(out)))
-	for _, child := range children {
-		// First add grandchildren (recursively) - deepest first
-		result = append(result, getAllDescendants(child)...)
-		// Then add this child
-		result = append(result, child)
-	}
-
-	return result
+// Uses native /proc filesystem access - no shell spawning.
+func getAllDescendants(pid int) []int {
+	return proc.GetAllDescendants(pid)
 }
 
 // getAllDescendantsWithRetry finds all descendant PIDs with multiple passes.
 // This addresses race conditions where processes fork during the scan.
 // Each pass may discover new children that were created after the previous pass.
 // Returns PIDs in deepest-first order, deduplicated.
-func getAllDescendantsWithRetry(pid string) []string {
-	seen := make(map[string]bool)
-	var result []string
+// Uses native /proc filesystem access - no shell spawning.
+func getAllDescendantsWithRetry(pid int) []int {
+	seen := make(map[int]bool)
 
 	for attempt := 0; attempt < DescendantRescanAttempts; attempt++ {
 		if attempt > 0 {
 			time.Sleep(DescendantRescanDelay)
 		}
 
-		descendants := getAllDescendants(pid)
+		descendants := proc.GetAllDescendants(pid)
 		newFound := false
 
 		for _, dpid := range descendants {
@@ -272,13 +258,14 @@ func getAllDescendantsWithRetry(pid string) []string {
 		}
 	}
 
-	// Build result in deepest-first order by re-running getAllDescendants.
+	// Build result in deepest-first order by re-running GetAllDescendants.
 	// We can't just use the accumulated PIDs because they're added in discovery
 	// order across multiple passes, not in tree-depth order. Re-scanning gives
 	// us the correct deepest-first ordering for safe process termination.
 	// PIDs that died between retry passes will simply be absent - that's fine,
 	// they don't need killing.
-	finalDescendants := getAllDescendants(pid)
+	finalDescendants := proc.GetAllDescendants(pid)
+	var result []int
 	for _, dpid := range finalDescendants {
 		if seen[dpid] {
 			result = append(result, dpid)
@@ -654,50 +641,13 @@ func (t *Tmux) GetPanePID(session string) (string, error) {
 // Used when the pane command is a shell (bash, zsh) that launched claude.
 // This recursively checks all descendants, not just direct children, to handle
 // cases like: shell → wrapper script → node/claude
-func hasClaudeChild(pid string) bool {
-	return hasClaudeDescendant(pid, make(map[string]bool))
-}
-
-// hasClaudeDescendant recursively checks if any descendant is running claude/node.
-// The visited map prevents infinite loops in case of any process tree anomalies.
-func hasClaudeDescendant(pid string, visited map[string]bool) bool {
-	if visited[pid] {
-		return false
-	}
-	visited[pid] = true
-
-	// Use pgrep to find child processes
-	cmd := exec.Command("pgrep", "-P", pid, "-l")
-	out, err := cmd.Output()
+// Uses native /proc filesystem access - no shell spawning.
+func hasClaudeChild(pidStr string) bool {
+	pid, err := strconv.Atoi(pidStr)
 	if err != nil {
 		return false
 	}
-
-	// Check each child
-	lines := strings.Split(string(out), "\n")
-	for _, line := range lines {
-		line = strings.TrimSpace(line)
-		if line == "" {
-			continue
-		}
-		// Format: "PID name" e.g., "29677 node"
-		parts := strings.Fields(line)
-		if len(parts) >= 2 {
-			childPID := parts[0]
-			name := parts[1]
-
-			// Check if this child is claude/node
-			if name == "node" || name == "claude" {
-				return true
-			}
-
-			// Recursively check this child's descendants
-			if hasClaudeDescendant(childPID, visited) {
-				return true
-			}
-		}
-	}
-	return false
+	return proc.HasDescendantMatching(pid, []string{"node", "claude"}, make(map[int]bool))
 }
 
 // FindSessionByWorkDir finds tmux sessions where the pane's current working directory

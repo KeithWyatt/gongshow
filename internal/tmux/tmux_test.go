@@ -571,7 +571,7 @@ func TestGetAllDescendants(t *testing.T) {
 	// Test the getAllDescendants helper function
 
 	// Test with nonexistent PID - should return empty slice
-	got := getAllDescendants("999999999")
+	got := getAllDescendants(999999999)
 	if len(got) != 0 {
 		t.Errorf("getAllDescendants(nonexistent) = %v, want empty slice", got)
 	}
@@ -579,15 +579,13 @@ func TestGetAllDescendants(t *testing.T) {
 	// Test with PID 1 (init/launchd) - should find some descendants
 	// Note: We can't test exact PIDs, just that the function doesn't panic
 	// and returns reasonable results
-	descendants := getAllDescendants("1")
-	t.Logf("getAllDescendants(\"1\") found %d descendants", len(descendants))
+	descendants := getAllDescendants(1)
+	t.Logf("getAllDescendants(1) found %d descendants", len(descendants))
 
-	// Verify returned PIDs are all numeric strings
+	// Verify returned PIDs are all positive integers
 	for _, pid := range descendants {
-		for _, c := range pid {
-			if c < '0' || c > '9' {
-				t.Errorf("getAllDescendants returned non-numeric PID: %q", pid)
-			}
+		if pid <= 0 {
+			t.Errorf("getAllDescendants returned invalid PID: %d", pid)
 		}
 	}
 }
@@ -596,32 +594,30 @@ func TestGetAllDescendantsWithRetry(t *testing.T) {
 	// Test the retry variant of getAllDescendants
 
 	// Test with nonexistent PID - should return empty slice
-	got := getAllDescendantsWithRetry("999999999")
+	got := getAllDescendantsWithRetry(999999999)
 	if len(got) != 0 {
 		t.Errorf("getAllDescendantsWithRetry(nonexistent) = %v, want empty slice", got)
 	}
 
 	// Test with PID 1 (init/launchd) - should find descendants
-	descendants := getAllDescendantsWithRetry("1")
-	t.Logf("getAllDescendantsWithRetry(\"1\") found %d descendants", len(descendants))
+	descendants := getAllDescendantsWithRetry(1)
+	t.Logf("getAllDescendantsWithRetry(1) found %d descendants", len(descendants))
 
 	// On a live system, there should always be some descendants of init
 	if len(descendants) == 0 {
-		t.Error("getAllDescendantsWithRetry(\"1\") found no descendants - expected some")
+		t.Error("getAllDescendantsWithRetry(1) found no descendants - expected some")
 	}
 
-	// Verify returned PIDs are all numeric strings and unique
-	seen := make(map[string]bool)
+	// Verify returned PIDs are all positive and unique
+	seen := make(map[int]bool)
 	for _, pid := range descendants {
 		if seen[pid] {
-			t.Errorf("getAllDescendantsWithRetry returned duplicate PID: %q", pid)
+			t.Errorf("getAllDescendantsWithRetry returned duplicate PID: %d", pid)
 		}
 		seen[pid] = true
 
-		for _, c := range pid {
-			if c < '0' || c > '9' {
-				t.Errorf("getAllDescendantsWithRetry returned non-numeric PID: %q", pid)
-			}
+		if pid <= 0 {
+			t.Errorf("getAllDescendantsWithRetry returned invalid PID: %d", pid)
 		}
 	}
 
@@ -630,28 +626,9 @@ func TestGetAllDescendantsWithRetry(t *testing.T) {
 	// necessarily more) processes due to timing.
 }
 
-func TestHasClaudeDescendant(t *testing.T) {
-	// Test the recursive descendant check
-
-	// Test with nonexistent PID - should return false
-	got := hasClaudeDescendant("999999999", make(map[string]bool))
-	if got {
-		t.Error("hasClaudeDescendant should return false for nonexistent PID")
-	}
-
-	// Test cycle detection - should not infinite loop
-	visited := make(map[string]bool)
-	visited["1"] = true
-	got = hasClaudeDescendant("1", visited)
-	if got {
-		t.Error("hasClaudeDescendant should return false when PID already visited")
-	}
-
-	// Test with PID 1 (init) - should handle deep trees without stack overflow
-	got = hasClaudeDescendant("1", make(map[string]bool))
-	t.Logf("hasClaudeDescendant(\"1\") = %v", got)
-	// Result depends on whether claude/node is running, but it should not panic
-}
+// Note: hasClaudeDescendant has been replaced by proc.HasDescendantMatching
+// which is tested in the proc package. The hasClaudeChild wrapper is tested
+// in TestHasClaudeChild above.
 
 func TestProcessCleanupConstants(t *testing.T) {
 	// Verify the constants are reasonable values

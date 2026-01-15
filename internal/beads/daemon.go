@@ -5,9 +5,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"os/exec"
-	"strconv"
-	"strings"
+	"syscall"
 	"time"
+
+	"github.com/KeithWyatt/gongshow/internal/proc"
 )
 
 const (
@@ -109,8 +110,9 @@ func EnsureBdDaemonHealth(workDir string) string {
 
 // restartBdDaemons restarts all bd daemons.
 func restartBdDaemons() error { //nolint:unparam // error return kept for future use
-	// Stop all daemons first using pkill to avoid auto-start side effects
-	_ = exec.Command("pkill", "-TERM", "-f", "bd daemon").Run()
+	// Stop all daemons first using native signals to avoid auto-start side effects
+	pids := proc.FindByPattern("bd daemon")
+	proc.SignalAll(pids, syscall.SIGTERM)
 
 	// Give time for cleanup
 	time.Sleep(200 * time.Millisecond)
@@ -158,18 +160,9 @@ func StopAllBdProcesses(dryRun, force bool) (int, int, error) {
 }
 
 // CountBdDaemons returns count of running bd daemons.
-// Uses pgrep instead of "bd daemon list" to avoid triggering daemon auto-start
-// during shutdown verification.
+// Uses native /proc scanning instead of shell commands to avoid spawning overhead.
 func CountBdDaemons() int {
-	// Use pgrep -f with wc -l for cross-platform compatibility
-	// (macOS pgrep doesn't support -c flag)
-	cmd := exec.Command("sh", "-c", "pgrep -f 'bd daemon' 2>/dev/null | wc -l")
-	output, err := cmd.Output()
-	if err != nil {
-		return 0
-	}
-	count, _ := strconv.Atoi(strings.TrimSpace(string(output)))
-	return count
+	return proc.CountByPattern("bd daemon")
 }
 
 
@@ -179,18 +172,19 @@ func stopBdDaemons(force bool) (int, int) {
 		return 0, 0
 	}
 
-	// Use pkill directly instead of "bd daemon killall" to avoid triggering
-	// daemon auto-start as a side effect of running bd commands.
-	// Note: pkill -f pattern may match unintended processes in rare cases
-	// (e.g., editors with "bd daemon" in file content). This is acceptable
-	// given the alternative of respawning daemons during shutdown.
+	// Use native /proc scanning and syscalls instead of pkill shell commands.
+	// This avoids shell spawning overhead during shutdown.
+	pids := proc.FindByPattern("bd daemon")
+
 	if force {
-		_ = exec.Command("pkill", "-9", "-f", "bd daemon").Run()
+		proc.SignalAll(pids, syscall.SIGKILL)
 	} else {
-		_ = exec.Command("pkill", "-TERM", "-f", "bd daemon").Run()
+		proc.SignalAll(pids, syscall.SIGTERM)
 		time.Sleep(gracefulTimeout)
 		if remaining := CountBdDaemons(); remaining > 0 {
-			_ = exec.Command("pkill", "-9", "-f", "bd daemon").Run()
+			// Re-scan for any remaining and SIGKILL them
+			pids = proc.FindByPattern("bd daemon")
+			proc.SignalAll(pids, syscall.SIGKILL)
 		}
 	}
 
@@ -205,16 +199,9 @@ func stopBdDaemons(force bool) (int, int) {
 }
 
 // CountBdActivityProcesses returns count of running `bd activity` processes.
+// Uses native /proc scanning instead of shell commands to avoid spawning overhead.
 func CountBdActivityProcesses() int {
-	// Use pgrep -f with wc -l for cross-platform compatibility
-	// (macOS pgrep doesn't support -c flag)
-	cmd := exec.Command("sh", "-c", "pgrep -f 'bd activity' 2>/dev/null | wc -l")
-	output, err := cmd.Output()
-	if err != nil {
-		return 0
-	}
-	count, _ := strconv.Atoi(strings.TrimSpace(string(output)))
-	return count
+	return proc.CountByPattern("bd activity")
 }
 
 func stopBdActivityProcesses(force bool) (int, int) {
@@ -223,13 +210,18 @@ func stopBdActivityProcesses(force bool) (int, int) {
 		return 0, 0
 	}
 
+	// Use native /proc scanning and syscalls instead of pkill shell commands.
+	pids := proc.FindByPattern("bd activity")
+
 	if force {
-		_ = exec.Command("pkill", "-9", "-f", "bd activity").Run()
+		proc.SignalAll(pids, syscall.SIGKILL)
 	} else {
-		_ = exec.Command("pkill", "-TERM", "-f", "bd activity").Run()
+		proc.SignalAll(pids, syscall.SIGTERM)
 		time.Sleep(gracefulTimeout)
 		if remaining := CountBdActivityProcesses(); remaining > 0 {
-			_ = exec.Command("pkill", "-9", "-f", "bd activity").Run()
+			// Re-scan for any remaining and SIGKILL them
+			pids = proc.FindByPattern("bd activity")
+			proc.SignalAll(pids, syscall.SIGKILL)
 		}
 	}
 
