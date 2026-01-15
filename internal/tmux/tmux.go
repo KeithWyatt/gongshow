@@ -161,14 +161,15 @@ func (t *Tmux) KillSession(name string) error {
 // Process:
 // 1. Get the pane's main process PID
 // 2. Find all descendant processes with retry/rescan to catch forks
-// 3. Send SIGTERM to all descendants (deepest first)
-// 4. Wait for graceful shutdown (500ms)
-// 5. Rescan for any new processes that may have forked
-// 6. Send SIGKILL to any remaining descendants
+// 3. Send SIGTERM to all descendants (deepest first to avoid orphaning grandchildren)
+// 4. Wait for graceful shutdown (SIGTERMGracePeriod)
+// 5. Rescan for any processes that forked during SIGTERM handling
+// 6. Send SIGKILL to all descendants (deepest first, including newly discovered)
 // 7. Kill the tmux session
 //
 // The retry/rescan approach addresses race conditions where processes fork new children
 // after the initial descendant list is built but before kill signals are sent.
+// SIGKILL is sent in deepest-first order to prevent brief orphaning of grandchildren.
 func (t *Tmux) KillSessionWithProcesses(name string) error {
 	// Get the pane PID
 	pid, err := t.GetPanePID(name)
@@ -194,6 +195,7 @@ func (t *Tmux) KillSessionWithProcesses(name string) error {
 		finalDescendants := getAllDescendantsWithRetry(pid)
 
 		// Build set of all PIDs to SIGKILL (original + newly discovered)
+		// Use map for O(1) membership check, but iterate in order
 		killSet := make(map[string]bool)
 		for _, dpid := range descendants {
 			killSet[dpid] = true
@@ -202,7 +204,14 @@ func (t *Tmux) KillSessionWithProcesses(name string) error {
 			killSet[dpid] = true
 		}
 
-		// Send SIGKILL to any remaining descendants
+		// Send SIGKILL in deepest-first order (using finalDescendants for ordering)
+		// This prevents brief orphaning of grandchildren during cleanup
+		for _, dpid := range finalDescendants {
+			_ = exec.Command("kill", "-KILL", dpid).Run()
+			delete(killSet, dpid) // Mark as handled
+		}
+		// Kill any remaining from original scan that died before final scan
+		// (order doesn't matter for these - they're likely already dead)
 		for dpid := range killSet {
 			_ = exec.Command("kill", "-KILL", dpid).Run()
 		}
@@ -263,8 +272,12 @@ func getAllDescendantsWithRetry(pid string) []string {
 		}
 	}
 
-	// Build result in deepest-first order by re-running getAllDescendants
-	// This ensures proper ordering even with the deduplication
+	// Build result in deepest-first order by re-running getAllDescendants.
+	// We can't just use the accumulated PIDs because they're added in discovery
+	// order across multiple passes, not in tree-depth order. Re-scanning gives
+	// us the correct deepest-first ordering for safe process termination.
+	// PIDs that died between retry passes will simply be absent - that's fine,
+	// they don't need killing.
 	finalDescendants := getAllDescendants(pid)
 	for _, dpid := range finalDescendants {
 		if seen[dpid] {
