@@ -230,12 +230,9 @@ func runPrime(cmd *cobra.Command, args []string) error {
 	// Output previous session checkpoint for crash recovery
 	outputCheckpointContext(ctx)
 
-	// Run bd prime to output beads workflow context
-	if !primeDryRun {
-		runBdPrime(cwd)
-	} else {
-		explain(true, "bd prime: skipped in dry-run mode")
-	}
+	// NOTE: bd prime call removed - role template already contains all context
+	// that PRIME.md provides (Propulsion Principle, startup protocol, etc.)
+	// This saves ~336 tokens per session. See bead go-57r.
 
 	// Run gt mail check --inject to inject any pending mail
 	if !primeDryRun {
@@ -342,32 +339,6 @@ func detectRole(cwd, townRoot string) RoleInfo {
 
 	// Default: could be rig root - treat as unknown
 	return ctx
-}
-
-// runBdPrime runs `bd prime` and outputs the result.
-// This provides beads workflow context to the agent.
-func runBdPrime(workDir string) {
-	cmd := exec.Command("bd", "prime")
-	cmd.Dir = workDir
-
-	var stdout, stderr bytes.Buffer
-	cmd.Stdout = &stdout
-	cmd.Stderr = &stderr
-
-	if err := cmd.Run(); err != nil {
-		// Skip if bd prime fails (beads might not be available)
-		// But log stderr if present for debugging
-		if errMsg := strings.TrimSpace(stderr.String()); errMsg != "" {
-			fmt.Fprintf(os.Stderr, "bd prime: %s\n", errMsg)
-		}
-		return
-	}
-
-	output := strings.TrimSpace(stdout.String())
-	if output != "" {
-		fmt.Println()
-		fmt.Println(output)
-	}
 }
 
 // runMailCheckInject runs `gt mail check --inject` and outputs the result.
