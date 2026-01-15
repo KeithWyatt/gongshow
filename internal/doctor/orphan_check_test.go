@@ -4,6 +4,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"syscall"
 	"testing"
 )
 
@@ -36,9 +37,9 @@ func TestNewOrphanProcessCheck(t *testing.T) {
 		t.Errorf("expected name 'orphan-processes', got %q", check.Name())
 	}
 
-	// OrphanProcessCheck should NOT be fixable - it's informational only
-	if check.CanFix() {
-		t.Error("expected CanFix to return false for process check (informational only)")
+	// OrphanProcessCheck is fixable - it can kill orphaned processes
+	if !check.CanFix() {
+		t.Error("expected CanFix to return true for process check")
 	}
 }
 
@@ -90,14 +91,14 @@ func TestOrphanProcessCheck_Run(t *testing.T) {
 		t.Errorf("expected StatusOK or StatusWarning, got %v: %s", result.Status, result.Message)
 	}
 
-	// If warning, should have informational details
+	// If warning, should have informational details and FixHint
 	if result.Status == StatusWarning {
 		if len(result.Details) < 3 {
 			t.Errorf("expected at least 3 detail lines (2 info + 1 process), got %d", len(result.Details))
 		}
-		// Should NOT have a FixHint since this is informational only
-		if result.FixHint != "" {
-			t.Errorf("expected no FixHint for informational check, got %q", result.FixHint)
+		// Should have a FixHint since this is now fixable
+		if result.FixHint == "" {
+			t.Error("expected FixHint for fixable check")
 		}
 	}
 }
@@ -511,7 +512,7 @@ func TestOrphanProcessCheck_TmuxServerNotDetected_Bug(t *testing.T) {
 	}
 
 	// This demonstrates the bug: process is flagged as orphan when it shouldn't be
-	if result.Message != "Found 1 runtime process(es) running outside tmux" {
+	if result.Message != "Found 1 orphaned runtime process(es)" {
 		t.Errorf("unexpected message: %q", result.Message)
 	}
 }
@@ -549,7 +550,7 @@ func TestOrphanProcessCheck_MultipleTmuxSessions(t *testing.T) {
 		t.Errorf("expected StatusWarning, got %v: %s", result.Status, result.Message)
 	}
 
-	if result.Message != "Found 2 runtime process(es) running outside tmux" {
+	if result.Message != "Found 2 orphaned runtime process(es)" {
 		t.Errorf("unexpected message: %q", result.Message)
 	}
 }
@@ -631,5 +632,224 @@ func TestOrphanProcessCheck_ScreenSession(t *testing.T) {
 	// This is expected behavior - the check is specifically for tmux
 	if result.Status != StatusWarning {
 		t.Errorf("expected StatusWarning (screen process is orphan from tmux view), got %v", result.Status)
+	}
+}
+
+// TestOrphanProcessCheck_Fix tests that Fix() kills orphaned processes.
+func TestOrphanProcessCheck_Fix(t *testing.T) {
+	var killedPIDs []int
+
+	// Mock syscallKill to track what gets killed
+	origSyscallKill := syscallKill
+	defer func() { syscallKill = origSyscallKill }()
+	syscallKill = func(pid int, sig syscall.Signal) error {
+		if sig == 0 {
+			return nil // Process exists check
+		}
+		killedPIDs = append(killedPIDs, pid)
+		return nil
+	}
+
+	lister := &mockProcessLister{
+		tmuxServerPIDs: []int{100},
+		panePIDs:       []int{200},
+		runtimeProcesses: []processInfo{
+			{pid: 1000, ppid: 1, cmd: "claude"}, // Orphan
+			{pid: 2000, ppid: 1, cmd: "claude"}, // Orphan
+		},
+		parentPIDs: map[int]int{
+			1000: 1,
+			2000: 1,
+		},
+	}
+
+	check := NewOrphanProcessCheckWithProcessLister(lister)
+	ctx := &CheckContext{TownRoot: t.TempDir()}
+
+	// Run to populate orphanProcesses
+	result := check.Run(ctx)
+	if result.Status != StatusWarning {
+		t.Fatalf("expected StatusWarning, got %v", result.Status)
+	}
+
+	// Fix should kill the orphans
+	err := check.Fix(ctx)
+	if err != nil {
+		t.Fatalf("Fix failed: %v", err)
+	}
+
+	// Verify both orphans were killed
+	if len(killedPIDs) != 2 {
+		t.Errorf("expected 2 processes killed, got %d: %v", len(killedPIDs), killedPIDs)
+	}
+}
+
+// TestOrphanProcessCheck_Fix_DryRun tests that dry-run mode doesn't actually kill.
+func TestOrphanProcessCheck_Fix_DryRun(t *testing.T) {
+	var killedPIDs []int
+
+	// Mock syscallKill to track what gets killed
+	origSyscallKill := syscallKill
+	defer func() { syscallKill = origSyscallKill }()
+	syscallKill = func(pid int, sig syscall.Signal) error {
+		if sig == 0 {
+			return nil // Process exists check
+		}
+		killedPIDs = append(killedPIDs, pid)
+		return nil
+	}
+
+	lister := &mockProcessLister{
+		tmuxServerPIDs: []int{100},
+		panePIDs:       []int{200},
+		runtimeProcesses: []processInfo{
+			{pid: 1000, ppid: 1, cmd: "claude"}, // Orphan
+		},
+		parentPIDs: map[int]int{
+			1000: 1,
+		},
+	}
+
+	check := NewOrphanProcessCheckWithProcessLister(lister)
+	ctx := &CheckContext{TownRoot: t.TempDir(), DryRun: true}
+
+	// Run to populate orphanProcesses
+	result := check.Run(ctx)
+	if result.Status != StatusWarning {
+		t.Fatalf("expected StatusWarning, got %v", result.Status)
+	}
+
+	// Fix with dry-run should NOT kill
+	err := check.Fix(ctx)
+	if err != nil {
+		t.Fatalf("Fix failed: %v", err)
+	}
+
+	// Verify no processes were killed (dry-run)
+	if len(killedPIDs) != 0 {
+		t.Errorf("expected 0 processes killed in dry-run, got %d: %v", len(killedPIDs), killedPIDs)
+	}
+}
+
+// TestOrphanProcessCheck_Fix_ProcessBecomesNonOrphan tests that Fix() re-verifies
+// processes before killing and skips those that are no longer orphaned.
+func TestOrphanProcessCheck_Fix_ProcessBecomesNonOrphan(t *testing.T) {
+	var killedPIDs []int
+
+	// Mock syscallKill
+	origSyscallKill := syscallKill
+	defer func() { syscallKill = origSyscallKill }()
+	syscallKill = func(pid int, sig syscall.Signal) error {
+		if sig == 0 {
+			return nil
+		}
+		killedPIDs = append(killedPIDs, pid)
+		return nil
+	}
+
+	// Initial state: process 1000 is orphan (parent is init)
+	lister := &mockProcessLister{
+		tmuxServerPIDs: []int{100},
+		panePIDs:       []int{200},
+		runtimeProcesses: []processInfo{
+			{pid: 1000, ppid: 1, cmd: "claude"},
+		},
+		parentPIDs: map[int]int{
+			1000: 1,
+		},
+	}
+
+	check := NewOrphanProcessCheckWithProcessLister(lister)
+	ctx := &CheckContext{TownRoot: t.TempDir()}
+
+	// Run to populate orphanProcesses
+	result := check.Run(ctx)
+	if result.Status != StatusWarning {
+		t.Fatalf("expected StatusWarning, got %v", result.Status)
+	}
+
+	// Simulate: process 1000 now has tmux pane 200 as parent
+	// (this could happen if process was reparented between Run and Fix)
+	lister.parentPIDs[1000] = 200
+
+	// Fix should skip this process because it's no longer orphaned
+	err := check.Fix(ctx)
+	if err != nil {
+		t.Fatalf("Fix failed: %v", err)
+	}
+
+	// Verify no processes were killed (process is no longer orphan)
+	if len(killedPIDs) != 0 {
+		t.Errorf("expected 0 processes killed (process became non-orphan), got %d: %v", len(killedPIDs), killedPIDs)
+	}
+}
+
+// TestOrphanProcessCheck_MaxAncestryDepth verifies the 8-level depth limit.
+func TestOrphanProcessCheck_MaxAncestryDepth(t *testing.T) {
+	// Create a chain that's exactly maxAncestryDepth levels
+	// init(1) -> ... -> pane(100) -> ... -> claude
+	// The pane should be found within the limit
+
+	parentPIDs := make(map[int]int)
+	// Build chain: 1000 -> 999 -> 998 -> ... -> 993 -> 100 (pane) -> 1
+	currentPID := 1000
+	for i := 0; i < 7; i++ {
+		parentPIDs[currentPID] = currentPID - 1
+		currentPID--
+	}
+	parentPIDs[993] = 100 // 8th level is the pane
+	parentPIDs[100] = 1
+
+	lister := &mockProcessLister{
+		tmuxServerPIDs: []int{},
+		panePIDs:       []int{100},
+		runtimeProcesses: []processInfo{
+			{pid: 1000, ppid: 999, cmd: "claude"},
+		},
+		parentPIDs: parentPIDs,
+	}
+
+	check := NewOrphanProcessCheckWithProcessLister(lister)
+	ctx := &CheckContext{TownRoot: t.TempDir()}
+	result := check.Run(ctx)
+
+	// Should find the pane at depth 8 and NOT report as orphan
+	if result.Status != StatusOK {
+		t.Errorf("expected StatusOK (pane found at depth 8), got %v: %s", result.Status, result.Message)
+	}
+}
+
+// TestOrphanProcessCheck_ExceedsMaxAncestryDepth verifies processes with
+// tmux ancestors beyond 8 levels are flagged as orphans.
+func TestOrphanProcessCheck_ExceedsMaxAncestryDepth(t *testing.T) {
+	// Create a chain that's deeper than maxAncestryDepth
+	// The pane at depth 9 should NOT be found
+
+	parentPIDs := make(map[int]int)
+	// Build chain: 1000 -> 999 -> 998 -> ... -> 991 -> 100 (pane) -> 1
+	currentPID := 1000
+	for i := 0; i < 9; i++ {
+		parentPIDs[currentPID] = currentPID - 1
+		currentPID--
+	}
+	parentPIDs[991] = 100 // 10th level is the pane (beyond limit)
+	parentPIDs[100] = 1
+
+	lister := &mockProcessLister{
+		tmuxServerPIDs: []int{},
+		panePIDs:       []int{100},
+		runtimeProcesses: []processInfo{
+			{pid: 1000, ppid: 999, cmd: "claude"},
+		},
+		parentPIDs: parentPIDs,
+	}
+
+	check := NewOrphanProcessCheckWithProcessLister(lister)
+	ctx := &CheckContext{TownRoot: t.TempDir()}
+	result := check.Run(ctx)
+
+	// Should NOT find the pane (too deep) and report as orphan
+	if result.Status != StatusWarning {
+		t.Errorf("expected StatusWarning (pane beyond depth limit), got %v: %s", result.Status, result.Message)
 	}
 }

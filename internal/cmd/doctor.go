@@ -14,6 +14,7 @@ var (
 	doctorVerbose         bool
 	doctorRig             string
 	doctorRestartSessions bool
+	doctorDryRun          bool
 )
 
 var doctorCmd = &cobra.Command{
@@ -81,6 +82,7 @@ Patrol checks:
   - patrol-roles-have-prompts Verify role prompts exist
 
 Use --fix to attempt automatic fixes for issues that support it.
+Use --fix --dry-run to see what would be fixed without making changes.
 Use --rig to check a specific rig instead of the entire workspace.`,
 	RunE: runDoctor,
 }
@@ -90,6 +92,7 @@ func init() {
 	doctorCmd.Flags().BoolVarP(&doctorVerbose, "verbose", "v", false, "Show detailed output")
 	doctorCmd.Flags().StringVar(&doctorRig, "rig", "", "Check specific rig only")
 	doctorCmd.Flags().BoolVar(&doctorRestartSessions, "restart-sessions", false, "Restart patrol sessions when fixing stale settings (use with --fix)")
+	doctorCmd.Flags().BoolVar(&doctorDryRun, "dry-run", false, "Show what would be fixed without actually fixing (use with --fix)")
 	rootCmd.AddCommand(doctorCmd)
 }
 
@@ -106,6 +109,7 @@ func runDoctor(cmd *cobra.Command, args []string) error {
 		RigName:         doctorRig,
 		Verbose:         doctorVerbose,
 		RestartSessions: doctorRestartSessions,
+		DryRun:          doctorDryRun,
 	}
 
 	// Create doctor and register checks
