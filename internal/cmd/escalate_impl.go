@@ -12,6 +12,7 @@ import (
 	"github.com/KeithWyatt/gongshow/internal/config"
 	"github.com/KeithWyatt/gongshow/internal/events"
 	"github.com/KeithWyatt/gongshow/internal/mail"
+	"github.com/KeithWyatt/gongshow/internal/notify"
 	"github.com/KeithWyatt/gongshow/internal/style"
 	"github.com/KeithWyatt/gongshow/internal/workspace"
 )
@@ -114,8 +115,8 @@ func runEscalate(cmd *cobra.Command, args []string) error {
 		}
 	}
 
-	// Process external notification actions (email:, sms:, slack)
-	executeExternalActions(actions, escalationConfig, issue.ID, severity, description)
+	// Process external notification actions (email:, sms:, slack, log)
+	executeExternalActions(actions, escalationConfig, townRoot, issue.ID, severity, description)
 
 	// Log to activity feed
 	payload := events.EscalationPayload(issue.ID, agentID, strings.Join(targets, ","), description)
@@ -538,39 +539,63 @@ func extractMailTargetsFromActions(actions []string) []string {
 	return targets
 }
 
-// executeExternalActions processes external notification actions (email:, sms:, slack).
-// For now, this logs warnings if contacts aren't configured - actual sending is future work.
-func executeExternalActions(actions []string, cfg *config.EscalationConfig, _, _, _ string) {
+// executeExternalActions processes external notification actions (email:, sms:, slack, log).
+// Sends actual notifications via the notify package.
+func executeExternalActions(actions []string, cfg *config.EscalationConfig, townRoot, escalationID, severity, description string) {
+	// Build notification object
+	n := &notify.Notification{
+		ID:        escalationID,
+		Severity:  severity,
+		Title:     description,
+		Source:    detectSender(),
+		Timestamp: time.Now(),
+	}
+
 	for _, action := range actions {
 		switch {
 		case strings.HasPrefix(action, "email:"):
 			if cfg.Contacts.HumanEmail == "" {
 				style.PrintWarning("email action '%s' skipped: contacts.human_email not configured in settings/escalation.json", action)
 			} else {
-				// TODO: Implement actual email sending
-				fmt.Printf("  📧 Would send email to %s (not yet implemented)\n", cfg.Contacts.HumanEmail)
+				result := notify.SendEmail(cfg.Contacts.HumanEmail, n)
+				if result.Success {
+					fmt.Printf("  📧 %s\n", result.Message)
+				} else {
+					style.PrintWarning("email: %s", result.Message)
+				}
 			}
 
 		case strings.HasPrefix(action, "sms:"):
 			if cfg.Contacts.HumanSMS == "" {
 				style.PrintWarning("sms action '%s' skipped: contacts.human_sms not configured in settings/escalation.json", action)
 			} else {
-				// TODO: Implement actual SMS sending
-				fmt.Printf("  📱 Would send SMS to %s (not yet implemented)\n", cfg.Contacts.HumanSMS)
+				result := notify.SendSMS(cfg.Contacts.HumanSMS, n)
+				if result.Success {
+					fmt.Printf("  📱 %s\n", result.Message)
+				} else {
+					style.PrintWarning("sms: %s", result.Message)
+				}
 			}
 
 		case action == "slack":
 			if cfg.Contacts.SlackWebhook == "" {
 				style.PrintWarning("slack action skipped: contacts.slack_webhook not configured in settings/escalation.json")
 			} else {
-				// TODO: Implement actual Slack webhook posting
-				fmt.Printf("  💬 Would post to Slack (not yet implemented)\n")
+				result := notify.SendSlack(cfg.Contacts.SlackWebhook, n)
+				if result.Success {
+					fmt.Printf("  💬 %s\n", result.Message)
+				} else {
+					style.PrintWarning("slack: %s", result.Message)
+				}
 			}
 
 		case action == "log":
-			// Log action always succeeds - writes to escalation log file
-			// TODO: Implement actual log file writing
-			fmt.Printf("  📝 Logged to escalation log\n")
+			result := notify.WriteLog(townRoot, n)
+			if result.Success {
+				fmt.Printf("  📝 %s\n", result.Message)
+			} else {
+				style.PrintWarning("log: %s", result.Message)
+			}
 		}
 	}
 }
