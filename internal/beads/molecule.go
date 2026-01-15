@@ -325,9 +325,15 @@ func (b *Beads) instantiateFromChildren(mol *Issue, parent *Issue, templates []*
 
 		child, err := b.Create(childOpts)
 		if err != nil {
-			// Attempt to clean up created issues on failure (best-effort cleanup)
+			// Attempt to clean up created issues on failure
+			var cleanupErrs []string
 			for _, created := range createdIssues {
-				_ = b.Close(created.ID)
+				if closeErr := b.Close(created.ID); closeErr != nil {
+					cleanupErrs = append(cleanupErrs, fmt.Sprintf("%s: %v", created.ID, closeErr))
+				}
+			}
+			if len(cleanupErrs) > 0 {
+				return nil, fmt.Errorf("creating step from template %q: %w (cleanup also failed for: %s)", tmpl.ID, err, strings.Join(cleanupErrs, ", "))
 			}
 			return nil, fmt.Errorf("creating step from template %q: %w", tmpl.ID, err)
 		}
@@ -418,9 +424,15 @@ func (b *Beads) instantiateFromMarkdown(mol *Issue, parent *Issue, opts Instanti
 
 		child, err := b.Create(childOpts)
 		if err != nil {
-			// Attempt to clean up created issues on failure (best-effort cleanup)
+			// Attempt to clean up created issues on failure
+			var cleanupErrs []string
 			for _, created := range createdIssues {
-				_ = b.Close(created.ID)
+				if closeErr := b.Close(created.ID); closeErr != nil {
+					cleanupErrs = append(cleanupErrs, fmt.Sprintf("%s: %v", created.ID, closeErr))
+				}
+			}
+			if len(cleanupErrs) > 0 {
+				return nil, fmt.Errorf("creating step %q: %w (cleanup also failed for: %s)", step.Ref, err, strings.Join(cleanupErrs, ", "))
 			}
 			return nil, fmt.Errorf("creating step %q: %w", step.Ref, err)
 		}
