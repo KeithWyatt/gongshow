@@ -158,8 +158,7 @@ func (b *Beads) CreateAgentBead(id, title string, fields *AgentFields) (*Issue, 
 	// Set the role slot if specified (this is the authoritative storage)
 	if fields != nil && fields.RoleBead != "" {
 		if _, err := b.run("slot", "set", id, "role", fields.RoleBead); err != nil {
-			// Non-fatal: warn but continue
-			fmt.Printf("Warning: could not set role slot: %v\n", err)
+			return &issue, fmt.Errorf("agent bead created but failed to set role slot: %w", err)
 		}
 	}
 
@@ -168,8 +167,7 @@ func (b *Beads) CreateAgentBead(id, title string, fields *AgentFields) (*Issue, 
 	// agent's hook slot is empty. See mi-619.
 	if fields != nil && fields.HookBead != "" {
 		if _, err := b.run("slot", "set", id, "hook", fields.HookBead); err != nil {
-			// Non-fatal: warn but continue - description text has the backup
-			fmt.Printf("Warning: could not set hook slot: %v\n", err)
+			return &issue, fmt.Errorf("agent bead created but failed to set hook slot: %w", err)
 		}
 	}
 
@@ -222,20 +220,23 @@ func (b *Beads) CreateOrReopenAgentBead(id, title string, fields *AgentFields) (
 
 	// Set the role slot if specified
 	if fields != nil && fields.RoleBead != "" {
-		if _, err := b.run("slot", "set", id, "role", fields.RoleBead); err != nil {
-			// Non-fatal: warn but continue
-			fmt.Printf("Warning: could not set role slot: %v\n", err)
+		if _, slotErr := b.run("slot", "set", id, "role", fields.RoleBead); slotErr != nil {
+			issue, _ := b.Show(id)
+			return issue, fmt.Errorf("agent bead reopened but failed to set role slot: %w", slotErr)
 		}
 	}
 
 	// Clear any existing hook slot (handles stale state from previous lifecycle)
-	_, _ = b.run("slot", "clear", id, "hook")
+	if _, clearErr := b.run("slot", "clear", id, "hook"); clearErr != nil {
+		issue, _ := b.Show(id)
+		return issue, fmt.Errorf("agent bead reopened but failed to clear hook slot: %w", clearErr)
+	}
 
 	// Set the hook slot if specified
 	if fields != nil && fields.HookBead != "" {
-		if _, err := b.run("slot", "set", id, "hook", fields.HookBead); err != nil {
-			// Non-fatal: warn but continue
-			fmt.Printf("Warning: could not set hook slot: %v\n", err)
+		if _, slotErr := b.run("slot", "set", id, "hook", fields.HookBead); slotErr != nil {
+			issue, _ := b.Show(id)
+			return issue, fmt.Errorf("agent bead reopened but failed to set hook slot: %w", slotErr)
 		}
 	}
 
