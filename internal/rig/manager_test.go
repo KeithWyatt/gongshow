@@ -606,7 +606,7 @@ func TestDeriveBeadsPrefix(t *testing.T) {
 		want string
 	}{
 		// Compound words with common suffixes should split
-		{"gongshow", "gt"},       // gas + town
+		{"gastown", "gt"},        // gas + town (legacy name example)
 		{"nashville", "nv"},     // nash + ville
 		{"bridgeport", "bp"},    // bridge + port
 		{"someplace", "sp"},     // some + place
@@ -654,7 +654,7 @@ func TestSplitCompoundWord(t *testing.T) {
 		want []string
 	}{
 		// Known suffixes
-		{"gongshow", []string{"gas", "town"}},
+		{"gastown", []string{"gas", "town"}},
 		{"nashville", []string{"nash", "ville"}},
 		{"bridgeport", []string{"bridge", "port"}},
 		{"someplace", []string{"some", "place"}},
