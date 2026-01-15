@@ -48,6 +48,10 @@ type Daemon struct {
 	// Mass death detection: track recent session deaths
 	deathsMu     sync.Mutex
 	recentDeaths []sessionDeath
+
+	// GUPP violation recovery tracking: agentID -> first recovery attempt time
+	guppRecoveryMu       sync.Mutex
+	guppRecoveryAttempts map[string]time.Time
 }
 
 // sessionDeath records a detected session death for mass death analysis.
@@ -80,11 +84,12 @@ func New(config *Config) (*Daemon, error) {
 	ctx, cancel := context.WithCancel(context.Background())
 
 	return &Daemon{
-		config: config,
-		tmux:   tmux.NewTmux(),
-		logger: logger,
-		ctx:    ctx,
-		cancel: cancel,
+		config:               config,
+		tmux:                 tmux.NewTmux(),
+		logger:               logger,
+		ctx:                  ctx,
+		cancel:               cancel,
+		guppRecoveryAttempts: make(map[string]time.Time),
 	}, nil
 }
 

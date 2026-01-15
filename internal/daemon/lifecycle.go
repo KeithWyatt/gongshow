@@ -778,7 +778,11 @@ func identityToBDActor(identity string) string {
 // GUPPViolationTimeout is how long an agent can have work on hook without
 // progressing before it's considered a GUPP (GongShow Universal Propulsion
 // Principle) violation. GUPP states: if you have work on your hook, you run it.
-const GUPPViolationTimeout = 30 * time.Minute
+const GUPPViolationTimeout = 15 * time.Minute
+
+// GUPPEscalationTimeout is how long after the first recovery attempt before
+// escalating to the human overseer if the agent is still stuck.
+const GUPPEscalationTimeout = 30 * time.Minute
 
 // checkGUPPViolations looks for agents that have work-on-hook but aren't
 // progressing. This is a GUPP violation: agents with hooked work must execute.
@@ -851,9 +855,34 @@ func (d *Daemon) checkRigGUPPViolations(rigName string) {
 				d.logger.Printf("GUPP violation: agent %s has hook_bead=%s but hasn't updated in %v (timeout: %v)",
 					agent.ID, agent.HookBead, age.Round(time.Minute), GUPPViolationTimeout)
 
-				// Notify the witness for this rig
-				d.notifyWitnessOfGUPP(rigName, agent.ID, agent.HookBead, age)
+				// Check if we've already attempted recovery
+				d.guppRecoveryMu.Lock()
+				firstAttempt, hasAttempted := d.guppRecoveryAttempts[agent.ID]
+				d.guppRecoveryMu.Unlock()
+
+				if !hasAttempted {
+					// First violation: notify witness and attempt auto-restart
+					d.notifyWitnessOfGUPP(rigName, agent.ID, agent.HookBead, age)
+					d.attemptGUPPRecovery(rigName, polecatName, sessionName, agent.ID)
+				} else if time.Since(firstAttempt) > GUPPEscalationTimeout {
+					// Still stuck after escalation timeout: escalate to human
+					d.escalateGUPPToHuman(rigName, agent.ID, agent.HookBead, age)
+				}
+				// Between first attempt and escalation timeout: wait and let recovery take effect
+			} else {
+				// Agent is progressing - clear any recovery tracking
+				d.guppRecoveryMu.Lock()
+				if _, hasAttempted := d.guppRecoveryAttempts[agent.ID]; hasAttempted {
+					d.logger.Printf("GUPP recovery successful: agent %s is progressing again", agent.ID)
+					delete(d.guppRecoveryAttempts, agent.ID)
+				}
+				d.guppRecoveryMu.Unlock()
 			}
+		} else {
+			// Session is dead - clear any recovery tracking (orphan handler will deal with it)
+			d.guppRecoveryMu.Lock()
+			delete(d.guppRecoveryAttempts, agent.ID)
+			d.guppRecoveryMu.Unlock()
 		}
 	}
 }
@@ -867,8 +896,8 @@ func (d *Daemon) notifyWitnessOfGUPP(rigName, agentID, hookBead string, stuckDur
 hook_bead: %s
 stuck_duration: %v
 
-Action needed: Check if agent is alive and responsive. Consider restarting if stuck.`,
-		agentID, hookBead, stuckDuration.Round(time.Minute))
+Daemon will attempt auto-recovery. Escalation to human if still stuck after %v.`,
+		agentID, hookBead, stuckDuration.Round(time.Minute), GUPPEscalationTimeout)
 
 	cmd := exec.Command("gt", "mail", "send", witnessAddr, "-s", subject, "-m", body)
 	cmd.Dir = d.config.TownRoot
@@ -877,6 +906,70 @@ Action needed: Check if agent is alive and responsive. Consider restarting if st
 		d.logger.Printf("Warning: failed to notify witness of GUPP violation: %v", err)
 	} else {
 		d.logger.Printf("Notified %s of GUPP violation for %s", witnessAddr, agentID)
+	}
+}
+
+// attemptGUPPRecovery tries to restart a stuck polecat session automatically.
+// Records the attempt time to enable escalation if recovery fails.
+func (d *Daemon) attemptGUPPRecovery(rigName, polecatName, sessionName, agentID string) {
+	// Record this recovery attempt
+	d.guppRecoveryMu.Lock()
+	d.guppRecoveryAttempts[agentID] = time.Now()
+	d.guppRecoveryMu.Unlock()
+
+	d.logger.Printf("Attempting GUPP auto-recovery for %s: restarting session %s", agentID, sessionName)
+
+	// Kill the stuck session - this will trigger the pane-died hook
+	// and the orphan work handler will restart it
+	if err := d.tmux.KillSessionWithProcesses(sessionName); err != nil {
+		d.logger.Printf("Warning: failed to kill stuck session %s: %v", sessionName, err)
+		return
+	}
+
+	// Wait briefly for the session to die cleanly
+	time.Sleep(2 * time.Second)
+
+	// Restart the polecat session
+	if err := d.restartPolecatSession(rigName, polecatName, sessionName); err != nil {
+		d.logger.Printf("Warning: failed to restart polecat session %s: %v", sessionName, err)
+		return
+	}
+
+	d.logger.Printf("GUPP auto-recovery: restarted session %s for %s", sessionName, agentID)
+}
+
+// escalateGUPPToHuman sends an urgent notification to the human overseer
+// when auto-recovery has failed and the agent is still stuck.
+func (d *Daemon) escalateGUPPToHuman(rigName, agentID, hookBead string, stuckDuration time.Duration) {
+	d.logger.Printf("GUPP ESCALATION: agent %s still stuck after auto-recovery (total: %v)",
+		agentID, stuckDuration.Round(time.Minute))
+
+	// Clear the recovery tracking - we've escalated
+	d.guppRecoveryMu.Lock()
+	delete(d.guppRecoveryAttempts, agentID)
+	d.guppRecoveryMu.Unlock()
+
+	// Send urgent mail to human
+	subject := fmt.Sprintf("URGENT: %s stuck for %v - auto-recovery failed", agentID, stuckDuration.Round(time.Minute))
+	body := fmt.Sprintf(`Agent %s has work on hook but isn't progressing despite auto-recovery attempt.
+
+hook_bead: %s
+stuck_duration: %v
+auto_recovery: FAILED
+
+HUMAN INTERVENTION REQUIRED:
+1. Check if the agent is truly stuck (gt polecat attach %s)
+2. Consider manually restarting: gt session restart %s
+3. Check for systemic issues if multiple agents are stuck`,
+		agentID, hookBead, stuckDuration.Round(time.Minute), agentID, agentID)
+
+	cmd := exec.Command("gt", "mail", "send", "--human", "-s", subject, "-m", body)
+	cmd.Dir = d.config.TownRoot
+
+	if err := cmd.Run(); err != nil {
+		d.logger.Printf("Warning: failed to escalate GUPP violation to human: %v", err)
+	} else {
+		d.logger.Printf("Escalated GUPP violation for %s to human overseer", agentID)
 	}
 }
 
