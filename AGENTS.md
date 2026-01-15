@@ -19,3 +19,11 @@ When working on code, **iterate and improve it 5 times before committing**:
 5. Final polish - comments, formatting, simplification
 
 Only commit after completing all 5 iterations. This ensures higher quality code with fewer review cycles.
+
+### Test Fixing Rule
+**Always fix broken tests before completing your task.** When you:
+- Break existing tests with your changes → fix them
+- Discover pre-existing test failures → fix them
+- Add new functionality → add tests for it
+
+Never leave tests in a failing state. Run `go test ./...` before marking work complete.
