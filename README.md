@@ -94,7 +94,7 @@ Git-backed issue tracking system that stores work state as structured data.
 
 ```bash
 # Install Gas Town
-go install github.com/steveyegge/gastown/cmd/gt@latest
+go install github.com/KeithWyatt/gongshow/cmd/gt@latest
 
 # Add Go binaries to PATH (add to ~/.zshrc or ~/.bashrc)
 export PATH="$PATH:$HOME/go/bin"
