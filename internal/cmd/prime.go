@@ -250,12 +250,9 @@ func runPrime(cmd *cobra.Command, args []string) error {
 		checkPendingEscalations(ctx)
 	}
 
-	// Output startup directive for roles that should announce themselves
-	// Skip if in autonomous mode (slung work provides its own directive)
-	if !hasSlungWork {
-		explain(true, "Startup directive: normal mode (no hooked work)")
-		outputStartupDirective(ctx)
-	}
+	// NOTE: outputStartupDirective removed - all role templates now have
+	// startup protocol sections (Propulsion Principle, startup steps, etc.)
+	// This saves ~90 tokens per session. See bead go-pdj.
 
 	return nil
 }

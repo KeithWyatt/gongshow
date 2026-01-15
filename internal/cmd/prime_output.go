@@ -254,80 +254,8 @@ func outputHandoffContent(ctx RoleContext) {
 	fmt.Println(style.Dim.Render("(Clear with: gt rig reset --handoff)"))
 }
 
-// outputStartupDirective outputs role-specific instructions for the agent.
-// This tells agents like Mayor to announce themselves on startup.
-func outputStartupDirective(ctx RoleContext) {
-	switch ctx.Role {
-	case RoleMayor:
-		fmt.Println()
-		fmt.Println("---")
-		fmt.Println()
-		fmt.Println("**STARTUP PROTOCOL**: You are the Mayor. Please:")
-		fmt.Println("1. Announce: \"Mayor, checking in.\"")
-		fmt.Println("2. Check mail: `gt mail inbox` - look for 🤝 HANDOFF messages")
-		fmt.Println("3. Check for attached work: `gt hook`")
-		fmt.Println("   - If mol attached → **RUN IT** (no human input needed)")
-		fmt.Println("   - If no mol → await user instruction")
-	case RoleWitness:
-		fmt.Println()
-		fmt.Println("---")
-		fmt.Println()
-		fmt.Println("**STARTUP PROTOCOL**: You are the Witness. Please:")
-		fmt.Println("1. Announce: \"Witness, checking in.\"")
-		fmt.Println("2. Check mail: `gt mail inbox` - look for 🤝 HANDOFF messages")
-		fmt.Println("3. Check for attached patrol: `gt hook`")
-		fmt.Println("   - If mol attached → **RUN IT** (resume from current step)")
-		fmt.Println("   - If no mol → create patrol: `bd mol wisp mol-witness-patrol`")
-	case RolePolecat:
-		fmt.Println()
-		fmt.Println("---")
-		fmt.Println()
-		fmt.Println("**STARTUP PROTOCOL**: You are a polecat. Please:")
-		fmt.Printf("1. Announce: \"%s Polecat %s, checking in.\"\n", ctx.Rig, ctx.Polecat)
-		fmt.Println("2. Check mail: `gt mail inbox`")
-		fmt.Println("3. If there's a 🤝 HANDOFF message, read it for context")
-		fmt.Println("4. Check for attached work: `gt hook`")
-		fmt.Println("   - If mol attached → **RUN IT** (you were spawned with this work)")
-		fmt.Println("   - If no mol → ERROR: polecats must have work attached; escalate to Witness")
-	case RoleRefinery:
-		fmt.Println()
-		fmt.Println("---")
-		fmt.Println()
-		fmt.Println("**STARTUP PROTOCOL**: You are the Refinery. Please:")
-		fmt.Println("1. Announce: \"Refinery, checking in.\"")
-		fmt.Println("2. Check mail: `gt mail inbox` - look for 🤝 HANDOFF messages")
-		fmt.Println("3. Check for attached patrol: `gt hook`")
-		fmt.Println("   - If mol attached → **RUN IT** (resume from current step)")
-		fmt.Println("   - If no mol → create patrol: `bd mol wisp mol-refinery-patrol`")
-	case RoleCrew:
-		fmt.Println()
-		fmt.Println("---")
-		fmt.Println()
-		fmt.Println("**STARTUP PROTOCOL**: You are a crew worker. Please:")
-		fmt.Printf("1. Announce: \"%s Crew %s, checking in.\"\n", ctx.Rig, ctx.Polecat)
-		fmt.Println("2. Check mail: `gt mail inbox`")
-		fmt.Println("3. If there's a 🤝 HANDOFF message, read it and continue the work")
-		fmt.Println("4. Check for attached work: `gt hook`")
-		fmt.Println("   - If attachment found → **RUN IT** (no human input needed)")
-		fmt.Println("   - If no attachment → await user instruction")
-	case RoleDeacon:
-		// Skip startup protocol if paused - the pause message was already shown
-		paused, _, _ := deacon.IsPaused(ctx.TownRoot)
-		if paused {
-			return
-		}
-		fmt.Println()
-		fmt.Println("---")
-		fmt.Println()
-		fmt.Println("**STARTUP PROTOCOL**: You are the Deacon. Please:")
-		fmt.Println("1. Announce: \"Deacon, checking in.\"")
-		fmt.Println("2. Signal awake: `gt deacon heartbeat \"starting patrol\"`")
-		fmt.Println("3. Check mail: `gt mail inbox` - look for 🤝 HANDOFF messages")
-		fmt.Println("4. Check for attached patrol: `gt hook`")
-		fmt.Println("   - If mol attached → **RUN IT** (resume from current step)")
-		fmt.Println("   - If no mol → create patrol: `bd mol wisp mol-deacon-patrol`")
-	}
-}
+// NOTE: outputStartupDirective was removed - all role templates now include
+// startup protocol sections. See bead go-pdj for details.
 
 // outputAttachmentStatus checks for attached work molecule and outputs status.
 // This is key for the autonomous overnight work pattern.
