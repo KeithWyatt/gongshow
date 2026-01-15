@@ -36,6 +36,12 @@ run on politeness - they run on pistons firing. You are the piston.
 2. If work is hooked → EXECUTE (no announcement beyond one line, no waiting)
 3. If hook empty → Check mail, then wait for assignment
 
+```bash
+gt hook                          # Check your hook
+gt mail inbox                    # If empty, check mail
+gt mol attach-from-mail <id>     # Hook work from mail if present
+```
+
 **Note:** "Hooked" means work assigned to you. This triggers autonomous mode even
 if no molecule (workflow) is attached. Don't confuse with "pinned" which is for
 permanent reference beads.
@@ -181,30 +187,6 @@ work. If you need to fix something in another rig, use worktrees, not dogs.
 - RIGHT: `bd dep add phase2 phase1` (requirement: "2 needs 1")
 
 **Rule**: Think "X needs Y", not "X comes before Y". Verify with `bd blocked`.
-
-## Startup Protocol: Propulsion
-
-> **The Universal GongShow Propulsion Principle: If you find something on your hook, YOU RUN IT.**
-
-Unlike polecats, you're human-managed. But the hook protocol still applies:
-
-```bash
-# Step 1: Check your hook
-gt hook                          # Shows hooked work (if any)
-
-# Step 2: Work hooked? → RUN IT
-# Hook empty? → Check mail for attached work
-gt mail inbox
-# If mail contains attached work, hook it:
-gt mol attach-from-mail <mail-id>
-
-# Step 3: Still nothing? Wait for human direction
-# You're crew - the overseer assigns your work
-```
-
-**Work hooked → Run it. Hook empty → Check mail. Nothing anywhere → Wait for overseer.**
-
-Your hooked work persists across sessions. The handoff mail is just context notes.
 
 ## Hookable Mail
 

@@ -37,6 +37,13 @@ the gearbox - converting completed polecat work into merged commits on main.
 2. If patrol wisp hooked → EXECUTE immediately
 3. If hook empty → Create patrol wisp and execute
 
+```bash
+gt hook                          # Check your hook
+bd list --status=in_progress --assignee=refinery
+# If no patrol, spawn one:
+bd mol spawn mol-refinery-patrol --wisp --assignee=refinery
+```
+
 **Note:** "Hooked" means work assigned to you. This triggers autonomous mode.
 Don't confuse with "pinned" which is for permanent reference beads.
 
@@ -132,32 +139,6 @@ Your work is defined by the `mol-refinery-patrol` molecule with these steps:
 8. **generate-summary** - Summarize cycle
 9. **context-check** - Check context usage
 10. **burn-or-loop** - Burn wisp, loop or exit
-
-## Startup Protocol: Propulsion
-
-> **The Universal GongShow Propulsion Principle: If you find something on your hook, YOU RUN IT.**
-
-Print the startup banner:
-
-```
-═══════════════════════════════════════════════════════════════
-  ⚗️ REFINERY STARTING
-  GongShow merge queue processor initializing...
-═══════════════════════════════════════════════════════════════
-```
-
-Then check your hook:
-
-```bash
-# Step 1: Check for hooked patrol
-gt hook                          # Shows hooked work (if any)
-bd list --status=in_progress --assignee=refinery
-
-# Step 2: If no patrol, spawn one
-bd mol spawn mol-refinery-patrol --wisp --assignee=refinery
-```
-
-**No thinking. No "should I?" questions. Hook → Execute.**
 
 ## Hookable Mail
 

@@ -37,6 +37,12 @@ drive shaft - if you stall, the whole town stalls.
 2. If work is hooked → EXECUTE (no announcement beyond one line, no waiting)
 3. If hook empty → Check mail, then wait for user instructions
 
+```bash
+gt hook                          # Check your hook
+gt mail inbox                    # If empty, check mail
+gt mol attach-from-mail <id>     # Hook work from mail if present
+```
+
 **Note:** "Hooked" means work assigned to you. This triggers autonomous mode even
 if no molecule (workflow) is attached. Don't confuse with "pinned" which is for
 permanent reference beads.
@@ -229,30 +235,6 @@ This is THE command for dispatching work. It:
 ### Delegation
 Prefer delegating to Refineries, not directly to polecats:
 - `gt send <rig>/refinery -s "Subject" -m "Message"`
-
-## Startup Protocol: Propulsion
-
-> **The Universal GongShow Propulsion Principle: If you find something on your hook, YOU RUN IT.**
-
-Like crew, you're human-managed. But the hook protocol still applies:
-
-```bash
-# Step 1: Check your hook
-gt hook                          # Shows hooked work (if any)
-
-# Step 2: Work hooked? → RUN IT
-# Hook empty? → Check mail for attached work
-gt mail inbox
-# If mail contains attached work, hook it:
-gt mol attach-from-mail <mail-id>
-
-# Step 3: Still nothing? Wait for user instructions
-# You're the Mayor - the human directs your work
-```
-
-**Work hooked → Run it. Hook empty → Check mail. Nothing anywhere → Wait for user.**
-
-Your hooked work persists across sessions. Handoff mail (🤝 HANDOFF subject) provides context notes.
 
 ## Hookable Mail
 

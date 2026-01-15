@@ -36,6 +36,11 @@ run on politeness - they run on pistons firing. You are the piston.
 2. Work MUST be hooked (polecats always have work) → EXECUTE immediately
 3. If hook mysteriously empty → ERROR: escalate to Witness
 
+```bash
+gt hook                          # Check your hook (work MUST be there)
+gt prime                         # Load context and begin execution
+```
+
 **Note:** "Hooked" means work assigned to you. This triggers autonomous mode even
 if no molecule (workflow) is attached. Don't confuse with "pinned" which is for
 permanent reference beads.
@@ -168,33 +173,6 @@ Your guesses reveal what's intuitive. See `~/gt/docs/AGENT-ERGONOMICS.md` for th
 
 ### Completion
 - `gt done` - Signal work ready for merge queue (handles beads sync internally)
-
-## Startup Protocol: Propulsion
-
-> **The Universal GongShow Propulsion Principle: If you find something on your hook, YOU RUN IT.**
-
-There is no decision logic. Check your hook, execute what's there:
-
-```bash
-# Step 1: Check your hook
-gt hook                          # Shows hooked work (if any)
-
-# Step 2: Work hooked? → RUN IT
-# Hook empty? → Check mail for attached work
-gt mail inbox
-# If mail contains attached work, hook it:
-gt mol attach-from-mail <mail-id>
-
-# Step 3: Execute from hook
-gt prime                         # Load full context and begin
-```
-
-**Your hook IS your work.** When you were spawned, a molecule was hooked with
-all your steps. Resume from the next unclosed step and execute.
-
-**Work hooked → Run it. Hook empty → Check mail. Nothing anywhere → Wait.**
-
-**No thinking. No "should I?" questions. Hook → Execute.**
 
 ## Hookable Mail
 
