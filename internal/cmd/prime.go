@@ -421,14 +421,21 @@ func checkSlungWork(ctx RoleContext) bool {
 	fmt.Println("3. Begin work (no waiting for input)")
 	fmt.Println()
 
-	// Show the hooked work details
+	// Show the hooked work details (using cached bead data - no subprocess call needed)
 	fmt.Printf("%s\n\n", style.Bold.Render("## Hooked Work"))
 	fmt.Printf("  Bead ID: %s\n", style.Bold.Render(hookedBead.ID))
 	fmt.Printf("  Title: %s\n", hookedBead.Title)
+	fmt.Printf("  Status: %s\n", hookedBead.Status)
+	if hookedBead.Priority >= 0 {
+		fmt.Printf("  Priority: P%d\n", hookedBead.Priority)
+	}
+	if hookedBead.Assignee != "" {
+		fmt.Printf("  Assignee: %s\n", hookedBead.Assignee)
+	}
 	if hookedBead.Description != "" {
 		// Show first few lines of description
 		lines := strings.Split(hookedBead.Description, "\n")
-		maxLines := 5
+		maxLines := 8
 		if len(lines) > maxLines {
 			lines = lines[:maxLines]
 			lines = append(lines, "...")
@@ -436,31 +443,6 @@ func checkSlungWork(ctx RoleContext) bool {
 		fmt.Println("  Description:")
 		for _, line := range lines {
 			fmt.Printf("    %s\n", line)
-		}
-	}
-	fmt.Println()
-
-	// Show bead preview using bd show
-	fmt.Println("**Bead details:**")
-	cmd := exec.Command("bd", "show", hookedBead.ID)
-	var stdout, stderr bytes.Buffer
-	cmd.Stdout = &stdout
-	cmd.Stderr = &stderr
-	if err := cmd.Run(); err != nil {
-		if errMsg := strings.TrimSpace(stderr.String()); errMsg != "" {
-			fmt.Fprintf(os.Stderr, "  bd show %s: %s\n", hookedBead.ID, errMsg)
-		} else {
-			fmt.Fprintf(os.Stderr, "  bd show %s: %v\n", hookedBead.ID, err)
-		}
-	} else {
-		lines := strings.Split(stdout.String(), "\n")
-		maxLines := 15
-		if len(lines) > maxLines {
-			lines = lines[:maxLines]
-			lines = append(lines, "...")
-		}
-		for _, line := range lines {
-			fmt.Printf("  %s\n", line)
 		}
 	}
 	fmt.Println()
